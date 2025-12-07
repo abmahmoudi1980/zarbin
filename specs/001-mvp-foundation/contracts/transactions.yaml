@@ -1,0 +1,708 @@
+openapi: 3.0.0
+info:
+  title: Zarbin Transactions API
+  description: Transaction management endpoints for manual income/expense tracking
+  version: 1.0.0
+servers:
+  - url: /api/v1
+    description: API v1
+
+paths:
+  /transactions:
+    post:
+      summary: Create a new transaction
+      description: Create a new income or expense transaction with Jalali date and category
+      tags:
+        - Transactions
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - amount_toman
+                - transaction_type
+                - transaction_date
+              properties:
+                amount_toman:
+                  type: integer
+                  description: Amount in Toman (must be > 0 and <= 99,999,999,999)
+                  example: 5000000
+                transaction_type:
+                  type: string
+                  enum: ["income", "expense"]
+                  description: Whether this is income or expense
+                  example: "expense"
+                category_id:
+                  type: integer
+                  description: Category ID (optional, defaults to "Other" if not provided)
+                  example: 1
+                transaction_date:
+                  type: string
+                  format: date
+                  description: Jalali date in YYYY/MM/DD format
+                  example: "1403/01/15"
+                notes:
+                  type: string
+                  description: Optional notes or description (max 500 chars)
+                  example: "Grocery shopping at Hyperstar"
+              example:
+                amount_toman: 5000000
+                transaction_type: "expense"
+                category_id: 1
+                transaction_date: "1403/01/15"
+                notes: "Weekly grocery shopping"
+      responses:
+        "201":
+          description: Transaction created successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 42
+                  user_id:
+                    type: integer
+                    example: 1
+                  amount_toman:
+                    type: integer
+                    example: 5000000
+                  transaction_type:
+                    type: string
+                    enum: ["income", "expense"]
+                    example: "expense"
+                  category_id:
+                    type: integer
+                    example: 1
+                  category_name:
+                    type: string
+                    example: "خوراک"
+                  transaction_date:
+                    type: string
+                    format: date
+                    description: Jalali date returned in YYYY/MM/DD format
+                    example: "1403/01/15"
+                  usd_rate_at_creation:
+                    type: number
+                    format: float
+                    description: USD to Toman rate at creation time (for historical accuracy)
+                    example: 42500.50
+                  amount_usd_equivalent:
+                    type: number
+                    format: float
+                    description: Amount in USD equivalent at creation time
+                    example: 117.65
+                  gold_rate_at_creation:
+                    type: number
+                    format: float
+                    description: Gold gram to Toman rate at creation time
+                    example: 2150000
+                  amount_gold_grams_equivalent:
+                    type: number
+                    format: float
+                    description: Amount in gold grams equivalent at creation time
+                    example: 2.33
+                  notes:
+                    type: string
+                    example: "Weekly grocery shopping"
+                  created_at:
+                    type: string
+                    format: date-time
+                    example: "2024-01-15T10:30:00Z"
+        "400":
+          description: Bad request - invalid input
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Amount must be greater than 0"
+                  errors:
+                    type: object
+                    example:
+                      amount_toman: ["must be greater than 0"]
+        "401":
+          description: Unauthorized - invalid or missing token
+        "422":
+          description: Unprocessable entity - validation failed
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                  errors:
+                    type: object
+
+    get:
+      summary: List user's transactions
+      description: Get paginated list of all user transactions, sorted by date (newest first)
+      tags:
+        - Transactions
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: page
+          in: query
+          description: Page number for pagination (default 1)
+          schema:
+            type: integer
+            example: 1
+        - name: per_page
+          in: query
+          description: Items per page (default 20, max 100)
+          schema:
+            type: integer
+            example: 20
+        - name: transaction_type
+          in: query
+          description: Filter by transaction type
+          schema:
+            type: string
+            enum: ["income", "expense"]
+            example: "expense"
+        - name: category_id
+          in: query
+          description: Filter by category ID
+          schema:
+            type: integer
+            example: 1
+        - name: from_date
+          in: query
+          description: Filter transactions from this Jalali date (YYYY/MM/DD)
+          schema:
+            type: string
+            format: date
+            example: "1403/01/01"
+        - name: to_date
+          in: query
+          description: Filter transactions until this Jalali date (YYYY/MM/DD)
+          schema:
+            type: string
+            format: date
+            example: "1403/01/31"
+      responses:
+        "200":
+          description: List of transactions retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  transactions:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 42
+                        amount_toman:
+                          type: integer
+                          example: 5000000
+                        transaction_type:
+                          type: string
+                          enum: ["income", "expense"]
+                          example: "expense"
+                        category_id:
+                          type: integer
+                          example: 1
+                        category_name:
+                          type: string
+                          example: "خوراک"
+                        transaction_date:
+                          type: string
+                          format: date
+                          example: "1403/01/15"
+                        amount_usd_equivalent:
+                          type: number
+                          format: float
+                          example: 117.65
+                        amount_gold_grams_equivalent:
+                          type: number
+                          format: float
+                          example: 2.33
+                        notes:
+                          type: string
+                          example: "Weekly grocery shopping"
+                        created_at:
+                          type: string
+                          format: date-time
+                          example: "2024-01-15T10:30:00Z"
+                  pagination:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                        example: 1
+                      per_page:
+                        type: integer
+                        example: 20
+                      total_count:
+                        type: integer
+                        example: 45
+                      total_pages:
+                        type: integer
+                        example: 3
+        "401":
+          description: Unauthorized - invalid or missing token
+
+  /transactions/{id}:
+    get:
+      summary: Get a single transaction
+      description: Retrieve details of a specific transaction
+      tags:
+        - Transactions
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Transaction ID
+          schema:
+            type: integer
+            example: 42
+      responses:
+        "200":
+          description: Transaction retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 42
+                  user_id:
+                    type: integer
+                    example: 1
+                  amount_toman:
+                    type: integer
+                    example: 5000000
+                  transaction_type:
+                    type: string
+                    enum: ["income", "expense"]
+                    example: "expense"
+                  category_id:
+                    type: integer
+                    example: 1
+                  category_name:
+                    type: string
+                    example: "خوراک"
+                  transaction_date:
+                    type: string
+                    format: date
+                    example: "1403/01/15"
+                  usd_rate_at_creation:
+                    type: number
+                    format: float
+                    example: 42500.50
+                  amount_usd_equivalent:
+                    type: number
+                    format: float
+                    example: 117.65
+                  gold_rate_at_creation:
+                    type: number
+                    format: float
+                    example: 2150000
+                  amount_gold_grams_equivalent:
+                    type: number
+                    format: float
+                    example: 2.33
+                  notes:
+                    type: string
+                    example: "Weekly grocery shopping"
+                  created_at:
+                    type: string
+                    format: date-time
+                    example: "2024-01-15T10:30:00Z"
+                  updated_at:
+                    type: string
+                    format: date-time
+                    example: "2024-01-15T10:30:00Z"
+        "401":
+          description: Unauthorized - invalid or missing token
+        "404":
+          description: Transaction not found
+
+    patch:
+      summary: Update a transaction
+      description: Update an existing transaction (notes, category, or amount before sync)
+      tags:
+        - Transactions
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Transaction ID
+          schema:
+            type: integer
+            example: 42
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                amount_toman:
+                  type: integer
+                  description: Updated amount in Toman (optional)
+                  example: 5500000
+                category_id:
+                  type: integer
+                  description: Updated category ID (optional)
+                  example: 2
+                notes:
+                  type: string
+                  description: Updated notes (optional)
+                  example: "Updated notes"
+      responses:
+        "200":
+          description: Transaction updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    example: 42
+                  amount_toman:
+                    type: integer
+                    example: 5500000
+                  category_id:
+                    type: integer
+                    example: 2
+                  category_name:
+                    type: string
+                    example: "حمل‌ونقل"
+                  notes:
+                    type: string
+                    example: "Updated notes"
+                  updated_at:
+                    type: string
+                    format: date-time
+                    example: "2024-01-15T11:00:00Z"
+        "401":
+          description: Unauthorized - invalid or missing token
+        "404":
+          description: Transaction not found
+        "422":
+          description: Unprocessable entity - validation failed
+
+    delete:
+      summary: Delete a transaction
+      description: Delete a transaction (only possible if not yet synced to server)
+      tags:
+        - Transactions
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: Transaction ID
+          schema:
+            type: integer
+            example: 42
+      responses:
+        "204":
+          description: Transaction deleted successfully
+        "401":
+          description: Unauthorized - invalid or missing token
+        "404":
+          description: Transaction not found
+
+  /balance:
+    get:
+      summary: Get user's total balance
+      description: Get user's current total balance in Toman with USD and Gold equivalents
+      tags:
+        - Balance
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Balance retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_toman:
+                    type: integer
+                    description: Total balance in Toman (sum of all income - all expense transactions)
+                    example: 50000000
+                  usd_rate_current:
+                    type: number
+                    format: float
+                    description: Current USD to Toman rate (for real-time conversion)
+                    example: 42500.50
+                  total_usd_equivalent:
+                    type: number
+                    format: float
+                    description: Total balance in USD (at current rate)
+                    example: 1176.47
+                  gold_rate_current:
+                    type: number
+                    format: float
+                    description: Current gold gram to Toman rate (for real-time conversion)
+                    example: 2150000
+                  total_gold_grams_equivalent:
+                    type: number
+                    format: float
+                    description: Total balance in gold grams (at current rate)
+                    example: 23.26
+                  last_updated:
+                    type: string
+                    format: date-time
+                    description: Last time the balance was calculated
+                    example: "2024-01-15T11:00:00Z"
+        "401":
+          description: Unauthorized - invalid or missing token
+
+  /categories:
+    get:
+      summary: List all transaction categories
+      description: Get list of all available transaction categories (predefined)
+      tags:
+        - Categories
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Categories retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  categories:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 1
+                        name:
+                          type: string
+                          description: Persian category name
+                          example: "خوراک"
+                        icon_code:
+                          type: string
+                          description: Icon identifier for UI display
+                          example: "grocery"
+                        display_order:
+                          type: integer
+                          example: 1
+                    example:
+                      - id: 1
+                        name: "خوراک"
+                        icon_code: "grocery"
+                        display_order: 1
+                      - id: 2
+                        name: "حمل‌ونقل"
+                        icon_code: "transport"
+                        display_order: 2
+                      - id: 3
+                        name: "قبوض"
+                        icon_code: "bills"
+                        display_order: 3
+                      - id: 4
+                        name: "خرید"
+                        icon_code: "shopping"
+                        display_order: 4
+                      - id: 5
+                        name: "سلامت"
+                        icon_code: "health"
+                        display_order: 5
+                      - id: 6
+                        name: "تفریح"
+                        icon_code: "entertainment"
+                        display_order: 6
+                      - id: 7
+                        name: "سایر"
+                        icon_code: "other"
+                        display_order: 7
+        "401":
+          description: Unauthorized - invalid or missing token
+
+  /dashboard:
+    get:
+      summary: Get dashboard summary
+      description: Get comprehensive dashboard data including balance, recent transactions, and spending breakdown by category
+      tags:
+        - Dashboard
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: jalali_month
+          in: query
+          description: Jalali month to get category breakdown for (format YYYY/MM, defaults to current)
+          schema:
+            type: string
+            example: "1403/01"
+      responses:
+        "200":
+          description: Dashboard data retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  balance:
+                    type: object
+                    properties:
+                      total_toman:
+                        type: integer
+                        example: 50000000
+                      total_usd_equivalent:
+                        type: number
+                        format: float
+                        example: 1176.47
+                      total_gold_grams_equivalent:
+                        type: number
+                        format: float
+                        example: 23.26
+                  recent_transactions:
+                    type: array
+                    maxItems: 10
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          example: 42
+                        amount_toman:
+                          type: integer
+                          example: 5000000
+                        transaction_type:
+                          type: string
+                          enum: ["income", "expense"]
+                          example: "expense"
+                        category_name:
+                          type: string
+                          example: "خوراک"
+                        transaction_date:
+                          type: string
+                          format: date
+                          example: "1403/01/15"
+                        notes:
+                          type: string
+                          example: "Weekly shopping"
+                  spending_breakdown_current_month:
+                    type: object
+                    description: Spending breakdown by category for current Jalali month
+                    properties:
+                      month:
+                        type: string
+                        description: Jalali month in YYYY/MM format
+                        example: "1403/01"
+                      categories:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            category_name:
+                              type: string
+                              example: "خوراک"
+                            total_amount:
+                              type: integer
+                              description: Total expense in this category for the month
+                              example: 12000000
+                            percentage_of_month:
+                              type: number
+                              format: float
+                              description: Percentage of total monthly spending
+                              example: 35.5
+                      total_spending:
+                        type: integer
+                        description: Total spending (expenses only) for the month
+                        example: 33800000
+        "401":
+          description: Unauthorized - invalid or missing token
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token from /auth/login endpoint
+
+  schemas:
+    Transaction:
+      type: object
+      required:
+        - id
+        - amount_toman
+        - transaction_type
+        - category_id
+        - transaction_date
+      properties:
+        id:
+          type: integer
+        amount_toman:
+          type: integer
+        transaction_type:
+          type: string
+          enum: ["income", "expense"]
+        category_id:
+          type: integer
+        category_name:
+          type: string
+        transaction_date:
+          type: string
+          format: date
+        amount_usd_equivalent:
+          type: number
+          format: float
+        amount_gold_grams_equivalent:
+          type: number
+          format: float
+        notes:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    Category:
+      type: object
+      required:
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        icon_code:
+          type: string
+        display_order:
+          type: integer
+
+tags:
+  - name: Transactions
+    description: Transaction management endpoints
+  - name: Balance
+    description: Balance and balance-related endpoints
+  - name: Categories
+    description: Category management endpoints
+  - name: Dashboard
+    description: Dashboard summary endpoints

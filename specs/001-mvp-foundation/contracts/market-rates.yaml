@@ -1,0 +1,10 @@
+openapi: 3.1.0
+info:
+  title: Zarbin Market Rates API
+  description: Real-time market exchange rates for Gold, USD, and Bahar Azadi Coin
+  version: 1.0.0
+  contact:
+    name: Zarbin Team
+
+servers:
+  - url: https://api.zarbin.app/api/v1

@@ -1,0 +1,50 @@
+openapi: 3.1.0
+info:
+  title: Zarbin Authentication API
+  description: User registration, login, and session management for Zarbin
+  version: 1.0.0
+  contact:
+    name: Zarbin Team
+
+servers:
+  - url: https://api.zarbin.app/api/v1
+    description: Production server
+  - url: http://localhost:3000/api/v1
+    description: Development server
+
+tags:
+  - name: Authentication
+    description: User registration, login, and session management
+
+paths:
+  /auth/register:
+    post:
+      operationId: registerUser
+      tags: [Authentication]
+      summary: Register a new user
+      description: |
+        Creates a new user account with Iranian mobile number and password.
+        Sends an OTP via SMS for verification.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [mobile_number, password]
+              properties:
+                mobile_number:
+                  type: string
+                  pattern: '^\+989[0-9]{9}$'
+                  example: '+989123456789'
+                  description: Iranian mobile number in E.164 format
+                password:
+                  type: string
+                  minLength: 8
+                  example: 'mypassword1'
+                  description: Minimum 8 characters with at least 1 digit
+      responses:
+        '201':
+          description: User created, OTP sent
+          content:
+            application/json:

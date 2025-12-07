@@ -7,6 +7,10 @@ class MarketDataService
     gold_gram: "price_gold_grams",
     bahar_coin: "price_bahar_azadi"
   }.freeze
+  
+  # Cache expiry: 5 minutes
+  CACHE_EXPIRY = 5.minutes
+  CACHE_KEY = "market_rates:latest"
 
   class << self
     def fetch_and_store_rates
@@ -14,6 +18,8 @@ class MarketDataService
       return false if rates_data.blank?
 
       store_rates(rates_data)
+      # Invalidate cache after new rates are stored
+      Rails.cache.delete(CACHE_KEY)
       true
     rescue StandardError => e
       Rails.logger.error("Error fetching market rates: #{e.message}")
@@ -21,13 +27,23 @@ class MarketDataService
     end
 
     def get_current_rates
+      # Try to get from cache first
+      cached = Rails.cache.read(CACHE_KEY)
+      return cached if cached.present?
+
+      # Fetch from database and cache
       latest = MarketRate.latest_rates
-      {
+      rates_hash = {
         usd_rate: latest.find { |r| r.rate_type == "usd" }&.value_in_toman,
         gold_rate: latest.find { |r| r.rate_type == "gold_gram" }&.value_in_toman,
         bahar_coin_rate: latest.find { |r| r.rate_type == "bahar_coin" }&.value_in_toman,
         timestamp: latest.first&.timestamp
       }
+      
+      # Store in cache with 5-minute expiry
+      Rails.cache.write(CACHE_KEY, rates_hash, expires_in: CACHE_EXPIRY)
+      
+      rates_hash
     end
 
     def get_rate(rate_type)
@@ -48,8 +64,8 @@ class MarketDataService
       return nil if rate.blank?
 
       {
-        amount_toman: amount_toman,
-        amount_in_currency: (amount_toman.to_f / rate.value_in_toman).round(2),
+        amount: (amount_toman.to_f / rate.value_in_toman).round(2),
+        original_amount: amount_toman,
         currency: target_currency,
         rate: rate.value_in_toman,
         timestamp: rate.timestamp

@@ -29,11 +29,11 @@ class MarketRate < ApplicationRecord
   # Instance Methods
 
   def self.latest_rates
-    %w(usd gold_gram bahar_coin).map { |type| for_type(type).order(timestamp: :desc).first }
+    %w(usd gold_gram bahar_coin).map { |type| for_type(type).order(timestamp: :desc).first }.compact
   end
 
   def self.rate_for_type(rate_type)
-    for_type(rate_type).order(timestamp: :desc).first&.value_in_toman
+    for_type(rate_type).order(timestamp: :desc).first
   end
 
   def stale?

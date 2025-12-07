@@ -84,23 +84,23 @@
 
 ### Tests for User Story 1 (TDD: Write tests FIRST, ensure they FAIL)
 
-- [ ] T036 [P] [US1] Contract test for GET `/api/v1/rates` in `backend/spec/requests/api/v1/rates_spec.rb`
-- [ ] T037 [P] [US1] Unit test for MarketDataService.fetch_rates in `backend/spec/services/market_data_service_spec.rb`
-- [ ] T038 [P] [US1] Widget test for MarketRatesScreen display in `frontend/test/screens/market_rates_screen_test.dart`
+- [x] T036 [P] [US1] Contract test for GET `/api/v1/rates` in `backend/spec/requests/api/v1/rates_spec.rb`
+- [x] T037 [P] [US1] Unit test for MarketDataService.fetch_rates in `backend/spec/services/market_data_service_spec.rb`
+- [x] T038 [P] [US1] Widget test for MarketRatesScreen display in `frontend/test/screens/market_rates_screen_test.dart`
 
 ### Implementation for User Story 1
 
-- [ ] T039 [P] [US1] Create RatesController with GET endpoint in `backend/app/controllers/api/v1/rates_controller.rb`
-- [ ] T040 [US1] Implement rate caching with Solid Cache (5-minute expiry) in `backend/app/services/market_data_service.rb`
-- [ ] T041 [P] [US1] Create rate formatting service for Jalali dates and Persian numerals in `backend/app/services/rate_formatter.rb`
-- [ ] T042 [P] [US1] Create MarketRateProvider for state management in `frontend/lib/providers/market_rate_provider.dart`
-- [ ] T043 [P] [US1] Create MarketRatesScreen UI with rate display widgets in `frontend/lib/screens/market_rates_screen.dart`
-- [ ] T044 [P] [US1] Implement pull-to-refresh functionality in `frontend/lib/screens/market_rates_screen.dart`
-- [ ] T045 [US1] Implement stale indicator (>5 minutes) in `frontend/lib/widgets/rate_card.dart` (depends on T040)
-- [ ] T046 [US1] Add rate update indicators (up/down arrows with percentage) in `frontend/lib/widgets/rate_change_indicator.dart`
-- [ ] T047 [P] [US1] Create background job to fetch rates every 5 minutes in `backend/app/jobs/fetch_market_rates_job.rb`
-- [ ] T048 [US1] Schedule FetchMarketRatesJob in Solid Queue during market hours in `backend/config/solid_queue.yml`
-- [ ] T049 [P] [US1] Add Persian fonts to Flutter for Jalali date display in `frontend/pubspec.yaml`
+- [x] T039 [P] [US1] Create RatesController with GET endpoint in `backend/app/controllers/api/v1/rates_controller.rb`
+- [x] T040 [US1] Implement rate caching with Solid Cache (5-minute expiry) in `backend/app/services/market_data_service.rb`
+- [x] T041 [P] [US1] Create rate formatting service for Jalali dates and Persian numerals in `backend/app/services/rate_formatter.rb`
+- [x] T042 [P] [US1] Create MarketRateProvider for state management in `frontend/lib/providers/market_rate_provider.dart`
+- [x] T043 [P] [US1] Create MarketRatesScreen UI with rate display widgets in `frontend/lib/screens/market_rates_screen.dart`
+- [x] T044 [P] [US1] Implement pull-to-refresh functionality in `frontend/lib/screens/market_rates_screen.dart`
+- [x] T045 [US1] Implement stale indicator (>5 minutes) in `frontend/lib/widgets/rate_card.dart` (depends on T040)
+- [x] T046 [US1] Add rate update indicators (up/down arrows with percentage) in `frontend/lib/widgets/rate_change_indicator.dart`
+- [x] T047 [P] [US1] Create background job to fetch rates every 5 minutes in `backend/app/jobs/fetch_market_rates_job.rb`
+- [x] T048 [US1] Schedule FetchMarketRatesJob in Solid Queue during market hours in `backend/config/solid_queue.yml`
+- [x] T049 [P] [US1] Add Persian fonts to Flutter for Jalali date display in `frontend/pubspec.yaml`
 - [ ] T050 [US1] Verify rates load within 3 seconds performance target
 
 **Checkpoint**: User Story 1 complete - rates display and refresh working. Can be tested independently.

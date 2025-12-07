@@ -77,6 +77,16 @@ class ApiClient {
     return _dio.get('${ApiConfig.ratesEndpoint}/latest');
   }
 
+  // Get all current market rates (main endpoint for MarketRatesScreen)
+  Future<Map<String, dynamic>> getMarketRates() async {
+    try {
+      final response = await _dio.get(ApiConfig.ratesEndpoint);
+      return response.data as Map<String, dynamic>;
+    } on DioException catch (e) {
+      throw Exception('Failed to fetch market rates: ${e.message}');
+    }
+  }
+
   Future<Response<dynamic>> getRate(String rateType) async {
     return _dio.get('${ApiConfig.ratesEndpoint}/current/$rateType');
   }

@@ -1,12 +1,46 @@
 # frozen_string_literal: true
 
+require 'digest'
+
 module Api
   module V1
     class RatesController < ApplicationController
-      skip_before_action :verify_authenticity_token
+      skip_before_action :verify_jwt_token, only: [:index, :latest, :current, :show]
       before_action :set_rate, only: [:show]
 
-      # GET /api/v1/rates/latest
+      # GET /api/v1/rates
+      # Returns all current market rates - main endpoint for frontend
+      def index
+        rates = MarketRate.latest_rates
+        
+        if rates.empty?
+          return render_success(
+            {
+              rates: [],
+              timestamp: Time.current.iso8601,
+              message: 'No rates available'
+            }
+          )
+        end
+
+        # Format rates for response
+        formatted_rates = rates.map { |rate| format_rate_response(rate) }
+        stale_minutes = calculate_stale_minutes(rates.first.timestamp)
+
+        response_data = {
+          rates: formatted_rates,
+          timestamp: rates.first.timestamp.iso8601,
+          rates_stale_minutes: stale_minutes,
+          stale: stale_minutes > 5
+        }
+
+        set_cache_headers
+        render_success(response_data)
+      rescue StandardError => e
+        render_error("Failed to fetch rates: #{e.message}", :internal_server_error)
+      end
+
+      # GET /api/v1/rates/latest (kept for backward compatibility)
       def latest
         rates = MarketRate.latest_rates
         render json: format_rates(rates)
@@ -54,6 +88,18 @@ module Api
         @rate = MarketRate.find(params[:id])
       end
 
+      def format_rate_response(rate)
+        {
+          rate_type: rate.rate_type,
+          value_in_toman: rate.value_in_toman,
+          label: rate.rate_label,
+          timestamp: rate.timestamp.iso8601,
+          stale: rate.stale?,
+          change_percent: calculate_change_percent(rate),
+          change_direction: calculate_change_direction(rate)
+        }
+      end
+
       def format_rates(rates)
         {
           rates: rates.map do |rate|
@@ -68,6 +114,40 @@ module Api
           end,
           last_updated: rates.first&.timestamp
         }
+      end
+
+      def calculate_change_percent(rate)
+        # Get previous rate from 1 hour ago for comparison
+        previous = MarketRate.where(rate_type: rate.rate_type)
+                              .where('timestamp < ?', 1.hour.ago)
+                              .order(timestamp: :desc)
+                              .first
+
+        return 0 unless previous.present?
+
+        change = rate.value_in_toman - previous.value_in_toman
+        (change.to_f / previous.value_in_toman * 100).round(2)
+      end
+
+      def calculate_change_direction(rate)
+        percent = calculate_change_percent(rate)
+        return 'stable' if percent.zero?
+        percent > 0 ? 'up' : 'down'
+      end
+
+      def calculate_stale_minutes(timestamp)
+        ((Time.current - timestamp) / 60).ceil
+      end
+
+      def set_cache_headers
+        # Cache rates for 5 minutes as they refresh every 5 minutes
+        response.headers['Cache-Control'] = 'public, max-age=300'
+        response.headers['ETag'] = generate_etag
+      end
+
+      def generate_etag
+        rates = MarketRate.latest_rates
+        Digest::MD5.hexdigest(rates.map { |r| "#{r.rate_type}:#{r.value_in_toman}:#{r.timestamp}" }.join('|'))
       end
     end
   end

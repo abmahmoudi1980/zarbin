@@ -1,8 +1,9 @@
-# Load environment variables from .env files
-require "pathname"
+# Load the Rails application.
+require_relative "application"
 
-ENV_FILE = File.expand_path("../../../.env", __FILE__)
-ENV_LOCAL_FILE = File.expand_path("../../../.env.local", __FILE__)
+# Load environment variables from .env files
+ENV_FILE = File.expand_path("../../.env", __dir__)
+ENV_LOCAL_FILE = File.expand_path("../../.env.local", __dir__)
 
 if File.exist?(ENV_FILE)
   File.foreach(ENV_FILE) do |line|
@@ -23,3 +24,6 @@ if File.exist?(ENV_LOCAL_FILE)
     ENV[key] = value.sub(/^["']|["']$/, '')
   end
 end
+
+# Initialize the Rails application.
+Rails.application.initialize!

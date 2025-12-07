@@ -4,23 +4,26 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  host: <%= ENV.fetch("DB_HOST", "localhost") %>
-  port: <%= ENV.fetch("DB_PORT", 5432) %>
-  username: <%= ENV.fetch("DB_USER", "postgres") %>
-  password: <%= ENV.fetch("DB_PASSWORD", "") %>
   
 development:
   <<: *default
   database: zarbin_dev
+  # Use local socket connection (peer authentication)
+  # This doesn't require a password for local development
+  host: localhost
+  username: postgres
+  # Leave password empty for peer authentication
 
 test:
   <<: *default
   database: zarbin_test
+  host: localhost
+  username: postgres
 
 production:
   <<: *default
-  database: zarbin_prod
+  database: <%= ENV.fetch("DB_NAME", "zarbin_prod") %>
   username: <%= ENV["DB_USER"] %>
   password: <%= ENV["DB_PASSWORD"] %>
   host: <%= ENV["DB_HOST"] %>
-  port: <%= ENV["DB_PORT"] %>
+  port: <%= ENV.fetch("DB_PORT", 5432) %>

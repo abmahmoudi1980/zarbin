@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+require "json"
+
+ENV["NODE_ENV"] ||= "development"
+ENV["SHAKAPACKER_PRECOMPILE"] ||= "true"
+
+require_relative "../config/boot"
+require "shakapacker/webpack_runner"
+
+app_root = File.expand_path("..", __dir__)
+Shakapacker::WebpackRunner.run(["--config", File.join(app_root, "config/webpack/webpack.config.js")] + ARGV, chdir: app_root)

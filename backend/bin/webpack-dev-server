@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+require "json"
+
+ENV["NODE_ENV"] ||= "development"
+
+require_relative "../config/boot"
+require "shakapacker/dev_server_runner"
+
+app_root = File.expand_path("..", __dir__)
+Shakapacker::DevServerRunner.run(chdir: app_root)

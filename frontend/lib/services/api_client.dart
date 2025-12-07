@@ -178,6 +178,16 @@ class ApiClient {
   Future<Response<dynamic>> getUserBalance() async {
     return _dio.get('${ApiConfig.baseUrl}/api/v1/user-balance');
   }
+
+  // Dashboard Endpoints
+  Future<Map<String, dynamic>> getDashboard() async {
+    try {
+      final response = await _dio.get('${ApiConfig.baseUrl}/api/v1/dashboard');
+      return response.data as Map<String, dynamic>;
+    } on DioException catch (e) {
+      throw Exception('Failed to fetch dashboard: ${e.message}');
+    }
+  }
 }
 
 class _AuthInterceptor extends QueuedInterceptorsManager {

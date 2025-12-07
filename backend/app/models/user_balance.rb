@@ -48,7 +48,7 @@ class UserBalance < ApplicationRecord
     when 'usd'
       (total_toman.to_f / rate).round(2)
     when 'gold_gram'
-      (total_toman.to_f / rate).round(2)
+      (total_toman.to_f / rate).round(3)
     else
       total_toman
     end
@@ -61,7 +61,7 @@ class UserBalance < ApplicationRecord
   end
 
   def calculate_gold_equivalent(amount, rate)
-    (amount.to_f / rate).round(2)
+    (amount.to_f / rate).round(3)
   end
 
   def validate_consistency

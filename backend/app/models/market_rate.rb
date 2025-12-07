@@ -36,6 +36,10 @@ class MarketRate < ApplicationRecord
     for_type(rate_type).order(timestamp: :desc).first
   end
 
+  def self.latest_rate_for(rate_type)
+    for_type(rate_type).order(timestamp: :desc).first&.value_in_toman
+  end
+
   def stale?
     timestamp < 5.minutes.ago
   end

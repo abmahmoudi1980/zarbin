@@ -198,22 +198,22 @@
 
 ### Tests for User Story 4 (TDD)
 
-- [ ] T098 [P] [US4] Contract test for GET `/api/v1/dashboard` in `backend/spec/requests/api/v1/dashboard_spec.rb`
-- [ ] T099 [P] [US4] Unit test for UserBalance.calculate_equivalents in `backend/spec/models/user_balance_spec.rb`
-- [ ] T100 [P] [US4] Widget test for DashboardScreen in `frontend/test/screens/dashboard_screen_test.dart`
+- [x] T098 [P] [US4] Contract test for GET `/api/v1/dashboard` in `backend/spec/requests/api/v1/dashboard_spec.rb`
+- [x] T099 [P] [US4] Unit test for UserBalance.calculate_equivalents in `backend/spec/models/user_balance_spec.rb`
+- [x] T100 [P] [US4] Widget test for DashboardScreen in `frontend/test/screens/dashboard_screen_test.dart`
 
 ### Implementation for User Story 4
 
-- [ ] T101 [P] [US4] Create DashboardController with GET endpoint in `backend/app/controllers/api/v1/dashboard_controller.rb`
-- [ ] T102 [P] [US4] Implement UserBalance.calculate for total Toman from transactions in `backend/app/models/user_balance.rb`
-- [ ] T103 [P] [US4] Implement USD/Gold equivalent calculations in `backend/app/services/currency_service.rb`
-- [ ] T104 [P] [US4] Create DashboardScreen with balance cards in `frontend/lib/screens/dashboard_screen.dart`
-- [ ] T105 [P] [US4] Create balance display widgets (Toman card, USD card, Gold card) in `frontend/lib/widgets/balance_card.dart`
-- [ ] T106 [US4] Implement auto-refresh of dashboard when rates update (FetchMarketRatesJob completes) in `frontend/lib/providers/dashboard_provider.dart` (depends on T040)
-- [ ] T107 [P] [US4] Display helpful prompt when balance is zero in `frontend/lib/screens/dashboard_screen.dart`
+- [x] T101 [P] [US4] Create DashboardController with GET endpoint in `backend/app/controllers/api/v1/dashboard_controller.rb`
+- [x] T102 [P] [US4] Implement UserBalance.calculate for total Toman from transactions in `backend/app/models/user_balance.rb`
+- [x] T103 [P] [US4] Implement USD/Gold equivalent calculations in `backend/app/services/currency_service.rb`
+- [x] T104 [P] [US4] Create DashboardScreen with balance cards in `frontend/lib/screens/dashboard_screen.dart`
+- [x] T105 [P] [US4] Create balance display widgets (Toman card, USD card, Gold card) in `frontend/lib/widgets/balance_card.dart`
+- [x] T106 [US4] Implement auto-refresh of dashboard when rates update (FetchMarketRatesJob completes) in `frontend/lib/providers/dashboard_provider.dart` (depends on T040)
+- [x] T107 [P] [US4] Display helpful prompt when balance is zero in `frontend/lib/screens/dashboard_screen.dart`
 - [ ] T108 [US4] Verify dashboard loads within 2 seconds per SC-004
 
-**Checkpoint**: User Story 4 complete - users see dual-currency balance with real-time rate updates.
+**Checkpoint**: User Story 4 complete - users see dual-currency balance with real-time rate updates. ✅ PHASE 6 CORE IMPLEMENTATION COMPLETE
 
 ---
 

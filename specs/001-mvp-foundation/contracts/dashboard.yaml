@@ -1,0 +1,115 @@
+openapi: 3.1.0
+info:
+  title: Zarbin Dashboard API
+  description: User net worth dashboard with balance and equivalents
+  version: 1.0.0
+  contact:
+    name: Zarbin Team
+
+servers:
+  - url: https://api.zarbin.app/api/v1
+
+paths:
+  /dashboard:
+    get:
+      summary: Get user's net worth dashboard
+      description: |
+        Returns the user's total balance in Toman with USD and Gold gram equivalents.
+        Requires valid JWT authentication.
+        
+        The endpoint calculates equivalents from current market rates at request time.
+      operationId: getDashboard
+      tags:
+        - Dashboard
+      security:
+        - BearerAuth: []
+      responses:
+        "200":
+          description: Dashboard data successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DashboardResponse"
+              examples:
+                with-balance:
+                  summary: User with transactions
+                  value:
+                    total_toman: 500000000
+                    total_usd_equivalent: 11764.71
+                    total_gold_grams_equivalent: 0.233
+                    last_updated: "1403/09/16 14:30:45"
+                zero-balance:
+                  summary: User with no transactions
+                  value:
+                    total_toman: 0
+                    total_usd_equivalent: 0.0
+                    total_gold_grams_equivalent: 0.0
+                    last_updated: "1403/09/16 14:30:45"
+
+        "401":
+          description: Unauthorized - Invalid or missing JWT token
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                invalid-token:
+                  value:
+                    error: "Unauthorized"
+                    message: "Invalid or expired token"
+
+        "500":
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+components:
+  schemas:
+    DashboardResponse:
+      type: object
+      required:
+        - total_toman
+        - total_usd_equivalent
+        - total_gold_grams_equivalent
+        - last_updated
+      properties:
+        total_toman:
+          type: integer
+          description: Total balance in Toman (no decimal places)
+          example: 500000000
+        total_usd_equivalent:
+          type: number
+          format: float
+          description: USD equivalent using current USD/Toman rate
+          example: 11764.71
+        total_gold_grams_equivalent:
+          type: number
+          format: float
+          description: Gold gram equivalent using current gold/Toman rate (3 decimal places)
+          example: 0.233
+        last_updated:
+          type: string
+          description: Jalali timestamp of when data was last updated (YYYY/MM/DD HH:MM:SS format)
+          example: "1403/09/16 14:30:45"
+
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          example: "Unauthorized"
+        message:
+          type: string
+          example: "Invalid or expired token"
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: JWT token obtained from login endpoint

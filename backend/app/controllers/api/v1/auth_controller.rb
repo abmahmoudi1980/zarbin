@@ -18,14 +18,17 @@ module Api
         @user = User.new(register_params)
         
         unless validate_password!(register_params[:password])
+          Rails.logger.warn("[AUTH] Registration failed - invalid password format for #{register_params[:mobile_number]}")
           return render json: error_response('Invalid password format'), status: :unprocessable_entity
         end
 
         unless validate_mobile_number!(register_params[:mobile_number])
+          Rails.logger.warn("[AUTH] Registration failed - invalid mobile number format: #{register_params[:mobile_number]}")
           return render json: error_response('Invalid mobile number format'), status: :unprocessable_entity
         end
 
         if @user.save
+          Rails.logger.info("[AUTH] User registered successfully: #{@user.mobile_number}")
           # Send OTP
           otp_service = OtpService.new
           otp_service.send_otp(@user.mobile_number)
@@ -35,10 +38,11 @@ module Api
             'OTP sent successfully. Please verify to activate your account.'
           ), status: :created
         else
+          Rails.logger.warn("[AUTH] Registration failed for #{register_params[:mobile_number]}: #{@user.errors.full_messages.join(', ')}")
           render json: error_response(@user.errors.full_messages.first), status: :unprocessable_entity
         end
       rescue StandardError => e
-        Rails.logger.error("Registration error: #{e.message}")
+        Rails.logger.error("[AUTH] Registration error for #{register_params[:mobile_number]}: #{e.message}")
         render json: error_response('Registration failed'), status: :unprocessable_entity
       end
 
@@ -51,17 +55,20 @@ module Api
         user = User.find_by(mobile_number:)
         
         unless user
+          Rails.logger.warn("[AUTH] OTP verification failed - user not found: #{mobile_number}")
           return render json: error_response('User not found'), status: :unauthorized
         end
 
         otp_service = OtpService.new
         
         unless otp_service.verify_otp(mobile_number, otp_code)
+          Rails.logger.warn("[AUTH] OTP verification failed - invalid/expired OTP for: #{mobile_number}")
           return render json: error_response('Invalid or expired OTP'), status: :unauthorized
         end
 
         # Activate user
         user.update(account_status: :active)
+        Rails.logger.info("[AUTH] User activated successfully: #{mobile_number}")
 
         # Generate token
         auth_service = AuthService.new
@@ -73,7 +80,7 @@ module Api
           'OTP verified successfully'
         ), status: :ok
       rescue StandardError => e
-        Rails.logger.error("OTP verification error: #{e.message}")
+        Rails.logger.error("[AUTH] OTP verification error for #{mobile_number}: #{e.message}")
         render json: error_response('OTP verification failed'), status: :unauthorized
       end
 
@@ -86,19 +93,24 @@ module Api
         user = User.find_by(mobile_number:)
         
         unless user
+          Rails.logger.warn("[AUTH] Login failed - user not found: #{mobile_number}")
           return render json: error_response('Invalid credentials'), status: :unauthorized
         end
 
         # Check if account is locked
         if user.account_locked?
           unlock_time = user.locked_until.strftime('%H:%M')
+          Rails.logger.warn("[AUTH] Login blocked - account locked: #{mobile_number} until #{unlock_time}")
           return render json: error_response("Account is locked until #{unlock_time}"), status: :forbidden
         end
 
         # Authenticate
         unless user.authenticate(password)
+          Rails.logger.warn("[AUTH] Login failed - invalid credentials for: #{mobile_number} (attempt #{user.failed_login_attempts + 1}/5)")
           return render json: error_response('Invalid credentials'), status: :unauthorized
         end
+
+        Rails.logger.info("[AUTH] User logged in successfully: #{mobile_number}")
 
         # Generate token
         auth_service = AuthService.new
@@ -110,7 +122,7 @@ module Api
           'Login successful'
         ), status: :ok
       rescue StandardError => e
-        Rails.logger.error("Login error: #{e.message}")
+        Rails.logger.error("[AUTH] Login error for #{mobile_number}: #{e.message}")
         render json: error_response('Login failed'), status: :unauthorized
       end
 
@@ -120,6 +132,7 @@ module Api
         token = request.headers['Authorization']&.split(' ')&.last
 
         unless token
+          Rails.logger.warn("[AUTH] Token refresh failed - no token provided")
           return render json: error_response('No token provided'), status: :unauthorized
         end
 
@@ -128,15 +141,22 @@ module Api
         begin
           new_token = auth_service.refresh_token(token)
           token_info = auth_service.token_info(new_token)
+          
+          # Log success without exposing token
+          payload = auth_service.decode_token(new_token)
+          user_id = payload['user_id']
+          Rails.logger.info("[AUTH] Token refreshed successfully for user_id: #{user_id}")
 
           render json: success_response(token_info, 'Token refreshed'), status: :ok
-        rescue AuthService::InvalidTokenError
+        rescue AuthService::InvalidTokenError => e
+          Rails.logger.warn("[AUTH] Token refresh failed - invalid token: #{e.message}")
           render json: error_response('Invalid token'), status: :unauthorized
-        rescue AuthService::TokenExpiredError
+        rescue AuthService::TokenExpiredError => e
+          Rails.logger.warn("[AUTH] Token refresh failed - token expired: #{e.message}")
           render json: error_response('Token expired'), status: :unauthorized
         end
       rescue StandardError => e
-        Rails.logger.error("Token refresh error: #{e.message}")
+        Rails.logger.error("[AUTH] Token refresh error: #{e.message}")
         render json: error_response('Token refresh failed'), status: :unauthorized
       end
 

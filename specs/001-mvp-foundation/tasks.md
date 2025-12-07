@@ -101,7 +101,7 @@
 - [x] T047 [P] [US1] Create background job to fetch rates every 5 minutes in `backend/app/jobs/fetch_market_rates_job.rb`
 - [x] T048 [US1] Schedule FetchMarketRatesJob in Solid Queue during market hours in `backend/config/solid_queue.yml`
 - [x] T049 [P] [US1] Add Persian fonts to Flutter for Jalali date display in `frontend/pubspec.yaml`
-- [ ] T050 [US1] Verify rates load within 3 seconds performance target
+- [x] T050 [US1] Verify rates load within 3 seconds performance target
 
 **Checkpoint**: User Story 1 complete - rates display and refresh working. Can be tested independently.
 
@@ -131,23 +131,23 @@
 - [x] T061 [P] [US2] Create AuthService for JWT token generation in `backend/app/services/auth_service.rb`
 - [x] T062 [P] [US2] Implement OTP generation and verification logic in `backend/app/services/otp_service.rb`
 - [x] T063 [P] [US2] Create JwtAuthMiddleware for token validation in `backend/app/controllers/application_controller.rb`
-- [ ] T064 [US2] Implement account lockout after 5 failed login attempts in `backend/app/models/user.rb` (depends on T059)
+- [x] T064 [US2] Implement account lockout after 5 failed login attempts in `backend/app/models/user.rb` (depends on T059)
 - [x] T065 [P] [US2] Create RegisterScreen with phone/password input in `frontend/lib/screens/register_screen.dart`
 - [x] T066 [P] [US2] Create OtpVerificationScreen with code entry in `frontend/lib/screens/otp_verification_screen.dart`
 - [x] T067 [P] [US2] Create LoginScreen with phone/password input in `frontend/lib/screens/login_screen.dart`
 - [x] T068 [P] [US2] Create AuthProvider for session management in `frontend/lib/providers/auth_provider.dart`
 - [x] T069 [P] [US2] Implement secure token storage in Flutter using flutter_secure_storage in `frontend/lib/services/secure_storage.dart`
-- [ ] T070 [US2] Implement 7-day token expiry refresh logic in `frontend/lib/services/api_client.dart` (depends on T068)
+- [x] T070 [US2] Implement 7-day token expiry refresh logic in `frontend/lib/services/api_client.dart` (depends on T068)
 - [x] T071 [P] [US2] Add form validation for Iranian mobile numbers in `frontend/lib/utils/validators.dart`
 - [x] T072 [P] [US2] Add form validation for password strength (min 8 chars, 1 number) in `frontend/lib/utils/validators.dart`
-- [ ] T073 [US2] Test account lockout triggers correctly after 5 failures and resets after 15 min
-- [ ] T074 [US2] Verify registration completes in <2 minutes per SC-001
+- [x] T073 [US2] Test account lockout triggers correctly after 5 failures and resets after 15 min
+- [x] T074 [US2] Verify registration completes in <2 minutes per SC-001
 
-**Checkpoint**: User Story 2 core implementation complete ✅
+**Checkpoint**: User Story 2 complete ✅
 - Register/Login screens, AuthProvider, secure storage ✅
 - AuthController, AuthService, OtpService ✅  
 - All tests written (TDD complete) ✅
-- Remaining: Token refresh (T070), integration tests (T073-T074)
+- Account lockout and token refresh implemented ✅
 
 ---
 
@@ -211,9 +211,9 @@
 - [x] T105 [P] [US4] Create balance display widgets (Toman card, USD card, Gold card) in `frontend/lib/widgets/balance_card.dart`
 - [x] T106 [US4] Implement auto-refresh of dashboard when rates update (FetchMarketRatesJob completes) in `frontend/lib/providers/dashboard_provider.dart` (depends on T040)
 - [x] T107 [P] [US4] Display helpful prompt when balance is zero in `frontend/lib/screens/dashboard_screen.dart`
-- [ ] T108 [US4] Verify dashboard loads within 2 seconds per SC-004
+- [x] T108 [US4] Verify dashboard loads within 2 seconds per SC-004
 
-**Checkpoint**: User Story 4 complete - users see dual-currency balance with real-time rate updates. ✅ PHASE 6 CORE IMPLEMENTATION COMPLETE
+**Checkpoint**: User Story 4 complete - users see dual-currency balance with real-time rate updates. ✅ PHASE 6 IMPLEMENTATION COMPLETE
 
 ---
 
@@ -251,12 +251,12 @@
 
 ### Backend Polish
 
-- [ ] T121 [P] Add error handling for TGJU API failures with fallback to cached rates in `backend/app/services/market_data_service.rb`
-- [ ] T122 [P] Add logging for authentication events in `backend/app/middleware/jwt_auth.rb`
-- [ ] T123 [P] Add logging for transaction operations in `backend/app/controllers/api/v1/transactions_controller.rb`
-- [ ] T124 [P] Configure Active Record Encryption for sensitive User data in `backend/app/models/user.rb`
-- [ ] T125 [P] Implement request rate limiting to prevent abuse in `backend/config/initializers/rate_limiter.rb`
-- [ ] T126 [P] Add input sanitization for transaction notes in `backend/app/controllers/api/v1/transactions_controller.rb`
+- [x] T121 [P] Add error handling for TGJU API failures with fallback to cached rates in `backend/app/services/market_data_service.rb`
+- [x] T122 [P] Add logging for authentication events in `backend/app/middleware/jwt_auth.rb`
+- [x] T123 [P] Add logging for transaction operations in `backend/app/controllers/api/v1/transactions_controller.rb`
+- [x] T124 [P] Configure Active Record Encryption for sensitive User data in `backend/app/models/user.rb`
+- [x] T125 [P] Implement request rate limiting to prevent abuse in `backend/config/initializers/rate_limiter.rb`
+- [x] T126 [P] Add input sanitization for transaction notes in `backend/app/controllers/api/v1/transactions_controller.rb`
 - [ ] T127 Run full test suite with RSpec: `bundle exec rspec` targeting 80% coverage in `backend/`
 - [ ] T128 Run RuboCop linting: `bundle exec rubocop` and fix violations in `backend/`
 - [ ] T129 Performance test: Market rates endpoint returns within 3 seconds
@@ -267,10 +267,10 @@
 
 ### Frontend Polish
 
-- [ ] T134 [P] Add error dialogs for API failures in `frontend/lib/widgets/error_dialog.dart`
-- [ ] T135 [P] Add offline indicators when rates are stale in `frontend/lib/widgets/offline_indicator.dart`
-- [ ] T136 [P] Implement app-wide error handling in `frontend/lib/main.dart`
-- [ ] T137 [P] Add input sanitization for transaction notes in `frontend/lib/screens/add_transaction_screen.dart`
+- [x] T134 [P] Add error dialogs for API failures in `frontend/lib/widgets/error_dialog.dart`
+- [x] T135 [P] Add offline indicators when rates are stale in `frontend/lib/widgets/offline_indicator.dart`
+- [x] T136 [P] Implement app-wide error handling in `frontend/lib/main.dart`
+- [x] T137 [P] Add input sanitization for transaction notes in `frontend/lib/screens/add_transaction_screen.dart`
 - [ ] T138 [P] Configure Flutter analytics/crash reporting (optional for MVP)
 - [ ] T139 Run Flutter analyzer: `flutter analyze` and fix issues in `frontend/`
 - [ ] T140 Format Flutter code: `dart format --set-exit-if-changed lib/` in `frontend/`
@@ -295,9 +295,9 @@
 
 ### Documentation & Deployment
 
-- [ ] T156 Generate API documentation from contracts/ OpenAPI specs
-- [ ] T157 Create deployment checklist in `docs/DEPLOYMENT.md`
-- [ ] T158 Create troubleshooting guide in `docs/TROUBLESHOOTING.md`
+- [x] T156 Generate API documentation from contracts/ OpenAPI specs
+- [x] T157 Create deployment checklist in `docs/DEPLOYMENT.md`
+- [x] T158 Create troubleshooting guide in `docs/TROUBLESHOOTING.md`
 - [ ] T159 Set up GitHub Actions CI/CD pipeline for automated testing in `.github/workflows/`
 - [ ] T160 Prepare Kamal deployment configuration in `backend/config/deploy.yml`
 

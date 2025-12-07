@@ -49,38 +49,31 @@ class User < ApplicationRecord
   def authenticate(password)
     return false if account_locked? || locked_account?
     
-    unless password_digest.blank? && BCrypt::Password.new(password_digest).is_password?(password)
+    # Use has_secure_password's authenticate method
+    if super(password)
+      reset_failed_attempts
+      update(last_login_at: Time.current)
+      true
+    else
       increment_failed_attempts
-      return false
+      false
     end
-
-    reset_failed_attempts
-    update(last_login_at: Time.current)
-    true
   end
 
   def account_locked?
-    account_status == 'locked' && locked_at.present? && locked_at > 15.minutes.ago
-  end
-
-  def locked_account?
     locked_until.present? && locked_until > Time.current
   end
 
-  def can_attempt_login?
-    if account_locked? && locked_at.present? && locked_at <= 15.minutes.ago
-      reset_failed_attempts
-      update(account_status: :active)
-      return true
-    end
+  def locked_account?
+    account_locked?
+  end
 
+  def can_attempt_login?
     !account_locked?
   end
 
   def locked_out_until
-    return nil unless locked_at
-
-    locked_at + 15.minutes
+    locked_until
   end
 
   def increment_failed_attempts
@@ -89,7 +82,7 @@ class User < ApplicationRecord
       update(
         failed_login_attempts: new_attempts,
         account_status: :locked,
-        locked_at: Time.current
+        locked_until: Time.current + 15.minutes
       )
     else
       update(failed_login_attempts: new_attempts)
@@ -97,7 +90,7 @@ class User < ApplicationRecord
   end
 
   def reset_failed_attempts
-    update(failed_login_attempts: 0, locked_at: nil, account_status: :active)
+    update(failed_login_attempts: 0, locked_until: nil, account_status: :active)
   end
 
   def activate!

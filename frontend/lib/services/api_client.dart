@@ -192,6 +192,8 @@ class ApiClient {
 
 class _AuthInterceptor extends QueuedInterceptorsManager {
   final ApiClient apiClient;
+  bool _isRefreshing = false;
+  final List<DioException> _failedQueue = [];
 
   _AuthInterceptor(this.apiClient);
 
@@ -210,13 +212,48 @@ class _AuthInterceptor extends QueuedInterceptorsManager {
   }
 
   @override
-  void onError(DioException err, ErrorInterceptorHandler handler) {
+  void onError(DioException err, ErrorInterceptorHandler handler) async {
     // Handle 401 Unauthorized - token expired
-    if (err.response?.statusCode == 401) {
-      // Token expired, clear it
-      SecureStorage().clearAll();
-      apiClient.clearToken();
+    if (err.response?.statusCode == 401 && !_isRefreshing) {
+      _isRefreshing = true;
+      
+      try {
+        // Try to refresh the token
+        final token = apiClient._token;
+        if (token != null) {
+          final response = await apiClient._dio.post(
+            '${ApiConfig.authEndpoint}/refresh',
+            options: Options(headers: {'Authorization': 'Bearer $token'}),
+          );
+          
+          if (response.statusCode == 200) {
+            final data = response.data as Map<String, dynamic>;
+            final newToken = data['data']['token'] as String;
+            
+            // Save new token
+            await SecureStorage().saveToken(newToken);
+            apiClient.setToken(newToken);
+            
+            // Retry the failed request
+            final options = err.requestOptions;
+            options.headers['Authorization'] = 'Bearer $newToken';
+            
+            _isRefreshing = false;
+            
+            // Retry the original request
+            final retryResponse = await apiClient._dio.fetch(options);
+            return handler.resolve(retryResponse);
+          }
+        }
+      } catch (e) {
+        // Token refresh failed, clear storage and redirect to login
+        await SecureStorage().clearAll();
+        apiClient.clearToken();
+      }
+      
+      _isRefreshing = false;
     }
+    
     super.onError(err, handler);
   }
 }

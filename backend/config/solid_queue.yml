@@ -1,0 +1,29 @@
+# Solid Queue Configuration
+# https://github.com/rails/solid_queue
+
+default: &default
+  processes:
+    - polling_interval: 1
+      batch_size: 10
+      concurrency: 5
+
+development:
+  <<: *default
+  processes:
+    - polling_interval: 1
+      batch_size: 10
+      concurrency: 1
+
+test:
+  <<: *default
+  processes:
+    - polling_interval: 1
+      batch_size: 5
+      concurrency: 1
+
+production:
+  <<: *default
+  processes:
+    - polling_interval: 2
+      batch_size: 50
+      concurrency: 10

@@ -1,0 +1,57 @@
+source "https://rubygems.org"
+
+ruby "3.4.0"
+
+# Rails framework
+gem "rails", "~> 8.0.0"
+
+# Database
+gem "pg", "~> 1.5"
+gem "solid_queue"
+gem "solid_cache"
+
+# Authentication & Security
+gem "bcrypt", "~> 3.1.7"
+gem "jwt", "~> 2.7"
+
+# API & Serialization
+gem "jsonapi-serializer"
+gem "rack-cors"
+
+# External Services
+gem "kavenegar", "~> 1.0" # SMS OTP provider
+gem "httparty", "~> 0.22.0" # HTTP requests for TGJU API
+
+# Localization & Time
+gem "i18n-rails", "~> 1.4"
+gem "parsi-date", "~> 4.1" # Jalali calendar support
+
+# Development tools
+gem "puma", "~> 6.4"
+gem "bootsnap", require: false
+gem "rake", "~> 13.0"
+
+group :development, :test do
+  gem "debug", ">= 1.0.0", platforms: %i[ mri mingw x64_mingw ]
+  gem "rspec-rails", "~> 6.1"
+  gem "factory_bot_rails", "~> 6.2"
+  gem "faker", "~> 3.2"
+  gem "shoulda-matchers", "~> 5.3"
+  gem "webmock", "~> 3.18"
+  gem "vcr", "~> 6.1"
+end
+
+group :development do
+  gem "rubocop", "~> 1.59", require: false
+  gem "rubocop-rails", "~> 2.21", require: false
+  gem "rubocop-rspec", "~> 2.25", require: false
+  gem "rubocop-performance", "~> 1.20", require: false
+  gem "web-console"
+end
+
+group :test do
+  gem "capybara", "~> 3.40"
+  gem "selenium-webdriver", "~> 4.15"
+  gem "simplecov", "~> 0.22.0", require: false
+  gem "rspec-json_expectations", "~> 2.2"
+end

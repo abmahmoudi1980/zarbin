@@ -1,0 +1,4 @@
+# RuboCop TODO file
+# To regenerate: rubocop --auto-gen-config
+
+# Empty for now - will be populated on first rubocop run

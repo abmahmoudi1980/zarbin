@@ -5,6 +5,7 @@ import '../providers/market_rate_provider.dart';
 import '../services/api_client.dart';
 import '../utils/persian_formatter.dart';
 import '../widgets/balance_card.dart';
+import 'category_breakdown_screen.dart';
 
 /// DashboardScreen - Displays user's net worth dashboard
 /// 
@@ -150,6 +151,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
             else
               _buildLastUpdated(dashboard),
             
+            const SizedBox(height: 24),
+            
+            // Category breakdown section (only show if balance > 0)
+            if (dashboard.totalToman > 0)
+              _buildCategoryBreakdownSection(),
+            
             const SizedBox(height: 16),
           ],
         ),
@@ -227,6 +234,53 @@ class _DashboardScreenState extends State<DashboardScreen> {
         style: TextStyle(
           fontSize: 12,
           color: Colors.grey.shade600,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildCategoryBreakdownSection() {
+    return Card(
+      elevation: 2,
+      child: InkWell(
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => const CategoryBreakdownScreen(),
+            ),
+          );
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    'تفکیک هزینه‌های ماه',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  Icon(
+                    Icons.arrow_forward,
+                    color: Colors.grey[600],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Text(
+                'برای مشاهده تفصیلات، ضربه بزنید',
+                style: TextStyle(
+                  fontSize: 12,
+                  color: Colors.grey[600],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

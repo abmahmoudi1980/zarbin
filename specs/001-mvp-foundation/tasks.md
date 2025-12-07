@@ -225,21 +225,21 @@
 
 ### Tests for User Story 5 (TDD)
 
-- [ ] T109 [P] [US5] Contract test for GET `/api/v1/categories` in `backend/spec/requests/api/v1/categories_spec.rb`
-- [ ] T110 [P] [US5] Contract test for spending breakdown endpoint in `backend/spec/requests/api/v1/dashboard_spec.rb`
-- [ ] T111 [P] [US5] Unit test for category spending calculation in `backend/spec/services/spending_service_spec.rb`
-- [ ] T112 [P] [US5] Widget test for category breakdown chart in `frontend/test/widgets/category_chart_test.dart`
+- [x] T109 [P] [US5] Contract test for GET `/api/v1/categories` in `backend/spec/requests/api/v1/categories_spec.rb`
+- [x] T110 [P] [US5] Contract test for spending breakdown endpoint in `backend/spec/requests/api/v1/dashboard_spec.rb`
+- [x] T111 [P] [US5] Unit test for category spending calculation in `backend/spec/services/spending_service_spec.rb`
+- [x] T112 [P] [US5] Widget test for category breakdown chart in `frontend/test/widgets/category_chart_test.dart`
 
 ### Implementation for User Story 5
 
-- [ ] T113 [P] [US5] Create CategoriesController with GET endpoint in `backend/app/controllers/api/v1/categories_controller.rb`
-- [ ] T114 [P] [US5] Create SpendingService to calculate spending by category for current Jalali month in `backend/app/services/spending_service.rb`
-- [ ] T115 [P] [US5] Implement transaction default to "Other" category if not selected in `backend/app/models/transaction.rb`
-- [ ] T116 [P] [US5] Create CategoryBreakdownScreen showing pie chart or list in `frontend/lib/screens/category_breakdown_screen.dart`
-- [ ] T117 [P] [US5] Create PieChart widget for category spending visualization in `frontend/lib/widgets/category_pie_chart.dart`
-- [ ] T118 [P] [US5] Create CategoryListItem widget showing category name, amount, percentage in `frontend/lib/widgets/category_list_item.dart`
-- [ ] T119 [US5] Integrate category breakdown into main dashboard in `frontend/lib/screens/dashboard_screen.dart` (depends on T104)
-- [ ] T120 [P] [US5] Add category icons to breakd own display in `frontend/lib/utils/category_icons.dart`
+- [x] T113 [P] [US5] Create CategoriesController with GET endpoint in `backend/app/controllers/api/v1/categories_controller.rb`
+- [x] T114 [P] [US5] Create SpendingService to calculate spending by category for current Jalali month in `backend/app/services/spending_service.rb`
+- [x] T115 [P] [US5] Implement transaction default to "Other" category if not selected in `backend/app/models/transaction.rb`
+- [x] T116 [P] [US5] Create CategoryBreakdownScreen showing pie chart or list in `frontend/lib/screens/category_breakdown_screen.dart`
+- [x] T117 [P] [US5] Create PieChart widget for category spending visualization in `frontend/lib/widgets/category_pie_chart.dart`
+- [x] T118 [P] [US5] Create CategoryListItem widget showing category name, amount, percentage in `frontend/lib/widgets/category_list_item.dart`
+- [x] T119 [US5] Integrate category breakdown into main dashboard in `frontend/lib/screens/dashboard_screen.dart` (depends on T104)
+- [x] T120 [P] [US5] Add category icons to breakd own display in `frontend/lib/utils/category_icons.dart`
 
 **Checkpoint**: User Story 5 complete - all user stories implemented and independently testable.
 

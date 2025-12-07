@@ -181,4 +181,169 @@ RSpec.describe "Api::V1::Dashboard", type: :request do
       end
     end
   end
+
+  describe "GET /api/v1/dashboard/spending-breakdown" do
+    context "when user is authenticated and has no transactions" do
+      it "returns 200 OK with empty categories" do
+        get "/api/v1/dashboard/spending-breakdown", headers: auth_headers
+        expect(response).to have_http_status(:ok)
+        
+        json = JSON.parse(response.body)
+        expect(json["breakdown"]).to be_an(Array)
+        expect(json["breakdown"]).to be_empty
+      end
+
+      it "returns current Jalali month" do
+        get "/api/v1/dashboard/spending-breakdown", headers: auth_headers
+        json = JSON.parse(response.body)
+        
+        expect(json).to have_key("current_month")
+        # Jalali format: YYYY/MM
+        expect(json["current_month"]).to match(/\d{4}\/\d{2}/)
+      end
+    end
+
+    context "when user has transactions in current Jalali month" do
+      before do
+        # Create transactions in different categories for current month
+        food_category = Category.find_by(name_fa: "غذا")
+        transport_category = Category.find_by(name_fa: "حمل‌ونقل")
+        
+        Transaction.create!(
+          user_id: user.id,
+          amount_toman: 5_000_000,
+          type: "expense",
+          date: Date.current,
+          category_id: food_category.id
+        )
+        
+        Transaction.create!(
+          user_id: user.id,
+          amount_toman: 2_000_000,
+          type: "expense",
+          date: Date.current,
+          category_id: transport_category.id
+        )
+      end
+
+      it "returns spending breakdown by category" do
+        get "/api/v1/dashboard/spending-breakdown", headers: auth_headers
+        json = JSON.parse(response.body)
+
+        expect(json["breakdown"]).to be_an(Array)
+        expect(json["breakdown"].length).to eq(2)
+      end
+
+      it "includes required fields for each category breakdown" do
+        get "/api/v1/dashboard/spending-breakdown", headers: auth_headers
+        json = JSON.parse(response.body)
+
+        category_data = json["breakdown"].first
+        expect(category_data).to have_keys(
+          "category_id",
+          "category_name_fa",
+          "category_icon",
+          "total_amount",
+          "percentage"
+        )
+      end
+
+      it "calculates correct percentages" do
+        get "/api/v1/dashboard/spending-breakdown", headers: auth_headers
+        json = JSON.parse(response.body)
+
+        total = json["breakdown"].sum { |c| c["total_amount"] }
+        json["breakdown"].each do |category|
+          expected_percentage = (category["total_amount"].to_f / total * 100).round(2)
+          expect(category["percentage"]).to eq(expected_percentage)
+        end
+      end
+
+      it "returns breakdown sorted by amount (descending)" do
+        get "/api/v1/dashboard/spending-breakdown", headers: auth_headers
+        json = JSON.parse(response.body)
+
+        amounts = json["breakdown"].map { |c| c["total_amount"] }
+        expect(amounts).to eq(amounts.sort.reverse)
+      end
+
+      it "includes total spending amount" do
+        get "/api/v1/dashboard/spending-breakdown", headers: auth_headers
+        json = JSON.parse(response.body)
+
+        expect(json).to have_key("total_spending")
+        expect(json["total_spending"]).to eq(7_000_000)
+      end
+    end
+
+    context "when user has transactions in different months" do
+      before do
+        food_category = Category.find_by(name_fa: "غذا")
+        
+        # Current month transaction
+        Transaction.create!(
+          user_id: user.id,
+          amount_toman: 5_000_000,
+          type: "expense",
+          date: Date.current,
+          category_id: food_category.id
+        )
+        
+        # Previous month transaction (should be excluded)
+        Transaction.create!(
+          user_id: user.id,
+          amount_toman: 10_000_000,
+          type: "expense",
+          date: 40.days.ago,
+          category_id: food_category.id
+        )
+      end
+
+      it "only includes transactions from current Jalali month" do
+        get "/api/v1/dashboard/spending-breakdown", headers: auth_headers
+        json = JSON.parse(response.body)
+
+        # Only the current month transaction (5M) should be included
+        expect(json["total_spending"]).to eq(5_000_000)
+      end
+    end
+
+    context "when user has income and expense transactions" do
+      before do
+        category = Category.find_by(name_fa: "سایر")
+        
+        # Income transaction
+        Transaction.create!(
+          user_id: user.id,
+          amount_toman: 20_000_000,
+          type: "income",
+          date: Date.current,
+          category_id: category.id
+        )
+        
+        # Expense transaction
+        Transaction.create!(
+          user_id: user.id,
+          amount_toman: 5_000_000,
+          type: "expense",
+          date: Date.current,
+          category_id: category.id
+        )
+      end
+
+      it "only includes expense transactions in breakdown" do
+        get "/api/v1/dashboard/spending-breakdown", headers: auth_headers
+        json = JSON.parse(response.body)
+
+        expect(json["total_spending"]).to eq(5_000_000)
+      end
+    end
+
+    context "when user is not authenticated" do
+      it "returns 401 Unauthorized" do
+        get "/api/v1/dashboard/spending-breakdown"
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+  end
 end

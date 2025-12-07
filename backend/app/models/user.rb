@@ -2,7 +2,7 @@
 
 # User model - Authentication and account management
 # Attributes:
-#   - mobile_number: Iranian mobile number (unique, required)
+#   - mobile_number: Iranian mobile number (unique, required, encrypted)
 #   - password_digest: bcrypt hashed password
 #   - account_status: enum (active, suspended, deleted)
 #   - failed_login_attempts: counter for lockout
@@ -10,6 +10,9 @@
 #   - last_login_at: last successful login timestamp
 
 class User < ApplicationRecord
+  # Encrypt sensitive data at rest
+  encrypts :mobile_number, deterministic: true
+
   # Associations
   has_many :transactions, dependent: :destroy
   has_many :otp_verifications, dependent: :destroy

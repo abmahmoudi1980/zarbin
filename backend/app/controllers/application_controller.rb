@@ -21,6 +21,7 @@ class ApplicationController < ActionController::API
     token = extract_token_from_request
 
     unless token
+      Rails.logger.warn("Authentication failed: Authorization header missing from #{request.remote_ip}")
       render json: { 
         success: false, 
         error: 'Authorization header missing' 
@@ -33,17 +34,23 @@ class ApplicationController < ActionController::API
     begin
       payload = auth_service.decode_token(token)
       @current_user = User.find(payload['user_id'])
+      
+      # Log successful authentication
+      Rails.logger.info("Successful authentication: User #{@current_user.id} from #{request.remote_ip}")
     rescue AuthService::InvalidTokenError
+      Rails.logger.warn("Authentication failed: Invalid token from #{request.remote_ip}")
       render json: { 
         success: false, 
         error: 'Invalid token' 
       }, status: :unauthorized
     rescue AuthService::TokenExpiredError
+      Rails.logger.warn("Authentication failed: Token expired from #{request.remote_ip}")
       render json: { 
         success: false, 
         error: 'Token expired' 
       }, status: :unauthorized
     rescue ActiveRecord::RecordNotFound
+      Rails.logger.warn("Authentication failed: User not found from #{request.remote_ip}")
       render json: { 
         success: false, 
         error: 'User not found' 

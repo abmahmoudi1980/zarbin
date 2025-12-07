@@ -15,15 +15,24 @@ class MarketDataService
   class << self
     def fetch_and_store_rates
       rates_data = fetch_rates_from_tgju
-      return false if rates_data.blank?
+      
+      # If API fails, try to use cached rates
+      if rates_data.blank?
+        cached_rates = get_current_rates
+        Rails.logger.warn("TGJU API unavailable, using cached rates from #{cached_rates[:timestamp]}")
+        return cached_rates.present?
+      end
 
       store_rates(rates_data)
       # Invalidate cache after new rates are stored
       Rails.cache.delete(CACHE_KEY)
       true
     rescue StandardError => e
-      Rails.logger.error("Error fetching market rates: #{e.message}")
-      false
+      Rails.logger.error("Error fetching market rates: #{e.class} - #{e.message}")
+      Rails.logger.error("Backtrace: #{e.backtrace.join("\n")}")
+      # Return true if we have cached rates available
+      cached = Rails.cache.read(CACHE_KEY)
+      cached.present?
     end
 
     def get_current_rates

@@ -32,41 +32,54 @@ module Api
         transaction.gold_rate_at_creation ||= CurrencyService.record_transaction_rate('Gold')
         
         if transaction.save
+          Rails.logger.info("Transaction created: #{transaction.id} for user #{@user.id}, amount: #{transaction.amount_toman} #{transaction.transaction_type}")
           render json: format_transaction_with_success(transaction), status: :created
         else
+          Rails.logger.warn("Transaction creation failed for user #{@user.id}: #{transaction.errors.full_messages.join(', ')}")
           render json: { 
             success: false, 
             error: transaction.errors.full_messages.join(', ')
           }, status: :unprocessable_entity
         end
       rescue StandardError => e
+        Rails.logger.error("Error creating transaction for user #{@user.id}: #{e.class} - #{e.message}")
         render json: { error: e.message }, status: :internal_server_error
       end
 
       # PATCH/PUT /api/v1/transactions/:id
       def update
         if @transaction.user_id == current_user.id
+          old_amount = @transaction.amount_toman
           if @transaction.update(transaction_params)
+            Rails.logger.info("Transaction updated: #{@transaction.id}, amount changed from #{old_amount} to #{@transaction.amount_toman}")
             render json: format_transaction(@transaction)
           else
+            Rails.logger.warn("Transaction update failed: #{@transaction.id}: #{@transaction.errors.full_messages.join(', ')}")
             render json: { errors: @transaction.errors.full_messages }, status: :unprocessable_entity
           end
         else
+          Rails.logger.warn("Unauthorized transaction update attempt: user #{current_user.id} tried to update transaction #{@transaction.id}")
           render json: { error: "Unauthorized" }, status: :forbidden
         end
       rescue StandardError => e
+        Rails.logger.error("Error updating transaction #{@transaction.id}: #{e.class} - #{e.message}")
         render json: { error: e.message }, status: :internal_server_error
       end
 
       # DELETE /api/v1/transactions/:id
       def destroy
         if @transaction.user_id == current_user.id
+          transaction_id = @transaction.id
+          amount = @transaction.amount_toman
           @transaction.destroy
+          Rails.logger.info("Transaction deleted: #{transaction_id}, amount: #{amount}")
           render json: { message: "Transaction deleted successfully" }, status: :ok
         else
+          Rails.logger.warn("Unauthorized transaction delete attempt: user #{current_user.id} tried to delete transaction #{@transaction.id}")
           render json: { error: "Unauthorized" }, status: :forbidden
         end
       rescue StandardError => e
+        Rails.logger.error("Error deleting transaction #{@transaction.id}: #{e.class} - #{e.message}")
         render json: { error: e.message }, status: :internal_server_error
       end
 
@@ -104,7 +117,16 @@ module Api
       end
 
       def transaction_params
-        params.require(:transaction).permit(:amount_toman, :transaction_type, :category_id, :transaction_date, :notes)
+        params.require(:transaction).permit(:amount_toman, :transaction_type, :category_id, :transaction_date, :notes).tap do |p|
+          # Sanitize notes to prevent XSS
+          p[:notes] = sanitize_text(p[:notes]) if p[:notes].present?
+        end
+      end
+
+      def sanitize_text(text)
+        # Remove potentially malicious content while preserving Persian text
+        # Allow only safe Unicode characters, spaces, and basic punctuation
+        text.to_s.gsub(/[^\p{L}\p{N}\s\.,\-!?،؛]/u, '').strip[0...500]
       end
 
       def format_transaction(transaction)

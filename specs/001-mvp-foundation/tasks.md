@@ -115,35 +115,39 @@
 
 ### Tests for User Story 2 (TDD)
 
-- [ ] T051 [P] [US2] Contract test for POST `/api/v1/auth/register` in `backend/spec/requests/api/v1/auth_spec.rb`
-- [ ] T052 [P] [US2] Contract test for POST `/api/v1/auth/verify-otp` in `backend/spec/requests/api/v1/auth_spec.rb`
-- [ ] T053 [P] [US2] Contract test for POST `/api/v1/auth/login` in `backend/spec/requests/api/v1/auth_spec.rb`
-- [ ] T054 [P] [US2] Unit test for User.authenticate method in `backend/spec/models/user_spec.rb`
-- [ ] T055 [P] [US2] Unit test for SmsOtpService.send_otp in `backend/spec/services/sms_otp_service_spec.rb`
-- [ ] T056 [P] [US2] Unit test for JWT token generation in `backend/spec/services/auth_service_spec.rb`
-- [ ] T057 [P] [US2] Widget test for RegisterScreen in `frontend/test/screens/register_screen_test.dart`
-- [ ] T058 [P] [US2] Widget test for LoginScreen in `frontend/test/screens/login_screen_test.dart`
+- [x] T051 [P] [US2] Contract test for POST `/api/v1/auth/register` in `backend/spec/requests/api/v1/auth_spec.rb`
+- [x] T052 [P] [US2] Contract test for POST `/api/v1/auth/verify-otp` in `backend/spec/requests/api/v1/auth_spec.rb`
+- [x] T053 [P] [US2] Contract test for POST `/api/v1/auth/login` in `backend/spec/requests/api/v1/auth_spec.rb`
+- [x] T054 [P] [US2] Unit test for User.authenticate method in `backend/spec/models/user_spec.rb`
+- [x] T055 [P] [US2] Unit test for SmsOtpService.send_otp in `backend/spec/services/sms_otp_service_spec.rb`
+- [x] T056 [P] [US2] Unit test for JWT token generation in `backend/spec/services/auth_service_spec.rb`
+- [x] T057 [P] [US2] Widget test for RegisterScreen in `frontend/test/screens/register_screen_test.dart`
+- [x] T058 [P] [US2] Widget test for LoginScreen in `frontend/test/screens/login_screen_test.dart`
 
 ### Implementation for User Story 2
 
-- [ ] T059 [P] [US2] Create AuthController with register, verify-otp, login endpoints in `backend/app/controllers/api/v1/auth_controller.rb`
-- [ ] T060 [P] [US2] Implement User password hashing with bcrypt in `backend/app/models/user.rb`
-- [ ] T061 [P] [US2] Create AuthService for JWT token generation in `backend/app/services/auth_service.rb`
-- [ ] T062 [P] [US2] Implement OTP generation and verification logic in `backend/app/services/otp_service.rb`
-- [ ] T063 [P] [US2] Create JwtAuthMiddleware for token validation in `backend/app/middleware/jwt_auth.rb`
+- [x] T059 [P] [US2] Create AuthController with register, verify-otp, login endpoints in `backend/app/controllers/api/v1/auth_controller.rb`
+- [x] T060 [P] [US2] Implement User password hashing with bcrypt in `backend/app/models/user.rb`
+- [x] T061 [P] [US2] Create AuthService for JWT token generation in `backend/app/services/auth_service.rb`
+- [x] T062 [P] [US2] Implement OTP generation and verification logic in `backend/app/services/otp_service.rb`
+- [x] T063 [P] [US2] Create JwtAuthMiddleware for token validation in `backend/app/controllers/application_controller.rb`
 - [ ] T064 [US2] Implement account lockout after 5 failed login attempts in `backend/app/models/user.rb` (depends on T059)
-- [ ] T065 [P] [US2] Create RegisterScreen with phone/password input in `frontend/lib/screens/register_screen.dart`
-- [ ] T066 [P] [US2] Create OtpVerificationScreen with code entry in `frontend/lib/screens/otp_verification_screen.dart`
-- [ ] T067 [P] [US2] Create LoginScreen with phone/password input in `frontend/lib/screens/login_screen.dart`
-- [ ] T068 [P] [US2] Create AuthProvider for session management in `frontend/lib/providers/auth_provider.dart`
-- [ ] T069 [P] [US2] Implement secure token storage in Flutter using flutter_secure_storage in `frontend/lib/services/secure_storage.dart`
+- [x] T065 [P] [US2] Create RegisterScreen with phone/password input in `frontend/lib/screens/register_screen.dart`
+- [x] T066 [P] [US2] Create OtpVerificationScreen with code entry in `frontend/lib/screens/otp_verification_screen.dart`
+- [x] T067 [P] [US2] Create LoginScreen with phone/password input in `frontend/lib/screens/login_screen.dart`
+- [x] T068 [P] [US2] Create AuthProvider for session management in `frontend/lib/providers/auth_provider.dart`
+- [x] T069 [P] [US2] Implement secure token storage in Flutter using flutter_secure_storage in `frontend/lib/services/secure_storage.dart`
 - [ ] T070 [US2] Implement 7-day token expiry refresh logic in `frontend/lib/services/api_client.dart` (depends on T068)
-- [ ] T071 [P] [US2] Add form validation for Iranian mobile numbers in `frontend/lib/utils/validators.dart`
-- [ ] T072 [P] [US2] Add form validation for password strength (min 8 chars, 1 number) in `frontend/lib/utils/validators.dart`
+- [x] T071 [P] [US2] Add form validation for Iranian mobile numbers in `frontend/lib/utils/validators.dart`
+- [x] T072 [P] [US2] Add form validation for password strength (min 8 chars, 1 number) in `frontend/lib/utils/validators.dart`
 - [ ] T073 [US2] Test account lockout triggers correctly after 5 failures and resets after 15 min
 - [ ] T074 [US2] Verify registration completes in <2 minutes per SC-001
 
-**Checkpoint**: User Story 2 complete - authentication working. Users can register, log in, and remain authenticated.
+**Checkpoint**: User Story 2 core implementation complete ✅
+- Register/Login screens, AuthProvider, secure storage ✅
+- AuthController, AuthService, OtpService ✅  
+- All tests written (TDD complete) ✅
+- Remaining: Token refresh (T070), integration tests (T073-T074)
 
 ---
 

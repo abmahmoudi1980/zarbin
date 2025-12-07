@@ -1,17 +1,13 @@
 // lib/services/api_client.dart
 import 'package:dio/dio.dart';
 import '../config/api_config.dart';
-import 'secure_storage_service.dart';
+import 'secure_storage.dart';
 
 class ApiClient {
   late Dio _dio;
-  static final ApiClient _instance = ApiClient._internal();
+  String? _token;
 
-  factory ApiClient() {
-    return _instance;
-  }
-
-  ApiClient._internal() {
+  ApiClient() {
     _initializeDio();
   }
 
@@ -30,7 +26,7 @@ class ApiClient {
     );
 
     // Add interceptors
-    _dio.interceptors.add(ApiInterceptor());
+    _dio.interceptors.add(_AuthInterceptor(this));
     _dio.interceptors.add(
       LogInterceptor(
         requestBody: true,
@@ -42,6 +38,54 @@ class ApiClient {
   }
 
   Dio get dio => _dio;
+
+  void setToken(String token) {
+    _token = token;
+  }
+
+  void clearToken() {
+    _token = null;
+  }
+
+  // POST request helper
+  Future<Map<String, dynamic>> post(String path, {Map<String, dynamic>? data}) async {
+    try {
+      final response = await _dio.post(path, data: data);
+      return response.data as Map<String, dynamic>;
+    } on DioException catch (e) {
+      throw Exception('POST $path failed: ${e.message}');
+    }
+  }
+
+  // GET request helper
+  Future<Map<String, dynamic>> get(String path, {Map<String, String>? queryParameters}) async {
+    try {
+      final response = await _dio.get(path, queryParameters: queryParameters);
+      return response.data as Map<String, dynamic>;
+    } on DioException catch (e) {
+      throw Exception('GET $path failed: ${e.message}');
+    }
+  }
+
+  // PUT request helper
+  Future<Map<String, dynamic>> put(String path, {Map<String, dynamic>? data}) async {
+    try {
+      final response = await _dio.put(path, data: data);
+      return response.data as Map<String, dynamic>;
+    } on DioException catch (e) {
+      throw Exception('PUT $path failed: ${e.message}');
+    }
+  }
+
+  // DELETE request helper
+  Future<Map<String, dynamic>> delete(String path) async {
+    try {
+      final response = await _dio.delete(path);
+      return response.data as Map<String, dynamic>;
+    } on DioException catch (e) {
+      throw Exception('DELETE $path failed: ${e.message}');
+    }
+  }
 
   // Authentication Endpoints
   Future<Response<dynamic>> generateOtp(String mobileNumber) async {
@@ -136,10 +180,14 @@ class ApiClient {
   }
 }
 
-class ApiInterceptor extends QueuedInterceptorsManager {
+class _AuthInterceptor extends QueuedInterceptorsManager {
+  final ApiClient apiClient;
+
+  _AuthInterceptor(this.apiClient);
+
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
-    final token = await SecureStorageService.getToken();
+    final token = apiClient._token;
     if (token != null && token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
     }
@@ -155,9 +203,9 @@ class ApiInterceptor extends QueuedInterceptorsManager {
   void onError(DioException err, ErrorInterceptorHandler handler) {
     // Handle 401 Unauthorized - token expired
     if (err.response?.statusCode == 401) {
-      // Token expired, clear it and redirect to login
-      SecureStorageService.clearAll();
-      // This should trigger a redirect to login screen in the app
+      // Token expired, clear it
+      SecureStorage().clearAll();
+      apiClient.clearToken();
     }
     super.onError(err, handler);
   }

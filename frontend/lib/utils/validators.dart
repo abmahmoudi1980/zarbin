@@ -2,6 +2,19 @@
 import 'package:shamsi_date/shamsi_date.dart';
 
 class Validators {
+  // Check if Iranian mobile number is valid
+  static bool isValidIranianMobileNumber(String value) {
+    final cleaned = value.replaceAll(RegExp(r'\s+'), '');
+    return RegExp(r'^09\d{9}$').hasMatch(cleaned);
+  }
+
+  // Check if password is valid (min 8 chars, at least 1 number)
+  static bool isValidPassword(String value) {
+    if (value.length < 8) return false;
+    if (!RegExp(r'\d').hasMatch(value)) return false;
+    return true;
+  }
+
   // Validate Iranian mobile number (09XXXXXXXXX)
   static String? validateMobileNumber(String? value) {
     if (value == null || value.isEmpty) {
@@ -12,6 +25,23 @@ class Validators {
     
     if (!RegExp(r'^09\d{9}$').hasMatch(cleaned)) {
       return 'شماره موبایل باید 11 رقم و با 09 شروع شود';
+    }
+
+    return null;
+  }
+
+  // Validate password strength
+  static String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'رمز عبور الزامی است';
+    }
+
+    if (value.length < 8) {
+      return 'رمز عبور باید حداقل 8 کاراکتر باشد';
+    }
+
+    if (!RegExp(r'\d').hasMatch(value)) {
+      return 'رمز عبور باید حداقل یک عدد داشته باشد';
     }
 
     return null;

@@ -23,13 +23,13 @@ class User < ApplicationRecord
   }
   validates :password_digest, presence: true
   validates :account_status, presence: true, inclusion: { 
-    in: %w(active suspended deleted),
+    in: %w(active otp_pending suspended deleted locked),
     message: '%{value} is not a valid account status' 
   }
   validates :failed_login_attempts, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   # Enums
-  enum account_status: { active: 'active', suspended: 'suspended', deleted: 'deleted' }
+  enum account_status: { active: 'active', otp_pending: 'otp_pending', suspended: 'suspended', deleted: 'deleted', locked: 'locked' }
 
   # Scopes
   scope :active_only, -> { where(account_status: :active) }
@@ -44,37 +44,57 @@ class User < ApplicationRecord
   # Instance Methods
 
   def authenticate(password)
-    return false if account_locked?
+    return false if account_locked? || locked_account?
     
-    if password_digest.blank? || !BCrypt::Password.new(password_digest).is_password?(password)
-      increment_failed_login!
+    unless password_digest.blank? && BCrypt::Password.new(password_digest).is_password?(password)
+      increment_failed_attempts
       return false
     end
 
-    reset_failed_login!
+    reset_failed_attempts
     update(last_login_at: Time.current)
     true
   end
 
   def account_locked?
+    account_status == 'locked' && locked_at.present? && locked_at > 15.minutes.ago
+  end
+
+  def locked_account?
     locked_until.present? && locked_until > Time.current
   end
 
-  def increment_failed_login!
-    new_attempts = failed_login_attempts + 1
+  def can_attempt_login?
+    if account_locked? && locked_at.present? && locked_at <= 15.minutes.ago
+      reset_failed_attempts
+      update(account_status: :active)
+      return true
+    end
+
+    !account_locked?
+  end
+
+  def locked_out_until
+    return nil unless locked_at
+
+    locked_at + 15.minutes
+  end
+
+  def increment_failed_attempts
+    new_attempts = (failed_login_attempts || 0) + 1
     if new_attempts >= 5
-      # Lock account for 15 minutes
       update(
         failed_login_attempts: new_attempts,
-        locked_until: 15.minutes.from_now
+        account_status: :locked,
+        locked_at: Time.current
       )
     else
       update(failed_login_attempts: new_attempts)
     end
   end
 
-  def reset_failed_login!
-    update(failed_login_attempts: 0, locked_until: nil)
+  def reset_failed_attempts
+    update(failed_login_attempts: 0, locked_at: nil, account_status: :active)
   end
 
   def activate!

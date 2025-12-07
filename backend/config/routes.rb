@@ -9,12 +9,10 @@ Rails.application.routes.draw do
       get '/health', to: 'health#check'
 
       # Authentication endpoints
-      namespace :auth do
-        post '/register', to: 'auth#register'
-        post '/verify-otp', to: 'auth#verify_otp'
-        post '/login', to: 'auth#login'
-        delete '/logout', to: 'auth#logout'
-      end
+      post '/auth/register', to: 'auth#register'
+      post '/auth/verify-otp', to: 'auth#verify_otp'
+      post '/auth/login', to: 'auth#login'
+      post '/auth/refresh', to: 'auth#refresh'
 
       # Market rates (public)
       get '/rates', to: 'rates#index'

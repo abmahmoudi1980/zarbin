@@ -5,8 +5,9 @@ class CreateUsers < ActiveRecord::Migration[8.0]
     create_table :users do |t|
       t.string :mobile_number, null: false
       t.string :password_digest, null: false
-      t.string :account_status, default: 'active', null: false
+      t.string :account_status, default: 'otp_pending', null: false
       t.integer :failed_login_attempts, default: 0, null: false
+      t.datetime :locked_at
       t.datetime :locked_until
       t.datetime :last_login_at
 

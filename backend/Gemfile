@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-ruby "3.4.0"
+ruby "3.4.1"
 
 # Rails framework
 gem "rails", "~> 8.0.0"
@@ -19,12 +19,11 @@ gem "jsonapi-serializer"
 gem "rack-cors"
 
 # External Services
-gem "kavenegar", "~> 1.0" # SMS OTP provider
+gem "kavenegar-ruby"
 gem "httparty", "~> 0.22.0" # HTTP requests for TGJU API
 
 # Localization & Time
-gem "i18n-rails", "~> 1.4"
-gem "parsi-date", "~> 4.1" # Jalali calendar support
+gem "parsi-date"
 
 # Development tools
 gem "puma", "~> 6.4"

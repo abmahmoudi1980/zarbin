@@ -51,6 +51,9 @@ class Transaction < ApplicationRecord
   scope :income_only, -> { where(transaction_type: :income) }
   scope :expense_only, -> { where(transaction_type: :expense) }
   scope :ordered, -> { order(transaction_date: :desc, created_at: :desc) }
+  scope :sorted_by_date, -> { order(transaction_date: :desc, created_at: :desc) }
+  scope :by_type, ->(type) { where(transaction_type: type) }
+  scope :by_category, ->(category_id) { where(category_id: category_id) }
   scope :for_jalali_month, ->(year, month) { 
     where('transaction_date >= ? AND transaction_date < ?',
           "#{year}/#{format('%02d', month)}/01",

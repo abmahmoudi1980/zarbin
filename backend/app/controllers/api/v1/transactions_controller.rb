@@ -27,10 +27,17 @@ module Api
       def create
         transaction = @user.transactions.build(transaction_params)
         
+        # Capture exchange rates at creation time for historical accuracy (T085)
+        transaction.usd_rate_at_creation ||= CurrencyService.record_transaction_rate('USD')
+        transaction.gold_rate_at_creation ||= CurrencyService.record_transaction_rate('Gold')
+        
         if transaction.save
-          render json: format_transaction(transaction), status: :created
+          render json: format_transaction_with_success(transaction), status: :created
         else
-          render json: { errors: transaction.errors.full_messages }, status: :unprocessable_entity
+          render json: { 
+            success: false, 
+            error: transaction.errors.full_messages.join(', ')
+          }, status: :unprocessable_entity
         end
       rescue StandardError => e
         render json: { error: e.message }, status: :internal_server_error
@@ -116,6 +123,28 @@ module Api
           notes: transaction.notes,
           created_at: transaction.created_at,
           updated_at: transaction.updated_at
+        }
+      end
+
+      def format_transaction_with_success(transaction)
+        {
+          success: true,
+          data: {
+            id: transaction.id,
+            user_id: transaction.user_id,
+            amount_toman: transaction.amount_toman,
+            transaction_type: transaction.transaction_type,
+            category_id: transaction.category_id,
+            category_name: transaction.category&.persian_name || 'سایر',
+            transaction_date: transaction.transaction_date,
+            usd_rate_at_creation: transaction.usd_rate_at_creation,
+            amount_usd_equivalent: transaction.amount_usd_equivalent,
+            gold_rate_at_creation: transaction.gold_rate_at_creation,
+            amount_gold_grams_equivalent: transaction.amount_gold_grams_equivalent,
+            notes: transaction.notes,
+            created_at: transaction.created_at,
+            updated_at: transaction.updated_at
+          }
         }
       end
 

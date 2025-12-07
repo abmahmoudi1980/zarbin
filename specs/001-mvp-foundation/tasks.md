@@ -151,7 +151,7 @@
 
 ---
 
-## Phase 5: User Story 3 - Add Manual Transaction (Priority: P3)
+## Phase 5: User Story 3 - Add Manual Transaction (Priority: P3) ✅ COMPLETE
 
 **Goal**: Authenticated users can create income/expense transactions with categories, dates, and notes
 
@@ -159,32 +159,32 @@
 
 ### Tests for User Story 3 (TDD)
 
-- [ ] T075 [P] [US3] Contract test for POST `/api/v1/transactions` in `backend/spec/requests/api/v1/transactions_spec.rb`
-- [ ] T076 [P] [US3] Contract test for GET `/api/v1/transactions` in `backend/spec/requests/api/v1/transactions_spec.rb`
-- [ ] T077 [P] [US3] Unit test for Transaction.validate_amount in `backend/spec/models/transaction_spec.rb`
-- [ ] T078 [P] [US3] Unit test for currency conversion in `backend/spec/services/currency_service_spec.rb`
-- [ ] T079 [P] [US3] Widget test for AddTransactionScreen in `frontend/test/screens/add_transaction_screen_test.dart`
-- [ ] T080 [P] [US3] Widget test for TransactionListScreen in `frontend/test/screens/transaction_list_screen_test.dart`
+- [x] T075 [P] [US3] Contract test for POST `/api/v1/transactions` in `backend/spec/requests/api/v1/transactions_spec.rb`
+- [x] T076 [P] [US3] Contract test for GET `/api/v1/transactions` in `backend/spec/requests/api/v1/transactions_spec.rb`
+- [x] T077 [P] [US3] Unit test for Transaction.validate_amount in `backend/spec/models/transaction_spec.rb`
+- [x] T078 [P] [US3] Unit test for currency conversion in `backend/spec/services/currency_service_spec.rb`
+- [x] T079 [P] [US3] Widget test for AddTransactionScreen in `frontend/test/screens/add_transaction_screen_test.dart`
+- [x] T080 [P] [US3] Widget test for TransactionListScreen in `frontend/test/screens/transaction_list_screen_test.dart`
 
 ### Implementation for User Story 3
 
-- [ ] T081 [P] [US3] Create TransactionsController with POST/GET endpoints in `backend/app/controllers/api/v1/transactions_controller.rb`
-- [ ] T082 [P] [US3] Implement transaction amount validation (>0, <=99,999,999,999 Toman) in `backend/app/models/transaction.rb`
-- [ ] T083 [P] [US3] Create CurrencyService for Toman→USD conversion at creation time in `backend/app/services/currency_service.rb`
-- [ ] T084 [P] [US3] Implement transaction sorting by date (newest first) in `backend/app/models/transaction.rb`
-- [ ] T085 [US3] Ensure current exchange rate is stored with each transaction for historical accuracy in `backend/app/controllers/api/v1/transactions_controller.rb` (depends on T083)
-- [ ] T086 [P] [US3] Create AddTransactionScreen with form inputs in `frontend/lib/screens/add_transaction_screen.dart`
-- [ ] T087 [P] [US3] Integrate Jalali date picker into transaction form in `frontend/lib/screens/add_transaction_screen.dart`
-- [ ] T088 [P] [US3] Create category selector dropdown with all 7 categories in `frontend/lib/widgets/category_selector.dart`
-- [ ] T089 [P] [US3] Create TransactionListScreen showing all user transactions in `frontend/lib/screens/transaction_list_screen.dart`
-- [ ] T090 [P] [US3] Create transaction list item widget with amount, category icon, note preview in `frontend/lib/widgets/transaction_list_item.dart`
-- [ ] T091 [P] [US3] Create TransactionProvider for managing transaction state in `frontend/lib/providers/transaction_provider.dart`
-- [ ] T092 [P] [US3] Implement dual-currency display (Toman + USD equivalent) in `frontend/lib/widgets/dual_currency_display.dart`
-- [ ] T093 [P] [US3] Create Persian numeral formatter for transaction amounts in `frontend/lib/utils/persian_formatter.dart`
-- [ ] T094 [US3] Implement amount input validation with Persian numeral support in `frontend/lib/widgets/amount_input_field.dart`
-- [ ] T095 [P] [US3] Add income/expense type toggle in `frontend/lib/widgets/transaction_type_toggle.dart`
-- [ ] T096 [P] [US3] Implement local transaction caching to SQLite in `frontend/lib/services/database_service.dart`
-- [ ] T097 [US3] Test transaction creation completes in <30 seconds per SC-003
+- [x] T081 [P] [US3] Create TransactionsController with POST/GET endpoints in `backend/app/controllers/api/v1/transactions_controller.rb`
+- [x] T082 [P] [US3] Implement transaction amount validation (>0, <=99,999,999,999 Toman) in `backend/app/models/transaction.rb`
+- [x] T083 [P] [US3] Create CurrencyService for Toman→USD conversion at creation time in `backend/app/services/currency_service.rb`
+- [x] T084 [P] [US3] Implement transaction sorting by date (newest first) in `backend/app/models/transaction.rb`
+- [x] T085 [US3] Ensure current exchange rate is stored with each transaction for historical accuracy in `backend/app/controllers/api/v1/transactions_controller.rb` (depends on T083)
+- [x] T086 [P] [US3] Create AddTransactionScreen with form inputs in `frontend/lib/screens/add_transaction_screen.dart`
+- [x] T087 [P] [US3] Integrate Jalali date picker into transaction form in `frontend/lib/screens/add_transaction_screen.dart`
+- [x] T088 [P] [US3] Create category selector dropdown with all 7 categories in `frontend/lib/widgets/category_selector.dart`
+- [x] T089 [P] [US3] Create TransactionListScreen showing all user transactions in `frontend/lib/screens/transaction_list_screen.dart`
+- [x] T090 [P] [US3] Create transaction list item widget with amount, category icon, note preview in `frontend/lib/widgets/transaction_list_item.dart`
+- [x] T091 [P] [US3] Create TransactionProvider for managing transaction state in `frontend/lib/providers/transaction_provider.dart`
+- [x] T092 [P] [US3] Implement dual-currency display (Toman + USD equivalent) in `frontend/lib/widgets/dual_currency_display.dart`
+- [x] T093 [P] [US3] Create Persian numeral formatter for transaction amounts in `frontend/lib/utils/persian_formatter.dart`
+- [x] T094 [US3] Implement amount input validation with Persian numeral support in `frontend/lib/widgets/amount_input_field.dart`
+- [x] T095 [P] [US3] Add income/expense type toggle in `frontend/lib/widgets/transaction_type_toggle.dart`
+- [x] T096 [P] [US3] Implement local transaction caching to SQLite in `frontend/lib/services/database_service.dart`
+- [x] T097 [US3] Test transaction creation completes in <30 seconds per SC-003
 
 **Checkpoint**: User Story 3 complete - users can record income and expenses with full details.
 

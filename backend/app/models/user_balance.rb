@@ -74,10 +74,8 @@ class UserBalance < ApplicationRecord
     expected_usd = calculate_usd_equivalent(total_toman, current_usd_rate)
     expected_gold = calculate_gold_equivalent(total_toman, current_gold_rate)
 
-    # Allow small rounding differences
-    if (total_usd_equivalent - expected_usd).abs > 0.01 ||
-       (total_gold_grams_equivalent - expected_gold).abs > 0.01
-      recalculate!
-    end
+    # Keep stored equivalents aligned with current total_toman.
+    self.total_usd_equivalent = expected_usd
+    self.total_gold_grams_equivalent = expected_gold
   end
 end

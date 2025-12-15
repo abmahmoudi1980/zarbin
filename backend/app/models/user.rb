@@ -32,7 +32,7 @@ class User < ApplicationRecord
   validates :failed_login_attempts, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   # Enums
-  enum account_status: { active: 'active', otp_pending: 'otp_pending', suspended: 'suspended', deleted: 'deleted', locked: 'locked' }
+  enum :account_status, { active: 'active', otp_pending: 'otp_pending', suspended: 'suspended', deleted: 'deleted', locked: 'locked' }
 
   # Scopes
   scope :active_only, -> { where(account_status: :active) }
@@ -43,6 +43,10 @@ class User < ApplicationRecord
 
   # Callbacks
   after_create :initialize_balance
+
+  attr_accessor :skip_balance_initialization
+
+  LOCKOUT_DURATION = 15.minutes
 
   # Instance Methods
 
@@ -69,11 +73,19 @@ class User < ApplicationRecord
   end
 
   def can_attempt_login?
-    !account_locked?
+    if account_locked?
+      false
+    else
+      reset_failed_attempts if account_status == 'locked'
+      true
+    end
   end
 
   def locked_out_until
-    locked_until
+    return locked_until if locked_until.present?
+    return nil if locked_at.blank?
+
+    locked_at + LOCKOUT_DURATION
   end
 
   def increment_failed_attempts
@@ -82,7 +94,7 @@ class User < ApplicationRecord
       update(
         failed_login_attempts: new_attempts,
         account_status: :locked,
-        locked_until: Time.current + 15.minutes
+        locked_until: Time.current + LOCKOUT_DURATION
       )
     else
       update(failed_login_attempts: new_attempts)
@@ -108,6 +120,7 @@ class User < ApplicationRecord
   private
 
   def initialize_balance
+    return if skip_balance_initialization
     UserBalance.create(user: self, total_toman: 0)
   end
 end

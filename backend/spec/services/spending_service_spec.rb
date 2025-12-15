@@ -3,6 +3,10 @@
 require "rails_helper"
 
 RSpec.describe SpendingService do
+  before do
+    Category.find_or_create_defaults
+  end
+
   describe ".calculate_spending_by_category" do
     let(:user) { create(:user) }
     let(:current_month_range) { SpendingService.current_jalali_month_range }
@@ -17,22 +21,22 @@ RSpec.describe SpendingService do
 
     context "when user has expenses in current Jalali month" do
       before do
-        food_category = Category.find_by(name_fa: "غذا")
-        transport_category = Category.find_by(name_fa: "حمل‌ونقل")
+        food_category = Category.find_by(persian_name: "خوراک")
+          transport_category = Category.find_by(icon_code: "transport")
 
         Transaction.create!(
           user_id: user.id,
           amount_toman: 5_000_000,
-          type: "expense",
-          date: Date.current,
+          transaction_type: "expense",
+          transaction_date: Date.current,
           category_id: food_category.id
         )
 
         Transaction.create!(
           user_id: user.id,
           amount_toman: 2_000_000,
-          type: "expense",
-          date: Date.current,
+          transaction_type: "expense",
+          transaction_date: Date.current,
           category_id: transport_category.id
         )
       end
@@ -49,7 +53,7 @@ RSpec.describe SpendingService do
 
         category_data = result.first
         expect(category_data).to include(
-          category_id: be_a(String),
+          category_id: be_a(Integer),
           category_name_fa: be_a(String),
           category_icon: be_a(String),
           total_amount: be_a(Integer),
@@ -60,10 +64,10 @@ RSpec.describe SpendingService do
       it "calculates total amounts correctly" do
         result = SpendingService.calculate_spending_by_category(user)
 
-        food_data = result.find { |c| c[:category_name_fa] == "غذا" }
+        food_data = result.find { |c| c[:category_name_fa] == "خوراک" }
         expect(food_data[:total_amount]).to eq(5_000_000)
 
-        transport_data = result.find { |c| c[:category_name_fa] == "حمل‌ونقل" }
+        transport_data = result.find { |c| c[:category_icon] == "transport" }
         expect(transport_data[:total_amount]).to eq(2_000_000)
       end
 
@@ -85,14 +89,14 @@ RSpec.describe SpendingService do
       end
 
       it "returns only expense transactions" do
-        income_category = Category.find_by(name_fa: "سایر")
+        income_category = Category.find_by(persian_name: "سایر")
         
         # Create an income transaction
         Transaction.create!(
           user_id: user.id,
           amount_toman: 10_000_000,
-          type: "income",
-          date: Date.current,
+          transaction_type: "income",
+          transaction_date: Date.current,
           category_id: income_category.id
         )
 
@@ -105,14 +109,14 @@ RSpec.describe SpendingService do
 
     context "when user has transactions in different Jalali months" do
       before do
-        food_category = Category.find_by(name_fa: "غذا")
+        food_category = Category.find_by(persian_name: "خوراک")
 
         # Current month transaction
         Transaction.create!(
           user_id: user.id,
           amount_toman: 5_000_000,
-          type: "expense",
-          date: Date.current,
+          transaction_type: "expense",
+          transaction_date: Date.current,
           category_id: food_category.id
         )
 
@@ -120,8 +124,8 @@ RSpec.describe SpendingService do
         Transaction.create!(
           user_id: user.id,
           amount_toman: 10_000_000,
-          type: "expense",
-          date: 40.days.ago,
+          transaction_type: "expense",
+          transaction_date: 40.days.ago,
           category_id: food_category.id
         )
 
@@ -129,8 +133,8 @@ RSpec.describe SpendingService do
         Transaction.create!(
           user_id: user.id,
           amount_toman: 3_000_000,
-          type: "expense",
-          date: 40.days.from_now,
+          transaction_type: "expense",
+          transaction_date: 40.days.from_now,
           category_id: food_category.id
         )
       end
@@ -146,21 +150,21 @@ RSpec.describe SpendingService do
 
     context "when multiple transactions exist in same category" do
       before do
-        food_category = Category.find_by(name_fa: "غذا")
+        food_category = Category.find_by(persian_name: "خوراک")
 
         Transaction.create!(
           user_id: user.id,
           amount_toman: 2_000_000,
-          type: "expense",
-          date: Date.current,
+          transaction_type: "expense",
+          transaction_date: Date.current,
           category_id: food_category.id
         )
 
         Transaction.create!(
           user_id: user.id,
           amount_toman: 3_000_000,
-          type: "expense",
-          date: Date.current,
+          transaction_type: "expense",
+          transaction_date: Date.current,
           category_id: food_category.id
         )
       end
@@ -175,13 +179,13 @@ RSpec.describe SpendingService do
 
     context "when category has no transactions" do
       it "does not include category in breakdown" do
-        food_category = Category.find_by(name_fa: "غذا")
+        food_category = Category.find_by(persian_name: "خوراک")
 
         Transaction.create!(
           user_id: user.id,
           amount_toman: 1_000_000,
-          type: "expense",
-          date: Date.current,
+          transaction_type: "expense",
+          transaction_date: Date.current,
           category_id: food_category.id
         )
 
@@ -189,7 +193,7 @@ RSpec.describe SpendingService do
 
         # Only food category should be included
         expect(result.length).to eq(1)
-        expect(result.first[:category_name_fa]).to eq("غذا")
+        expect(result.first[:category_name_fa]).to eq("خوراک")
       end
     end
   end
@@ -223,13 +227,13 @@ RSpec.describe SpendingService do
 
     context "when user has expenses in current month" do
       before do
-        food_category = Category.find_by(name_fa: "غذا")
+        food_category = Category.find_by(persian_name: "خوراک")
 
         Transaction.create!(
           user_id: user.id,
           amount_toman: 5_000_000,
-          type: "expense",
-          date: Date.current,
+          transaction_type: "expense",
+          transaction_date: Date.current,
           category_id: food_category.id
         )
       end

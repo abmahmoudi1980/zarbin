@@ -1,6 +1,15 @@
 class CurrencyService
   class ExchangeRateNotAvailable < StandardError; end
 
+  RATE_TYPE_MAP = {
+    'USD' => 'usd',
+    'usd' => 'usd',
+    'Gold' => 'gold_gram',
+    'gold_gram' => 'gold_gram',
+    'BaharCoin' => 'bahar_coin',
+    'bahar_coin' => 'bahar_coin'
+  }.freeze
+
   # Converts Toman to USD using the current USD exchange rate
   def self.toman_to_usd(amount_toman)
     rate = get_current_rate('USD')
@@ -19,8 +28,8 @@ class CurrencyService
 
   # Retrieves the current exchange rate for a specific rate_type
   def self.get_current_rate(rate_type)
-    market_rate = MarketRate.where(rate_type: rate_type).order(created_at: :desc).first
-    market_rate&.value_in_toman
+    normalized = RATE_TYPE_MAP.fetch(rate_type, rate_type)
+    MarketRate.latest_rate_for(normalized)
   end
 
   # Records the exchange rate at transaction creation time for historical accuracy

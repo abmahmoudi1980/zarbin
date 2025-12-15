@@ -1,10 +1,14 @@
 require 'rails_helper'
 
 RSpec.describe CurrencyService, type: :service do
+  before do
+    MarketRate.delete_all
+  end
+
   describe '.toman_to_usd' do
     context 'with valid exchange rate' do
       it 'converts Toman to USD using current rate' do
-        rate = MarketRate.create!(rate_type: 'USD', value_in_toman: 42500.0)
+        rate = MarketRate.create!(rate_type: 'usd', value_in_toman: 42500, timestamp: Time.current)
 
         result = CurrencyService.toman_to_usd(42_500_000)
 
@@ -12,7 +16,7 @@ RSpec.describe CurrencyService, type: :service do
       end
 
       it 'handles fractional conversions' do
-        MarketRate.create!(rate_type: 'USD', value_in_toman: 42500.0)
+        MarketRate.create!(rate_type: 'usd', value_in_toman: 42500, timestamp: Time.current)
 
         result = CurrencyService.toman_to_usd(42_500)
 
@@ -20,7 +24,7 @@ RSpec.describe CurrencyService, type: :service do
       end
 
       it 'returns 0 for 0 Toman' do
-        MarketRate.create!(rate_type: 'USD', value_in_toman: 42500.0)
+        MarketRate.create!(rate_type: 'usd', value_in_toman: 42500, timestamp: Time.current)
 
         result = CurrencyService.toman_to_usd(0)
 
@@ -38,7 +42,7 @@ RSpec.describe CurrencyService, type: :service do
 
     context 'with very large amounts' do
       it 'handles amounts up to 99,999,999,999 Toman' do
-        MarketRate.create!(rate_type: 'USD', value_in_toman: 42500.0)
+        MarketRate.create!(rate_type: 'usd', value_in_toman: 42500, timestamp: Time.current)
 
         result = CurrencyService.toman_to_usd(99_999_999_999)
 
@@ -51,7 +55,7 @@ RSpec.describe CurrencyService, type: :service do
   describe '.toman_to_gold_grams' do
     context 'with valid gold rate' do
       it 'converts Toman to gold grams using current rate' do
-        MarketRate.create!(rate_type: 'Gold', value_in_toman: 2_000_000.0)
+        MarketRate.create!(rate_type: 'gold_gram', value_in_toman: 2_000_000, timestamp: Time.current)
 
         result = CurrencyService.toman_to_gold_grams(2_000_000)
 
@@ -59,7 +63,7 @@ RSpec.describe CurrencyService, type: :service do
       end
 
       it 'handles fractional grams' do
-        MarketRate.create!(rate_type: 'Gold', value_in_toman: 2_000_000.0)
+        MarketRate.create!(rate_type: 'gold_gram', value_in_toman: 2_000_000, timestamp: Time.current)
 
         result = CurrencyService.toman_to_gold_grams(1_000_000)
 
@@ -79,12 +83,12 @@ RSpec.describe CurrencyService, type: :service do
   describe '.get_current_rate' do
     context 'with existing rate' do
       it 'returns the most recent rate for rate_type' do
-        old_rate = MarketRate.create!(rate_type: 'USD', value_in_toman: 42000.0, created_at: 1.day.ago)
-        current_rate = MarketRate.create!(rate_type: 'USD', value_in_toman: 42500.0)
+        old_rate = MarketRate.create!(rate_type: 'usd', value_in_toman: 42000, timestamp: 1.day.ago)
+        current_rate = MarketRate.create!(rate_type: 'usd', value_in_toman: 42500, timestamp: Time.current)
 
         result = CurrencyService.get_current_rate('USD')
 
-        expect(result).to eq(42500.0)
+        expect(result).to eq(42500)
       end
     end
 
@@ -100,19 +104,19 @@ RSpec.describe CurrencyService, type: :service do
   describe '.record_transaction_rate' do
     context 'when creating a transaction' do
       it 'records the exchange rate at transaction creation time' do
-        MarketRate.create!(rate_type: 'USD', value_in_toman: 42500.0)
+        MarketRate.create!(rate_type: 'usd', value_in_toman: 42500, timestamp: Time.current)
 
-        rate = CurrencyService.record_transaction_rate('USD')
+        rate = CurrencyService.record_transaction_rate('usd')
 
         expect(rate).to eq(42500.0)
       end
 
       it 'handles multiple rate types' do
-        MarketRate.create!(rate_type: 'USD', value_in_toman: 42500.0)
-        MarketRate.create!(rate_type: 'Gold', value_in_toman: 2_000_000.0)
+        MarketRate.create!(rate_type: 'usd', value_in_toman: 42500, timestamp: Time.current)
+        MarketRate.create!(rate_type: 'gold_gram', value_in_toman: 2_000_000, timestamp: Time.current)
 
-        usd_rate = CurrencyService.record_transaction_rate('USD')
-        gold_rate = CurrencyService.record_transaction_rate('Gold')
+        usd_rate = CurrencyService.record_transaction_rate('usd')
+        gold_rate = CurrencyService.record_transaction_rate('gold_gram')
 
         expect(usd_rate).to eq(42500.0)
         expect(gold_rate).to eq(2_000_000.0)
@@ -140,7 +144,7 @@ RSpec.describe CurrencyService, type: :service do
 
   describe '.bulk_convert' do
     before do
-      MarketRate.create!(rate_type: 'USD', value_in_toman: 42500.0)
+      MarketRate.create!(rate_type: 'usd', value_in_toman: 42500, timestamp: Time.current)
     end
 
     it 'converts multiple amounts at once' do
@@ -183,7 +187,7 @@ RSpec.describe CurrencyService, type: :service do
 
   describe 'precision' do
     before do
-      MarketRate.create!(rate_type: 'USD', value_in_toman: 42500.0)
+      MarketRate.create!(rate_type: 'usd', value_in_toman: 42500, timestamp: Time.current)
     end
 
     it 'maintains precision for currency conversions' do

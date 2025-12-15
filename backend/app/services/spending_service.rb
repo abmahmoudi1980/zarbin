@@ -9,8 +9,8 @@ class SpendingService
 
       # Group expenses by category for current month
       spending_by_category = user.transactions
-        .where(type: 'expense')
-        .where(date: start_date..end_date)
+        .where(transaction_type: 'expense')
+        .where(transaction_date: start_date..end_date)
         .group(:category_id)
         .sum(:amount_toman)
 
@@ -23,7 +23,7 @@ class SpendingService
         category = Category.find(category_id)
         {
           category_id: category.id,
-          category_name_fa: category.name_fa,
+          category_name_fa: category.persian_name,
           category_icon: category.icon_code,
           total_amount: amount,
           percentage: ((amount.to_f / total_amount) * 100).round(2)
@@ -39,8 +39,8 @@ class SpendingService
       start_date, end_date = current_jalali_month_range
 
       user.transactions
-        .where(type: 'expense')
-        .where(date: start_date..end_date)
+        .where(transaction_type: 'expense')
+        .where(transaction_date: start_date..end_date)
         .sum(:amount_toman)
     end
 
@@ -51,7 +51,7 @@ class SpendingService
       jalali_today = today.to_jalali
 
       # Get first day of current Jalali month
-      start_date = Date.from_jalali(jalali_today.year, jalali_today.month, 1)
+      start_date = jalali_today.class.new(jalali_today.year, jalali_today.month, 1).to_gregorian
 
       # Get last day of current Jalali month
       # Jalali months have 31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 29/30, 29/30 days
@@ -64,7 +64,7 @@ class SpendingService
                    is_jalali_leap_year(jalali_today.year) ? 30 : 29
                  end
 
-      end_date = Date.from_jalali(jalali_today.year, jalali_today.month, last_day)
+      end_date = jalali_today.class.new(jalali_today.year, jalali_today.month, last_day).to_gregorian
 
       [start_date, end_date]
     end

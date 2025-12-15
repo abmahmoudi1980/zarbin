@@ -14,7 +14,7 @@ RSpec.describe AuthService, type: :service do
 
     it 'includes user ID in token payload' do
       token = service.generate_token(user)
-      decoded = JWT.decode(token, Rails.application.secrets.jwt_secret, algorithm: 'HS256')
+      decoded = JWT.decode(token, ENV.fetch('JWT_SECRET'), true, algorithm: 'HS256')
       payload = decoded.first
 
       expect(payload['user_id']).to eq(user.id)
@@ -22,7 +22,7 @@ RSpec.describe AuthService, type: :service do
 
     it 'includes mobile_number in token payload' do
       token = service.generate_token(user)
-      decoded = JWT.decode(token, Rails.application.secrets.jwt_secret, algorithm: 'HS256')
+      decoded = JWT.decode(token, ENV.fetch('JWT_SECRET'), true, algorithm: 'HS256')
       payload = decoded.first
 
       expect(payload['mobile_number']).to eq(user.mobile_number)
@@ -30,7 +30,7 @@ RSpec.describe AuthService, type: :service do
 
     it 'sets expiration to 7 days from now' do
       token = service.generate_token(user)
-      decoded = JWT.decode(token, Rails.application.secrets.jwt_secret, algorithm: 'HS256')
+      decoded = JWT.decode(token, ENV.fetch('JWT_SECRET'), true, algorithm: 'HS256')
       payload = decoded.first
 
       exp_time = Time.at(payload['exp'])

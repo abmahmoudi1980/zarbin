@@ -40,10 +40,11 @@ class Transaction < ApplicationRecord
   }
 
   # Enums
-  enum transaction_type: { income: 'income', expense: 'expense' }
+  enum :transaction_type, { income: 'income', expense: 'expense' }
 
   # Callbacks
   before_validation :set_default_category
+  before_validation :capture_rates
   before_create :capture_rates
   after_save :update_user_balance
 

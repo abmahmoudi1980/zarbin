@@ -19,7 +19,7 @@ class MarketRate < ApplicationRecord
   validates :timestamp, presence: true
 
   # Enums
-  enum rate_type: { usd: 'usd', gold_gram: 'gold_gram', bahar_coin: 'bahar_coin' }
+  enum :rate_type, { usd: 'usd', gold_gram: 'gold_gram', bahar_coin: 'bahar_coin' }
 
   # Scopes
   scope :latest, -> { order(timestamp: :desc).limit(3) }
@@ -33,7 +33,7 @@ class MarketRate < ApplicationRecord
   end
 
   def self.rate_for_type(rate_type)
-    for_type(rate_type).order(timestamp: :desc).first
+    for_type(rate_type).order(timestamp: :desc).first&.value_in_toman
   end
 
   def self.latest_rate_for(rate_type)

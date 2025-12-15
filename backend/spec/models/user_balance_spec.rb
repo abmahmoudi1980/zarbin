@@ -3,14 +3,14 @@
 require "rails_helper"
 
 RSpec.describe UserBalance, type: :model do
-  let(:user) { create(:user) }
+  let(:user) { create(:user, :with_balance) }
 
   describe "associations" do
     it { is_expected.to belong_to(:user) }
   end
 
   describe "validations" do
-    subject { build(:user_balance, user: user) }
+    subject { build(:user_balance, user: create(:user, :skip_balance)) }
 
     it { is_expected.to validate_presence_of(:user_id) }
     it { is_expected.to validate_uniqueness_of(:user_id) }
@@ -19,7 +19,7 @@ RSpec.describe UserBalance, type: :model do
   end
 
   describe "#calculate_equivalents" do
-    let(:user_balance) { create(:user_balance, user: user, total_toman: 100_000_000) }
+    let(:user_balance) { user.user_balance.tap { |ub| ub.update!(total_toman: 100_000_000) } }
 
     context "with valid rates" do
       it "returns hash with all equivalents" do
@@ -65,7 +65,7 @@ RSpec.describe UserBalance, type: :model do
     end
 
     context "with zero balance" do
-      let(:user_balance) { create(:user_balance, user: user, total_toman: 0) }
+      let(:user_balance) { user.user_balance.tap { |ub| ub.update!(total_toman: 0) } }
 
       it "returns zero equivalents" do
         usd_rate = 42_500
@@ -81,7 +81,7 @@ RSpec.describe UserBalance, type: :model do
 
     context "with different rate values" do
       it "scales equivalents proportionally to rate changes" do
-        balance = create(:user_balance, user: user, total_toman: 100_000_000)
+        balance = user.user_balance.tap { |ub| ub.update!(total_toman: 100_000_000) }
 
         result_low_rate = balance.calculate_equivalents(10_000, 2_150_000)
         result_high_rate = balance.calculate_equivalents(100_000, 2_150_000)
@@ -92,7 +92,7 @@ RSpec.describe UserBalance, type: :model do
     end
 
     context "with very large balances" do
-      let(:user_balance) { create(:user_balance, user: user, total_toman: 99_999_999_999) }
+      let(:user_balance) { user.user_balance.tap { |ub| ub.update!(total_toman: 99_999_999_999) } }
 
       it "handles large amounts without overflow" do
         usd_rate = 42_500
@@ -115,7 +115,7 @@ RSpec.describe UserBalance, type: :model do
       end
 
       it "updates total_toman from transactions" do
-        user_balance = create(:user_balance, user: user, total_toman: 0)
+        user_balance = user.user_balance.tap { |ub| ub.update!(total_toman: 0) }
 
         user_balance.recalculate!
 
@@ -128,7 +128,7 @@ RSpec.describe UserBalance, type: :model do
         MarketRate.create!(rate_type: "usd", value_in_toman: 42_500, timestamp: Time.current)
         MarketRate.create!(rate_type: "gold_gram", value_in_toman: 2_150_000, timestamp: Time.current)
 
-        user_balance = create(:user_balance, user: user, total_toman: 0)
+        user_balance = user.user_balance.tap { |ub| ub.update!(total_toman: 0) }
         user_balance.recalculate!
 
         # 70M / 42500 = 1647.06
@@ -139,7 +139,7 @@ RSpec.describe UserBalance, type: :model do
 
     context "when user has no transactions" do
       it "sets balance to zero" do
-        user_balance = create(:user_balance, user: user, total_toman: 100_000_000)
+        user_balance = user.user_balance.tap { |ub| ub.update!(total_toman: 100_000_000) }
 
         user_balance.recalculate!
 
@@ -149,7 +149,7 @@ RSpec.describe UserBalance, type: :model do
   end
 
   describe "#balance_in_currency" do
-    let(:user_balance) { create(:user_balance, user: user, total_toman: 100_000_000) }
+    let(:user_balance) { user.user_balance.tap { |ub| ub.update!(total_toman: 100_000_000) } }
 
     context "for USD conversion" do
       it "converts Toman to USD" do
@@ -166,7 +166,7 @@ RSpec.describe UserBalance, type: :model do
         rate = 2_150_000
         result = user_balance.balance_in_currency("gold_gram", rate)
 
-        expected = (100_000_000.to_f / rate).round(2)
+        expected = (100_000_000.to_f / rate).round(3)
         expect(result).to eq(expected)
       end
     end

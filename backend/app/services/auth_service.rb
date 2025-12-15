@@ -30,10 +30,10 @@ class AuthService
     begin
       decoded = JWT.decode(token, jwt_secret, true, algorithm: JWT_ALGORITHM)
       decoded.first
-    rescue JWT::DecodeError => e
-      raise InvalidTokenError, e.message
     rescue JWT::ExpiredSignature
       raise TokenExpiredError, 'Token has expired'
+    rescue JWT::DecodeError => e
+      raise InvalidTokenError, e.message
     end
   end
 
@@ -67,6 +67,6 @@ class AuthService
   private
 
   def jwt_secret
-    Rails.application.secrets.jwt_secret || Rails.application.key_generator.generate_key('jwt_secret', 32)
+    ENV['JWT_SECRET'].presence || Rails.application.secret_key_base
   end
 end

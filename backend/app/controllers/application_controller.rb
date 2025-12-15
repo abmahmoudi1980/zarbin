@@ -21,10 +21,10 @@ class ApplicationController < ActionController::API
     token = extract_token_from_request
 
     unless token
-      Rails.logger.warn("Authentication failed: Authorization header missing from #{request.remote_ip}")
+      Rails.logger.warn("Authentication failed: Token missing from #{request.remote_ip}")
       render json: { 
         success: false, 
-        error: 'Authorization header missing' 
+        error: 'Token missing' 
       }, status: :unauthorized
       return
     end

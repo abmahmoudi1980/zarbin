@@ -7,6 +7,7 @@
 #   - expires_at: expiration timestamp (10 minutes)
 #   - attempts: attempt counter (max 3)
 #   - verified: boolean flag
+ #   - is_used: boolean flag
 
 class OtpVerification < ApplicationRecord
   # Validations
@@ -22,7 +23,7 @@ class OtpVerification < ApplicationRecord
   validates :attempts, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   # Scopes
-  scope :valid, -> { where('expires_at > ?', Time.current).where(verified: false) }
+  scope :valid, -> { where('expires_at > ?', Time.current).where(verified: false).where(is_used: false) }
   scope :for_number, ->(number) { where(mobile_number: number) }
   scope :expired, -> { where('expires_at <= ?', Time.current) }
 
@@ -31,6 +32,8 @@ class OtpVerification < ApplicationRecord
   def self.generate_otp(mobile_number)
     code = rand(100000..999999)
     expires_at = ENV.fetch('OTP_EXPIRY_MINUTES', 10).to_i.minutes.from_now
+
+    where(mobile_number: mobile_number).where(is_used: false).update_all(is_used: true)
 
     create(
       mobile_number: mobile_number,

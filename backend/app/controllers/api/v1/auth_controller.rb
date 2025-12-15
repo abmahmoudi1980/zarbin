@@ -10,6 +10,7 @@
 module Api
   module V1
     class AuthController < ApplicationController
+      # Public endpoints, no authentication required for register, verify_otp, login
       skip_before_action :authenticate_request!, only: [:register, :verify_otp, :login]
 
       # POST /api/v1/auth/register

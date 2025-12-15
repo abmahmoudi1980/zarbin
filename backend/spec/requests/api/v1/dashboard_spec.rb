@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe "Api::V1::Dashboard", type: :request do
-  let(:user) { create(:user, mobile_number: "+989120000001") }
+  let(:user) { create(:user, mobile_number: "09120000001") }
   let(:auth_headers) do
     post "/api/v1/auth/login", params: {
       mobile_number: "+989120000001",
@@ -60,7 +60,7 @@ RSpec.describe "Api::V1::Dashboard", type: :request do
           amount_toman: 100_000_000,
           type: "income",
           date: Date.current,
-          category_id: Category.find_by(name_fa: "سایر").id,
+          category_id: Category.find_by(persian_name: "سایر").id,
           note: "Test income"
         )
         Transaction.create!(
@@ -68,7 +68,7 @@ RSpec.describe "Api::V1::Dashboard", type: :request do
           amount_toman: 30_000_000,
           type: "expense",
           date: Date.current,
-          category_id: Category.find_by(name_fa: "خوراک").id,
+          category_id: Category.find_by(persian_name: "خوراک").id,
           note: "Test expense"
         )
         # Balance should be 70,000,000 Toman
@@ -138,10 +138,8 @@ RSpec.describe "Api::V1::Dashboard", type: :request do
         expect(response).to have_http_status(:unauthorized)
       end
 
-      it "includes error message" do
-        get "/api/v1/dashboard"
-        json = JSON.parse(response.body)
-        expect(json).to include("error" => "Unauthorized")
+      it 'includes error message' do
+        expect(json).to include("error" => "Token missing")
       end
     end
 
@@ -153,7 +151,7 @@ RSpec.describe "Api::V1::Dashboard", type: :request do
           amount_toman: 50_000_000_000,
           type: "income",
           date: Date.current,
-          category_id: Category.find_by(name_fa: "سایر").id
+          category_id: Category.find_by(persian_name: "سایر").id
         )
       end
 
@@ -206,8 +204,8 @@ RSpec.describe "Api::V1::Dashboard", type: :request do
     context "when user has transactions in current Jalali month" do
       before do
         # Create transactions in different categories for current month
-        food_category = Category.find_by(name_fa: "غذا")
-        transport_category = Category.find_by(name_fa: "حمل‌ونقل")
+        food_category = Category.find_by(persian_name: "خوراک")
+        transport_category = Category.find_by(persian_name: "حمل‌ونقل")
         
         Transaction.create!(
           user_id: user.id,
@@ -241,7 +239,7 @@ RSpec.describe "Api::V1::Dashboard", type: :request do
         category_data = json["breakdown"].first
         expect(category_data).to have_keys(
           "category_id",
-          "category_name_fa",
+          "category_persian_name",
           "category_icon",
           "total_amount",
           "percentage"
@@ -278,7 +276,7 @@ RSpec.describe "Api::V1::Dashboard", type: :request do
 
     context "when user has transactions in different months" do
       before do
-        food_category = Category.find_by(name_fa: "غذا")
+        food_category = Category.find_by(persian_name: "خوراک")
         
         # Current month transaction
         Transaction.create!(
@@ -310,7 +308,7 @@ RSpec.describe "Api::V1::Dashboard", type: :request do
 
     context "when user has income and expense transactions" do
       before do
-        category = Category.find_by(name_fa: "سایر")
+        category = Category.find_by(persian_name: "سایر")
         
         # Income transaction
         Transaction.create!(

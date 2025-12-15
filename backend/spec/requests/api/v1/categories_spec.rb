@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe 'API::V1::Categories', type: :request do
-  let(:user) { create(:user, status: 'active') }
+  let(:user) { create(:user, account_status: 'active') }
   let(:auth_header) { { 'Authorization' => "Bearer #{user.tokens.create.token}" } }
 
   describe 'GET /api/v1/categories' do
@@ -38,8 +38,8 @@ RSpec.describe 'API::V1::Categories', type: :request do
       it 'includes Food, Transport, Bills, Shopping, Health, Entertainment, Other' do
         get '/api/v1/categories', headers: auth_header
 
-        category_names = response_body['categories'].map { |c| c['name_fa'] }
-        expect(category_names).to include('غذا', 'حمل‌ونقل', 'قبض‌ها', 'خریدن', 'سلامت', 'سرگرمی', 'سایر')
+        category_names = response_body['categories'].map { |c| c['persian_name'] }
+        expect(category_names).to include('خوراک', 'حمل‌ونقل', 'قبوض', 'خرید', 'سلامت', 'تفریح', 'سایر')
       end
 
       it 'includes valid icon codes for each category' do

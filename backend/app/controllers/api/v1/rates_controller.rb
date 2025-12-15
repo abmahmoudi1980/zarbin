@@ -14,11 +14,13 @@ module Api
         rates = MarketRate.latest_rates
         
         if rates.empty?
+          set_cache_headers
           return render_success(
             {
               rates: [],
               timestamp: Time.current.iso8601,
-              message: 'No rates available'
+              rates_stale_minutes: nil,
+              stale: false
             }
           )
         end

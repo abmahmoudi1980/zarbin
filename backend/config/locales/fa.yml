@@ -1,0 +1,48 @@
+fa:
+  activerecord:
+    errors:
+      messages:
+        record_invalid: "اعتبارسنجی ناموفق بود: %{errors}"
+        blank: "نمی‌تواند خالی باشد"
+        taken: "قبلاً گرفته شده است"
+        invalid: "نامعتبر است"
+        too_short: "خیلی کوتاه است (حداقل %{count} کاراکتر)"
+        too_long: "خیلی بلند است (حداکثر %{count} کاراکتر)"
+        wrong_length: "طول اشتباه است (باید %{count} کاراکتر باشد)"
+        not_a_number: "یک عدد نیست"
+        greater_than: "باید بزرگتر از %{count} باشد"
+        greater_than_or_equal_to: "باید بزرگتر یا مساوی %{count} باشد"
+        less_than: "باید کمتر از %{count} باشد"
+        less_than_or_equal_to: "باید کمتر یا مساوی %{count} باشد"
+        equal_to: "باید برابر با %{count} باشد"
+        inclusion: "در لیست موجود نیست"
+        exclusion: "رزرو شده است"
+        confirmation: "با %{attribute} مطابقت ندارد"
+        accepted: "باید پذیرفته شود"
+        empty: "نمی‌تواند خالی باشد"
+        present: "باید خالی باشد"
+        required: "باید وجود داشته باشد"
+    models:
+      user: "کاربر"
+      transaction: "تراکنش"
+      category: "دسته‌بندی"
+      market_rate: "نرخ بازار"
+    attributes:
+      user:
+        mobile_number: "شماره موبایل"
+        password: "رمز عبور"
+        password_hash: "رمز عبور"
+        account_status: "وضعیت حساب"
+      transaction:
+        amount_toman: "مبلغ به تومان"
+        transaction_type: "نوع تراکنش"
+        transaction_date: "تاریخ تراکنش"
+        note: "یادداشت"
+      category:
+        persian_name: "نام فارسی"
+        icon_code: "کد آیکون"
+        display_order: "ترتیب نمایش"
+      market_rate:
+        rate_type: "نوع نرخ"
+        value_in_toman: "مقدار به تومان"
+        timestamp: "زمان"

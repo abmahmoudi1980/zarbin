@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       get '/balance', to: 'balance#show'
       get '/categories', to: 'categories#index'
       get '/dashboard', to: 'dashboard#show'
+      get '/dashboard/spending-breakdown', to: 'dashboard#spending_breakdown'
     end
   end
 

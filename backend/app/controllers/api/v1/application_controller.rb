@@ -6,7 +6,8 @@ module Api
     class ApplicationController < ActionController::API
       include ErrorHandler
 
-      before_action :verify_jwt_token, except: [:register, :login, :verify_otp, :index, :history]
+      skip_before_action :verify_jwt_token, only: [:register, :login, :verify_otp], raise: false
+      before_action :verify_jwt_token
 
       attr_reader :current_user
 

@@ -13,6 +13,11 @@ class AuthService
   JWT_ALGORITHM = 'HS256'
   TOKEN_EXPIRY = 7.days
 
+  # Class method wrapper for convenience
+  def self.generate_token(user)
+    new.generate_token(user)
+  end
+
   def generate_token(user)
     payload = {
       user_id: user.id,

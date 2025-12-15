@@ -3,7 +3,6 @@
 module Api
   module V1
     class TransactionsController < ApplicationController
-      skip_before_action :verify_authenticity_token
       before_action :authenticate_request!, except: [:options]
       before_action :set_user, only: [:create, :index, :show, :destroy, :monthly_summary]
       before_action :set_transaction, only: [:show, :destroy, :update]

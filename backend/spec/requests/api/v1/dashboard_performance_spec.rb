@@ -10,20 +10,20 @@ RSpec.describe 'Dashboard Performance', type: :request do
   let(:valid_token) { auth_service.generate_token(user) }
 
   before do
-    # Create sample market rates
+    # Create market rates
     MarketRate.create!(
-      rate_type: 'gold_18k',
+      rate_type: 'gold_gram',
       value_in_toman: 7_500_000,
       timestamp: Time.current
     )
     MarketRate.create!(
-      rate_type: 'coin_bahar_azadi',
-      value_in_toman: 150_000_000,
+      rate_type: 'bahar_coin',
+      value_in_toman: 250_000_000,
       timestamp: Time.current
     )
     MarketRate.create!(
-      rate_type: 'usd_toman',
-      value_in_toman: 50_000,
+      rate_type: 'usd',
+      value_in_toman: 560_000,
       timestamp: Time.current
     )
 

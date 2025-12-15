@@ -54,8 +54,14 @@ RSpec.configure do |config|
   config.include FactoryBot::Syntax::Methods
 
   config.before(:suite) do
+    Rails.cache.clear
     UserBalance.delete_all
     User.delete_all
+  end
+
+  config.before(:each) do
+    Rails.cache.clear
+    MarketRate.delete_all
   end
   config.include ActiveSupport::Testing::TimeHelpers
 

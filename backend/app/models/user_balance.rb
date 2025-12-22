@@ -25,8 +25,8 @@ class UserBalance < ApplicationRecord
   def recalculate!
     total = Transaction.total_for_user(user_id)
     
-    current_usd_rate = MarketRate.rate_for_type('usd') || 42500
-    current_gold_rate = MarketRate.rate_for_type('gold_gram') || 2150000
+    current_usd_rate = MarketRate.latest_rate_for('usd') || 42_500
+    current_gold_rate = MarketRate.latest_rate_for('gold_gram') || 2_150_000
 
     update(
       total_toman: total,
@@ -68,8 +68,8 @@ class UserBalance < ApplicationRecord
     # Ensure equivalents are consistent with total_toman
     return if total_toman.zero?
 
-    current_usd_rate = MarketRate.rate_for_type('usd') || 42500
-    current_gold_rate = MarketRate.rate_for_type('gold_gram') || 2150000
+    current_usd_rate = MarketRate.latest_rate_for('usd') || 42_500
+    current_gold_rate = MarketRate.latest_rate_for('gold_gram') || 2_150_000
 
     expected_usd = calculate_usd_equivalent(total_toman, current_usd_rate)
     expected_gold = calculate_gold_equivalent(total_toman, current_gold_rate)

@@ -2,9 +2,17 @@ require 'rails_helper'
 
 RSpec.describe 'API::V1::Categories', type: :request do
   let(:user) { create(:user, account_status: 'active') }
-  let(:auth_header) { { 'Authorization' => "Bearer #{user.tokens.create.token}" } }
+  let(:auth_header) do
+    token = AuthService.generate_token(user)
+    { 'Authorization' => "Bearer #{token}" }
+  end
 
   describe 'GET /api/v1/categories' do
+    before do
+      # Seed categories before tests
+      Category.find_or_create_defaults
+    end
+
     context 'when user is authenticated' do
       it 'returns all categories with correct structure' do
         get '/api/v1/categories', headers: auth_header

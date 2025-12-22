@@ -6,14 +6,18 @@ module Api
     class ApplicationController < ActionController::API
       include ErrorHandler
 
-      skip_before_action :verify_jwt_token, only: [:register, :login, :verify_otp], raise: false
-      before_action :verify_jwt_token
+      # Ensure auth endpoints are excluded from JWT verification.
+      # Use `except` on the before_action to avoid referencing actions that
+      # do not exist on other controllers (which can raise under Rails 7.1+).
+      before_action :verify_jwt_token, except: [:register, :login, :verify_otp]
 
       attr_reader :current_user
 
       protected
 
       def verify_jwt_token
+        # Allow unauthenticated access to auth endpoints (register/login/verify_otp)
+        return if %w[register login verify_otp].include?(action_name)
         token = extract_token_from_headers
         return render_unauthorized('Token missing') unless token
 

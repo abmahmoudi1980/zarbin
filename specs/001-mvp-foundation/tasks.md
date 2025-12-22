@@ -3,7 +3,7 @@
 **Input**: Design documents from `/specs/001-mvp-foundation/`  
 **Prerequisites**: ✅ plan.md, ✅ spec.md, ✅ research.md, ✅ data-model.md, ✅ contracts/  
 **Organization**: Tasks grouped by user story (US1-US5) for independent implementation  
-**Path Convention**: Monorepo with `backend/` (Rails) and `frontend/` (Flutter) subdirectories  
+**Path Convention**: Monorepo with `backend/` (Rails) and `frontend/` (Flutter) subdirectories
 
 ---
 
@@ -144,8 +144,9 @@
 - [x] T074 [US2] Verify registration completes in <2 minutes per SC-001
 
 **Checkpoint**: User Story 2 complete ✅
+
 - Register/Login screens, AuthProvider, secure storage ✅
-- AuthController, AuthService, OtpService ✅  
+- AuthController, AuthService, OtpService ✅
 - All tests written (TDD complete) ✅
 - Account lockout and token refresh implemented ✅
 
@@ -257,7 +258,7 @@
 - [x] T124 [P] Configure Active Record Encryption for sensitive User data in `backend/app/models/user.rb`
 - [x] T125 [P] Implement request rate limiting to prevent abuse in `backend/config/initializers/rate_limiter.rb`
 - [x] T126 [P] Add input sanitization for transaction notes in `backend/app/controllers/api/v1/transactions_controller.rb`
-- [ ] T127 Run full test suite with RSpec: `bundle exec rspec` targeting 80% coverage in `backend/`
+- [~] T127 Run full test suite with RSpec: `bundle exec rspec` targeting 80% coverage in `backend/`
 - [ ] T128 Run RuboCop linting: `bundle exec rubocop` and fix violations in `backend/`
 - [ ] T129 Performance test: Market rates endpoint returns within 3 seconds
 - [ ] T130 Performance test: Dashboard endpoint returns within 2 seconds
@@ -308,7 +309,7 @@
 ## Dependencies Graph
 
 ```
-Phase 1 (Setup) 
+Phase 1 (Setup)
   ↓
 Phase 2 (Foundation) ← All T001-T035
   ↓
@@ -328,6 +329,7 @@ Phase 2 (Foundation) ← All T001-T035
 ### Can run in parallel from start (after Phase 2):
 
 **Backend tasks** (can all run in parallel):
+
 - T036-T050 (US1 backend + tests)
 - T051-T074 (US2 backend + tests)
 - T075-T097 (US3 backend + tests)
@@ -335,6 +337,7 @@ Phase 2 (Foundation) ← All T001-T035
 - T109-T120 (US5 backend + tests)
 
 **Frontend tasks** (can all run in parallel):
+
 - T043-T050 (US1 frontend)
 - T065-T074 (US2 frontend)
 - T086-T097 (US3 frontend)
@@ -342,6 +345,7 @@ Phase 2 (Foundation) ← All T001-T035
 - T116-T120 (US5 frontend)
 
 **Polish tasks** (can run in parallel after individual story completion):
+
 - T121-T148 (Backend and frontend polish independently)
 - T149-T155 (Integration tests)
 - T156-T160 (Documentation and deployment)

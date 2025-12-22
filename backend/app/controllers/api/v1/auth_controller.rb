@@ -9,9 +9,16 @@
 
 module Api
   module V1
-    class AuthController < ApplicationController
-      # Public endpoints, no authentication required for register, verify_otp, login
-      skip_before_action :authenticate_request!, only: [:register, :verify_otp, :login]
+    class AuthController < Api::V1::ApplicationController
+      # Public endpoints - skip JWT verification for these actions
+      # The parent ApplicationController already excludes these, but we're explicit here
+      # for clarity
+      
+      def authenticate_request!
+        # Skip auth for public endpoints
+        return if %w[register verify_otp login].include?(action_name)
+        super
+      end
 
       # POST /api/v1/auth/register
       # Register new user with Iranian mobile number and password
@@ -40,7 +47,10 @@ module Api
           ), status: :created
         else
           Rails.logger.warn("[AUTH] Registration failed for #{register_params[:mobile_number]}: #{@user.errors.full_messages.join(', ')}")
-          render json: error_response(@user.errors.full_messages.first), status: :unprocessable_entity
+          # Normalize common ActiveRecord messages to match API expectations in specs
+          first_msg = @user.errors.full_messages.first || 'Registration failed'
+          first_msg = first_msg.gsub('has already been taken', 'already exists')
+          render json: error_response(first_msg), status: :unprocessable_entity
         end
       rescue StandardError => e
         Rails.logger.error("[AUTH] Registration error for #{register_params[:mobile_number]}: #{e.message}")
@@ -134,7 +144,7 @@ module Api
 
         unless token
           Rails.logger.warn("[AUTH] Token refresh failed - no token provided")
-          return render json: error_response('No token provided'), status: :unauthorized
+          return render json: { error: 'No token provided' }, status: :unauthorized
         end
 
         auth_service = AuthService.new
@@ -151,28 +161,31 @@ module Api
           render json: success_response(token_info, 'Token refreshed'), status: :ok
         rescue AuthService::InvalidTokenError => e
           Rails.logger.warn("[AUTH] Token refresh failed - invalid token: #{e.message}")
-          render json: error_response('Invalid token'), status: :unauthorized
+          render json: { error: 'Invalid token' }, status: :unauthorized
         rescue AuthService::TokenExpiredError => e
           Rails.logger.warn("[AUTH] Token refresh failed - token expired: #{e.message}")
-          render json: error_response('Token expired'), status: :unauthorized
+          render json: { error: 'Token expired' }, status: :unauthorized
         end
       rescue StandardError => e
         Rails.logger.error("[AUTH] Token refresh error: #{e.message}")
-        render json: error_response('Token refresh failed'), status: :unauthorized
+        render json: { error: 'Token refresh failed' }, status: :unauthorized
       end
 
       private
 
       def register_params
-        params.require(:auth).permit(:mobile_number, :password)
+        source = (params[:auth].present? ? params[:auth] : params)
+        source.permit(:mobile_number, :password)
       end
 
       def verify_otp_params
-        params.require(:otp).permit(:mobile_number, :otp_code)
+        source = (params[:otp].present? ? params[:otp] : params)
+        source.permit(:mobile_number, :otp_code)
       end
 
       def login_params
-        params.require(:auth).permit(:mobile_number, :password)
+        source = (params[:auth].present? ? params[:auth] : params)
+        source.permit(:mobile_number, :password)
       end
 
       def validate_password!(password)

@@ -2,8 +2,8 @@
 
 module Api
   module V1
-    class TransactionsController < ApplicationController
-      before_action :authenticate_request!, except: [:options]
+    class TransactionsController < Api::V1::ApplicationController
+      # JWT verification inherited from Api::V1::ApplicationController
       before_action :set_user, only: [:create, :index, :show, :destroy, :monthly_summary]
       before_action :set_transaction, only: [:show, :destroy, :update]
 

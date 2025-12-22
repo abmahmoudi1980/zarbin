@@ -57,6 +57,17 @@ RSpec.configure do |config|
     Rails.cache.clear
     UserBalance.delete_all
     User.delete_all
+    # Ensure default categories and initial market rates exist for tests
+    Category.find_or_create_defaults
+    # Create a recent market rate set if none exists
+    if MarketRate.recent.empty?
+      timestamp = Time.current
+      MarketRate.create!(rate_type: 'usd', value_in_toman: 42_000, timestamp: timestamp)
+      MarketRate.create!(rate_type: 'gold_gram', value_in_toman: 2_500_000, timestamp: timestamp)
+      MarketRate.create!(rate_type: 'bahar_coin', value_in_toman: 45_000_000, timestamp: timestamp)
+    end
+    # Force English locale for test expectations to avoid translation mismatches
+    I18n.locale = :en
   end
 
   config.before(:each) do

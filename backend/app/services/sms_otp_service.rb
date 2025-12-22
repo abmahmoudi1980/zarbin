@@ -17,6 +17,15 @@ class SmsOtpService
     otp_verification
   end
 
+  # Backwards-compatible sender used by older OtpService implementation.
+  # Accepts an explicit OTP code and sends it via the configured provider.
+  def send_otp_sms(mobile_number, otp_code)
+    sent = call_kavenegar_api(phone: mobile_number, otp: otp_code, template_name: 'zarbin_otp')
+    raise SendError, 'Failed to send OTP' unless sent
+
+    true
+  end
+
   def verify_otp(mobile_number, code)
     otp = OtpVerification.where(mobile_number: mobile_number, is_used: false).order(created_at: :desc).first
     return false if otp.blank?

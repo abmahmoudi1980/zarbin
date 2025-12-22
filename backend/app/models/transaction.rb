@@ -12,6 +12,12 @@
 #   - notes: optional notes (max 500 chars)
 
 class Transaction < ApplicationRecord
+  # Allow legacy/consumer code that uses `type` to map to `transaction_type`
+  alias_attribute :type, :transaction_type
+  # Allow specs and older callers to use `date` instead of `transaction_date`
+  alias_attribute :date, :transaction_date
+  # Allow specs to use singular `note` while DB column is `notes`
+  alias_attribute :note, :notes
   # Associations
   belongs_to :user
   belongs_to :category, optional: true
@@ -91,8 +97,8 @@ class Transaction < ApplicationRecord
   end
 
   def capture_rates
-    self.usd_rate_at_creation ||= MarketRate.rate_for_type('usd') || 42500
-    self.gold_rate_at_creation ||= MarketRate.rate_for_type('gold_gram') || 2150000
+    self.usd_rate_at_creation ||= MarketRate.latest_rate_for('usd') || 42500
+    self.gold_rate_at_creation ||= MarketRate.latest_rate_for('gold_gram') || 2_150_000
   end
 
   def update_user_balance

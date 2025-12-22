@@ -13,10 +13,17 @@ module ErrorHandler
   private
 
   def handle_error(exception)
-    Rails.logger.error("Error: #{exception.message}")
-    Rails.logger.error(exception.backtrace.join("\n"))
+    Rails.logger.error("Error: #{exception.class} - #{exception.message}")
+    Rails.logger.error(exception.backtrace.first(10).join("\n"))
 
-    render json: { error: 'Internal server error' }, status: :internal_server_error
+    render json: { 
+      error: 'Internal server error',
+      debug_info: Rails.env.test? ? { 
+        exception: exception.class.name,
+        message: exception.message,
+        backtrace: exception.backtrace.first(5)
+      } : nil
+    }.compact, status: :internal_server_error
   end
 
   def handle_not_found(exception)

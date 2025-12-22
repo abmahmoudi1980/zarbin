@@ -7,17 +7,17 @@ RSpec.describe 'Market Rates Performance', type: :request do
     before do
       # Create sample market rates
       MarketRate.create!(
-        rate_type: 'gold_18k',
+        rate_type: 'gold_gram',
         value_in_toman: 7_500_000,
         timestamp: Time.current
       )
       MarketRate.create!(
-        rate_type: 'coin_bahar_azadi',
+        rate_type: 'bahar_coin',
         value_in_toman: 150_000_000,
         timestamp: Time.current
       )
       MarketRate.create!(
-        rate_type: 'usd_toman',
+        rate_type: 'usd',
         value_in_toman: 50_000,
         timestamp: Time.current
       )

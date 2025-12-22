@@ -4,8 +4,9 @@ require 'digest'
 
 module Api
   module V1
-    class RatesController < ApplicationController
-      skip_before_action :verify_jwt_token, only: [:index, :latest, :current, :show]
+    class RatesController < Api::V1::ApplicationController
+      # Rates are public - no authentication needed
+      skip_before_action :verify_jwt_token
       before_action :set_rate, only: [:show]
 
       # GET /api/v1/rates

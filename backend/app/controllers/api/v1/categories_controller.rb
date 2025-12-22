@@ -2,7 +2,8 @@
 
 module Api
   module V1
-    class CategoriesController < ApplicationController
+    class CategoriesController < Api::V1::ApplicationController
+      # JWT verification inherited from Api::V1::ApplicationController
       before_action :set_category, only: [:show]
 
       # GET /api/v1/categories

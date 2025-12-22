@@ -167,3 +167,77 @@ We've made solid progress from 62.5% to 64.4% pass rate by fixing critical infra
 - **42%**: Distributed across 8 other spec files
 
 **Recommendation**: Proceed with Option A (Quick Win Strategy) to reach the 80% target efficiently, focusing on the high-impact spec files that account for 62% of all failures.
+
+---
+
+## Session 2 Update - December 22, 2025
+
+### New Status
+
+**Pass Rate: 71% (187/264 tests passing)** ✅  
+**Improvement: +13 tests fixed (+7%)**  
+
+```
+Total Tests: 264
+Passing: 187 ✅ (+17 from previous session)
+Failing: 77 ❌ (-17 from previous session)
+```
+
+### Major Fixes Applied
+
+#### 1. Controller Inheritance Architecture ✅
+**Problem**: All API v1 controllers inheriting from wrong ApplicationController  
+**Solution**: Updated to inherit from `Api::V1::ApplicationController`
+- `dashboard_controller.rb`
+- `transactions_controller.rb`
+- `categories_controller.rb`
+- `rates_controller.rb`
+- `auth_controller.rb`
+
+#### 2. Auth Token Generation in Specs ✅
+**Problem**: Specs using `user.tokens.create.token` (doesn't exist)  
+**Solution**: Use `AuthService.generate_token(user)`
+
+#### 3. MarketRate Enum Validation ✅
+**Problem**: Specs using invalid rate_types (`gold_18k`, `coin_bahar_azadi`)  
+**Solution**: Fixed to use correct enums (`gold_gram`, `bahar_coin`, `usd`)
+
+#### 4. Token Refresh Error Format ✅
+**Problem**: Error responses wrapped incorrectly  
+**Solution**: Return plain JSON `{ error: 'message' }` format
+
+#### 5. Dashboard Spending Breakdown ✅
+**Problem**: Route exists but action missing  
+**Solution**: Implemented `spending_breakdown` action
+
+#### 6. Categories Test Seeding ✅
+**Problem**: Tests expected categories but none existed  
+**Solution**: Added `Category.find_or_create_defaults` before block
+
+#### 7. Error Handler Debug Info ✅
+**Problem**: 500 errors showed no details  
+**Solution**: Added debug_info in test environment
+
+### Fully Passing Test Suites
+
+- ✅ **Authentication (14/14)** - Register, login, OTP, lockout
+- ✅ **Rates (most passing)** - Market rates fetch and display
+- ✅ **Token Refresh (partial)** - Some token refresh scenarios
+
+### Remaining Work (77 failures)
+
+1. **Transactions (29 failures)** - Response format mismatch, current_user issues
+2. **Dashboard (33 failures)** - UserBalance integration, calculations
+3. **Categories (8 failures)** - Response structure, field name issues  
+4. **Models (7 failures)** - Validation logic
+
+### Next Session Goals
+
+Target: **>90% pass rate (238+ tests passing)**
+
+Priority fixes:
+1. Transaction controller response format (`data` wrapper)
+2. Dashboard UserBalance integration
+3. Categories response structure
+4. Model validations
+

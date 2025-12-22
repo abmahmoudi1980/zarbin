@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:zarbin/providers/auth_provider.dart';
 import 'package:zarbin/utils/validators.dart';
 import 'package:zarbin/widgets/loading_overlay.dart';
@@ -63,6 +64,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Consumer<AuthProvider>(
       builder: (context, authProvider, _) {
         if (authProvider.isLoading) {
@@ -76,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Login'),
+            title: Text(l10n.login),
             elevation: 0,
           ),
           body: SingleChildScrollView(
@@ -89,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Welcome Back',
+                    l10n.welcomeBack,
                     style: Theme.of(context).textTheme.headlineSmall,
                     textAlign: TextAlign.center,
                   ),
@@ -99,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextFormField(
                     controller: _mobileController,
                     decoration: InputDecoration(
-                      labelText: 'Mobile Number',
+                      labelText: l10n.mobileNumber,
                       hintText: '09123456789',
                       prefixIcon: const Icon(Icons.phone),
                       border: OutlineInputBorder(
@@ -123,7 +125,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextFormField(
                     controller: _passwordController,
                     decoration: InputDecoration(
-                      labelText: 'Password',
+                      labelText: l10n.password,
                       prefixIcon: const Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -184,7 +186,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
-                    child: const Text('Login'),
+                    child: Text(l10n.login),
                   ),
                   const SizedBox(height: 16),
 
@@ -192,11 +194,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Don\'t have an account? '),
+                      Text(l10n.dontHaveAccount),
                       GestureDetector(
                         onTap: _navigateToRegister,
                         child: Text(
-                          'Register',
+                          l10n.register,
                           style: TextStyle(
                             color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.bold,

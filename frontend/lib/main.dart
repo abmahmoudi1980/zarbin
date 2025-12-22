@@ -1,13 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'services/analytics_service.dart';
+import 'services/api_client.dart';
+import 'services/secure_storage.dart';
+import 'providers/auth_provider.dart';
+import 'providers/market_rate_provider.dart';
+import 'providers/dashboard_provider.dart';
+import 'screens/login_screen.dart';
+import 'screens/register_screen.dart';
+import 'screens/market_rates_screen.dart';
+import 'screens/dashboard_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Initialize Services
+  final apiClient = ApiClient();
+  final secureStorage = SecureStorage();
 
   // Initialize Firebase
   try {
@@ -36,33 +52,68 @@ void main() async {
   // Initialize Jalali date formatting for Persian locale
   await initializeDateFormatting('fa', null);
 
-  runApp(const ZarbinApp());
+  // Create Providers
+  final authProvider = AuthProvider(
+    apiClient: apiClient,
+    secureStorage: secureStorage,
+  );
+
+  final marketRateProvider = MarketRateProvider(
+    apiClient: apiClient,
+  );
+
+  final dashboardProvider = DashboardProvider(
+    apiClient: apiClient,
+  );
+
+  // Restore session if token exists
+  await authProvider.restoreSession();
+
+  runApp(ZarbinApp(
+    authProvider: authProvider,
+    marketRateProvider: marketRateProvider,
+    dashboardProvider: dashboardProvider,
+  ));
 }
 
 class ZarbinApp extends StatelessWidget {
-  const ZarbinApp({Key? key}) : super(key: key);
+  final AuthProvider authProvider;
+  final MarketRateProvider marketRateProvider;
+  final DashboardProvider dashboardProvider;
+
+  const ZarbinApp({
+    Key? key,
+    required this.authProvider,
+    required this.marketRateProvider,
+    required this.dashboardProvider,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Zarbin - Financial Advisor',
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: authProvider),
+        ChangeNotifierProvider.value(value: marketRateProvider),
+        ChangeNotifierProvider.value(value: dashboardProvider),
+      ],
+      child: MaterialApp(
+        title: 'Zarbin - Financial Advisor',
       debugShowCheckedModeBanner: false,
 
       // Analytics Observer
       navigatorObservers: [
-        AnalyticsService().getAnalyticsObserver(),
+        if (AnalyticsService().getAnalyticsObserver() != null)
+          AnalyticsService().getAnalyticsObserver()!,
       ],
 
       // Localization for Persian language
       localizationsDelegates: const [
+        AppLocalizations.delegate,
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('fa', 'IR'), // Persian/Farsi
-        Locale('en', 'US'), // English
-      ],
+      supportedLocales: AppLocalizations.supportedLocales,
       locale: const Locale('fa', 'IR'), // Default to Persian
 
       // Theme
@@ -72,7 +123,7 @@ class ZarbinApp extends StatelessWidget {
           brightness: Brightness.light,
         ),
         useMaterial3: true,
-        fontFamily: 'Vazir', // Persian font
+        textTheme: GoogleFonts.vazirmatnTextTheme(),
       ),
 
       darkTheme: ThemeData(
@@ -81,13 +132,21 @@ class ZarbinApp extends StatelessWidget {
           brightness: Brightness.dark,
         ),
         useMaterial3: true,
-        fontFamily: 'Vazir',
+        textTheme: GoogleFonts.vazirmatnTextTheme(
+          ThemeData.dark().textTheme,
+        ),
       ),
 
       themeMode: ThemeMode.system,
 
       home: const HomeScreen(),
-    );
+      routes: {
+        '/login': (context) => const LoginScreen(),
+        '/register': (context) => const RegisterScreen(),
+        '/rates': (context) => const MarketRatesScreen(),
+        '/dashboard': (context) => const DashboardScreen(),
+      },
+    ),);
   }
 }
 
@@ -96,38 +155,40 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Zarbin'),
+        title: Text(l10n.appTitle),
         centerTitle: true,
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              'Welcome to Zarbin',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            Text(
+              l10n.welcomeMessage,
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            const Text(
-              'AI-powered financial advisor for high-inflation economies',
+            Text(
+              l10n.appSubtitle,
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
             const SizedBox(height: 32),
             ElevatedButton(
               onPressed: () {
-                // TODO: Navigate to rates screen
+                Navigator.pushNamed(context, '/rates');
               },
-              child: const Text('View Market Rates'),
+              child: Text(l10n.viewMarketRates),
             ),
             const SizedBox(height: 16),
             OutlinedButton(
               onPressed: () {
-                // TODO: Navigate to login screen
+                Navigator.pushNamed(context, '/login');
               },
-              child: const Text('Sign In'),
+              child: Text(l10n.signIn),
             ),
           ],
         ),

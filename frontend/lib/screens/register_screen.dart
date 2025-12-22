@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:zarbin/providers/auth_provider.dart';
 import 'package:zarbin/utils/validators.dart';
 import 'package:zarbin/widgets/loading_overlay.dart';
@@ -71,6 +72,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Consumer<AuthProvider>(
       builder: (context, authProvider, _) {
         if (authProvider.isLoading) {
@@ -84,7 +86,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Register'),
+            title: Text(l10n.register),
             elevation: 0,
           ),
           body: SingleChildScrollView(
@@ -97,7 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Create Your Account',
+                    l10n.createAccount,
                     style: Theme.of(context).textTheme.headlineSmall,
                     textAlign: TextAlign.center,
                   ),
@@ -107,7 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   TextFormField(
                     controller: _mobileController,
                     decoration: InputDecoration(
-                      labelText: 'Mobile Number',
+                      labelText: l10n.mobileNumber,
                       hintText: '09123456789',
                       prefixIcon: const Icon(Icons.phone),
                       border: OutlineInputBorder(
@@ -131,7 +133,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   TextFormField(
                     controller: _passwordController,
                     decoration: InputDecoration(
-                      labelText: 'Password',
+                      labelText: l10n.password,
                       hintText: 'At least 8 characters with a number',
                       prefixIcon: const Icon(Icons.lock),
                       suffixIcon: IconButton(
@@ -165,7 +167,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   TextFormField(
                     controller: _confirmPasswordController,
                     decoration: InputDecoration(
-                      labelText: 'Confirm Password',
+                      labelText: l10n.confirmPassword,
                       prefixIcon: const Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(
@@ -206,7 +208,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       Expanded(
                         child: Text(
-                          'I agree to Terms and Conditions',
+                          l10n.agreeToTerms,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
@@ -240,7 +242,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 14),
                     ),
-                    child: const Text('Register'),
+                    child: Text(l10n.register),
                   ),
                   const SizedBox(height: 16),
 
@@ -248,11 +250,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Already have an account? '),
+                      Text(l10n.alreadyHaveAccount),
                       GestureDetector(
                         onTap: _navigateToLogin,
                         child: Text(
-                          'Login',
+                          l10n.login,
                           style: TextStyle(
                             color: Theme.of(context).primaryColor,
                             fontWeight: FontWeight.bold,

@@ -1,0 +1,17 @@
+{
+  "appTitle": "Zarbin",
+  "welcomeMessage": "Welcome to Zarbin",
+  "appSubtitle": "AI-powered financial advisor for high-inflation economies",
+  "viewMarketRates": "View Market Rates",
+  "signIn": "Sign In",
+  "mobileNumber": "Mobile Number",
+  "password": "Password",
+  "login": "Login",
+  "register": "Register",
+  "dontHaveAccount": "Don't have an account? ",
+  "alreadyHaveAccount": "Already have an account? ",
+  "welcomeBack": "Welcome Back",
+  "createAccount": "Create Your Account",
+  "confirmPassword": "Confirm Password",
+  "agreeToTerms": "I agree to Terms and Conditions"
+}

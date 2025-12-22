@@ -1,0 +1,17 @@
+{
+  "appTitle": "زربین",
+  "welcomeMessage": "به زربین خوش آمدید",
+  "appSubtitle": "مشاور مالی هوشمند برای اقتصادهای با تورم بالا",
+  "viewMarketRates": "مشاهده نرخ‌های بازار",
+  "signIn": "ورود به حساب",
+  "mobileNumber": "شماره موبایل",
+  "password": "رمز عبور",
+  "login": "ورود",
+  "register": "ثبت‌نام",
+  "dontHaveAccount": "حساب کاربری ندارید؟ ",
+  "alreadyHaveAccount": "قبلاً ثبت‌نام کرده‌اید؟ ",
+  "welcomeBack": "خوش آمدید",
+  "createAccount": "ایجاد حساب کاربری",
+  "confirmPassword": "تکرار رمز عبور",
+  "agreeToTerms": "با شرایط و قوانین موافقم"
+}

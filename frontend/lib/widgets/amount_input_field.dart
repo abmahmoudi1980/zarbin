@@ -34,13 +34,14 @@ class _AmountInputFieldState extends State<AmountInputField> {
   void _onChanged(String value) {
     // Convert any English numerals to Persian for display
     final persianValue = PersianFormatter.toPersianDigits(value);
-    
+
     // Update controller if changed
     if (persianValue != value) {
       final cursorPos = widget.controller.selection.baseOffset;
       widget.controller.value = TextEditingValue(
         text: persianValue,
-        selection: TextSelection.collapsed(offset: cursorPos < 0 ? 0 : cursorPos),
+        selection:
+            TextSelection.collapsed(offset: cursorPos < 0 ? 0 : cursorPos),
       );
     }
 

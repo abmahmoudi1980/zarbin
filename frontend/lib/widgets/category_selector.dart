@@ -62,7 +62,8 @@ class _CategorySelectorState extends State<CategorySelector> {
               value: category['id'] as int,
               child: Row(
                 children: [
-                  Text(category['icon'] as String, style: const TextStyle(fontSize: 18)),
+                  Text(category['icon'] as String,
+                      style: const TextStyle(fontSize: 18)),
                   const SizedBox(width: 8),
                   Text(category['name'] as String),
                 ],

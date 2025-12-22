@@ -7,7 +7,8 @@ class ApiConfig {
   static const String _prodBaseUrl = 'https://api.zarbin.app/api/v1';
 
   // Environment
-  static const bool isProduction = bool.fromEnvironment('kReleaseMode', defaultValue: false);
+  static const bool isProduction =
+      bool.fromEnvironment('kReleaseMode', defaultValue: false);
 
   // Base URL
   static String get baseUrl => isProduction ? _prodBaseUrl : _devBaseUrl;

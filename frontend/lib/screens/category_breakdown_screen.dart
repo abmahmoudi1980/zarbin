@@ -36,7 +36,8 @@ class _CategoryBreakdownScreenState extends State<CategoryBreakdownScreen> {
         _errorMessage = null;
       });
     } catch (e) {
-      setState(() => _errorMessage = 'خطا در بارگذاری داده‌ها: ${e.toString()}');
+      setState(
+          () => _errorMessage = 'خطا در بارگذاری داده‌ها: ${e.toString()}');
     } finally {
       setState(() => _isLoading = false);
     }
@@ -103,7 +104,7 @@ class _CategoryBreakdownScreenState extends State<CategoryBreakdownScreen> {
               'ماه ${_breakdownData!.currentMonth}',
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
-              ),
+                  ),
             ),
           ),
 

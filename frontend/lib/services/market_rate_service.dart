@@ -31,7 +31,7 @@ class MarketRateService {
         final rates = ratesData
             .map((r) => MarketRate.fromJson(r as Map<String, dynamic>))
             .toList();
-        
+
         // Cache the rates
         await HiveService.saveMarketRates(rates);
         return rates;

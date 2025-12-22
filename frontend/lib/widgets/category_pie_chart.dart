@@ -107,8 +107,8 @@ class CategoryPieChart extends StatelessWidget {
   }
 
   Widget _buildCategoryRow(CategorySpending category) {
-    final colorIndex = categoryBreakdown.categories.indexOf(category) %
-        _getColorList().length;
+    final colorIndex =
+        categoryBreakdown.categories.indexOf(category) % _getColorList().length;
     final color = _getColorList()[colorIndex];
 
     return Padding(

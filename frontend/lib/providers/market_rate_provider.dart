@@ -4,7 +4,7 @@ import '../services/api_client.dart';
 import '../services/analytics_service.dart';
 
 /// MarketRateProvider - State management for market rates
-/// 
+///
 /// Responsibilities:
 /// - Fetch rates from API
 /// - Cache rates locally
@@ -15,56 +15,56 @@ import '../services/analytics_service.dart';
 class MarketRateProvider extends ChangeNotifier {
   final ApiClient _apiClient;
   final AnalyticsService _analytics = AnalyticsService();
-  
+
   List<MarketRate> _rates = [];
   bool _isLoading = false;
   String? _error;
   DateTime? _lastFetchTime;
-  
+
   MarketRateProvider({required ApiClient apiClient}) : _apiClient = apiClient;
-  
+
   // Getters
   List<MarketRate> get rates => _rates;
   bool get isLoading => _isLoading;
   String? get error => _error;
   DateTime? get lastFetchTime => _lastFetchTime;
-  
+
   bool get isStale {
     if (_lastFetchTime == null) return true;
     final age = DateTime.now().difference(_lastFetchTime!);
     return age.inMinutes >= 5;
   }
-  
+
   int get staleMinutes {
     if (_lastFetchTime == null) return 0;
     return DateTime.now().difference(_lastFetchTime!).inMinutes;
   }
-  
+
   // Fetch rates from API
   Future<void> fetchRates() async {
     // Don't fetch if we're already loading
     if (_isLoading) return;
-    
+
     // Check if we have cached data that's still fresh
     if (_rates.isNotEmpty && !isStale) {
       return;
     }
-    
+
     _isLoading = true;
     _error = null;
     notifyListeners();
-    
+
     try {
       final ratesData = await _apiClient.getMarketRates();
-      
+
       // Convert API response to MarketRate objects
       _rates = (ratesData['rates'] as List)
           .map((r) => MarketRate.fromJson(r))
           .toList();
-      
+
       _lastFetchTime = DateTime.now();
       _error = null;
-      
+
       await _analytics.logEvent(name: 'rates_fetched');
     } catch (e, stack) {
       _error = 'Failed to fetch rates: $e';
@@ -75,14 +75,14 @@ class MarketRateProvider extends ChangeNotifier {
       notifyListeners();
     }
   }
-  
+
   // Refresh rates from API (pull-to-refresh)
   Future<void> refreshRates() async {
     // Force refresh regardless of cache
     _lastFetchTime = null;
     await fetchRates();
   }
-  
+
   // Get specific rate by type
   MarketRate? getRateByType(String rateType) {
     try {
@@ -91,19 +91,19 @@ class MarketRateProvider extends ChangeNotifier {
       return null;
     }
   }
-  
+
   // Get USD rate
   MarketRate? get usdRate => getRateByType('usd');
 
   // Convenience getter for tests and simple UI
   double get currentUsdRate => usdRate?.valueInToman.toDouble() ?? 0.0;
-  
+
   // Get Gold rate
   MarketRate? get goldRate => getRateByType('gold_gram');
-  
+
   // Get Bahar Azadi Coin rate
   MarketRate? get baharCoinRate => getRateByType('bahar_coin');
-  
+
   // Clear all data
   void clearRates() {
     _rates = [];
@@ -111,7 +111,7 @@ class MarketRateProvider extends ChangeNotifier {
     _error = null;
     notifyListeners();
   }
-  
+
   // Initialize and auto-fetch on first load
   @override
   void addListener(VoidCallback listener) {

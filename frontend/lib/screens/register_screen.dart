@@ -120,7 +120,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       prefixIcon: const Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _hidePassword ? Icons.visibility : Icons.visibility_off,
+                          _hidePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                         ),
                         onPressed: () {
                           setState(() => _hidePassword = !_hidePassword);
@@ -151,10 +153,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       prefixIcon: const Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _hideConfirmPassword ? Icons.visibility : Icons.visibility_off,
+                          _hideConfirmPassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                         ),
                         onPressed: () {
-                          setState(() => _hideConfirmPassword = !_hideConfirmPassword);
+                          setState(() =>
+                              _hideConfirmPassword = !_hideConfirmPassword);
                         },
                       ),
                       border: OutlineInputBorder(

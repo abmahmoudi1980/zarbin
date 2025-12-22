@@ -89,7 +89,7 @@ class TransactionListItem extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        
+
         // Category icon
         leading: CircleAvatar(
           backgroundColor: _getTypeColor().withOpacity(0.1),

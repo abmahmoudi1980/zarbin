@@ -22,7 +22,7 @@ class Validators {
     }
 
     final cleaned = value.replaceAll(RegExp(r'\s+'), '');
-    
+
     if (!RegExp(r'^09\d{9}$').hasMatch(cleaned)) {
       return 'شماره موبایل باید 11 رقم و با 09 شروع شود';
     }

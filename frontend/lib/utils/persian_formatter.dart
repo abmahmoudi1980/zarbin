@@ -77,7 +77,8 @@ class PersianFormatter {
     if (cleaned.length != 11) {
       return phoneNumber;
     }
-    final formatted = '${cleaned.substring(0, 4)} ${cleaned.substring(4, 7)} ${cleaned.substring(7)}';
+    final formatted =
+        '${cleaned.substring(0, 4)} ${cleaned.substring(4, 7)} ${cleaned.substring(7)}';
     return toPersianDigits(formatted);
   }
 
@@ -101,7 +102,7 @@ class PersianFormatter {
       'هشت',
       'نه'
     ];
-    
+
     const teens = [
       'ده',
       'یازده',
@@ -114,7 +115,7 @@ class PersianFormatter {
       'هجده',
       'نوزده'
     ];
-    
+
     const tens = [
       '',
       '',
@@ -127,7 +128,7 @@ class PersianFormatter {
       'هشتاد',
       'نود'
     ];
-    
+
     if (number == 0) return 'صفر';
     if (number < 0) return 'منفی ${numberToWords(-number)}';
     if (number < 10) return ones[number];
@@ -142,7 +143,7 @@ class PersianFormatter {
       final remainder = number % 100;
       return 'صد ${hundreds[hundred]}${remainder > 0 ? ' و ${numberToWords(remainder)}' : ''}';
     }
-    
+
     return number.toString();
   }
 

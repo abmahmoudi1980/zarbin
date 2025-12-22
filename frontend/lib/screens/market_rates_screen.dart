@@ -6,7 +6,7 @@ import '../utils/jalali_helper.dart';
 import '../widgets/rate_card.dart';
 
 /// MarketRatesScreen - Main screen displaying live market rates
-/// 
+///
 /// Features:
 /// - Display current rates for USD, Gold (gram), and Bahar Azadi Coin
 /// - Show Jalali timestamp with Persian numerals
@@ -158,8 +158,9 @@ class _MarketRatesScreenState extends State<MarketRatesScreen> {
 
   Widget _buildTimestampHeader(MarketRateProvider provider) {
     final jalaliDate = JalaliHelper.toJalaliString(provider.lastFetchTime!);
-    final timeStr = '${provider.lastFetchTime!.hour.toString().padLeft(2, '0')}:${provider.lastFetchTime!.minute.toString().padLeft(2, '0')}';
-    
+    final timeStr =
+        '${provider.lastFetchTime!.hour.toString().padLeft(2, '0')}:${provider.lastFetchTime!.minute.toString().padLeft(2, '0')}';
+
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(12),

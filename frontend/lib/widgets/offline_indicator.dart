@@ -59,7 +59,8 @@ class _OfflineIndicatorState extends State<OfflineIndicator>
     if (!widget.isOnline) {
       return FadeTransition(
         opacity: Tween<double>(begin: 0.5, end: 1.0).animate(
-          CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+          CurvedAnimation(
+              parent: _animationController, curve: Curves.easeInOut),
         ),
         child: Container(
           width: double.infinity,

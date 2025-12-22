@@ -9,7 +9,8 @@ class SecureStorageService {
 
   static final FlutterSecureStorage _storage = FlutterSecureStorage(
     aOptions: const AndroidOptions(
-      keyCipherAlgorithm: KeyCipherAlgorithm.RSA_ECB_OAEPwithSHA_256andMGF1Padding,
+      keyCipherAlgorithm:
+          KeyCipherAlgorithm.RSA_ECB_OAEPwithSHA_256andMGF1Padding,
       storageCipherAlgorithm: StorageCipherAlgorithm.AES_GCM_NoPadding,
       resetOnError: true,
     ),

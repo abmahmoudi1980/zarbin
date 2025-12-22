@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// BalanceCard widget - Displays a single balance in a specific currency
-/// 
+///
 /// Shows:
 /// - Currency label (e.g., "تومان", "دلار آمریکا", "طلا")
 /// - Amount value in Persian numerals
@@ -56,7 +56,7 @@ class BalanceCard extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 12),
-            
+
             // Amount with currency
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

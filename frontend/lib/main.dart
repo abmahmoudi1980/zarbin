@@ -8,15 +8,16 @@ import 'services/analytics_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   // Initialize Firebase
   try {
     await Firebase.initializeApp();
-    
+
     // Configure Crashlytics
     if (!kIsWeb) {
       // Pass all uncaught errors from the framework to Crashlytics.
-      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+      FlutterError.onError =
+          FirebaseCrashlytics.instance.recordFlutterFatalError;
 
       // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
       PlatformDispatcher.instance.onError = (error, stack) {
@@ -24,17 +25,17 @@ void main() async {
         return true;
       };
     }
-    
+
     // Initialize Analytics Service
     await AnalyticsService().init();
   } catch (e) {
     debugPrint('Firebase initialization failed: $e');
     // Continue app execution even if Firebase fails (e.g. missing config files in dev)
   }
-  
+
   // Initialize Jalali date formatting for Persian locale
   await initializeDateFormatting('fa', null);
-  
+
   runApp(const ZarbinApp());
 }
 
@@ -46,12 +47,12 @@ class ZarbinApp extends StatelessWidget {
     return MaterialApp(
       title: 'Zarbin - Financial Advisor',
       debugShowCheckedModeBanner: false,
-      
+
       // Analytics Observer
       navigatorObservers: [
         AnalyticsService().getAnalyticsObserver(),
       ],
-      
+
       // Localization for Persian language
       localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
@@ -63,7 +64,7 @@ class ZarbinApp extends StatelessWidget {
         Locale('en', 'US'), // English
       ],
       locale: const Locale('fa', 'IR'), // Default to Persian
-      
+
       // Theme
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
@@ -73,7 +74,7 @@ class ZarbinApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'Vazir', // Persian font
       ),
-      
+
       darkTheme: ThemeData(
         colorScheme: ColorScheme.fromSeed(
           seedColor: Colors.blue,
@@ -82,9 +83,9 @@ class ZarbinApp extends StatelessWidget {
         useMaterial3: true,
         fontFamily: 'Vazir',
       ),
-      
+
       themeMode: ThemeMode.system,
-      
+
       home: const HomeScreen(),
     );
   }

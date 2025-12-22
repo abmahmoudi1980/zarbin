@@ -7,7 +7,7 @@ import '../widgets/balance_card.dart';
 import 'category_breakdown_screen.dart';
 
 /// DashboardScreen - Displays user's net worth dashboard
-/// 
+///
 /// Features:
 /// - Show total balance in Toman
 /// - Display USD equivalent
@@ -33,9 +33,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
     super.initState();
     _dashboardProvider = context.read<DashboardProvider>();
     _marketRateProvider = context.read<MarketRateProvider>();
-    
+
     _loadDashboard();
-    
+
     // Listen for rate updates to refresh equivalents
     _marketRateProvider.addListener(_onRatesUpdated);
   }
@@ -141,21 +141,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
           children: [
             // Balance cards section
             _buildBalanceCards(dashboard),
-            
+
             const SizedBox(height: 24),
-            
+
             // Zero balance prompt
             if (dashboard.totalToman == 0)
               _buildZeroBalancePrompt()
             else
               _buildLastUpdated(dashboard),
-            
+
             const SizedBox(height: 24),
-            
+
             // Category breakdown section (only show if balance > 0)
-            if (dashboard.totalToman > 0)
-              _buildCategoryBreakdownSection(),
-            
+            if (dashboard.totalToman > 0) _buildCategoryBreakdownSection(),
+
             const SizedBox(height: 16),
           ],
         ),

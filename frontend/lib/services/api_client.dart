@@ -51,7 +51,8 @@ class ApiClient {
   }
 
   // POST request helper
-  Future<Map<String, dynamic>> post(String path, {Map<String, dynamic>? data}) async {
+  Future<Map<String, dynamic>> post(String path,
+      {Map<String, dynamic>? data}) async {
     try {
       final response = await _dio.post(path, data: data);
       return response.data as Map<String, dynamic>;
@@ -61,7 +62,8 @@ class ApiClient {
   }
 
   // GET request helper
-  Future<Map<String, dynamic>> get(String path, {Map<String, String>? queryParameters}) async {
+  Future<Map<String, dynamic>> get(String path,
+      {Map<String, String>? queryParameters}) async {
     try {
       final response = await _dio.get(path, queryParameters: queryParameters);
       return response.data as Map<String, dynamic>;
@@ -71,7 +73,8 @@ class ApiClient {
   }
 
   // PUT request helper
-  Future<Map<String, dynamic>> put(String path, {Map<String, dynamic>? data}) async {
+  Future<Map<String, dynamic>> put(String path,
+      {Map<String, dynamic>? data}) async {
     try {
       final response = await _dio.put(path, data: data);
       return response.data as Map<String, dynamic>;
@@ -81,7 +84,8 @@ class ApiClient {
   }
 
   // PATCH request helper
-  Future<Map<String, dynamic>> patch(String path, {Map<String, dynamic>? data}) async {
+  Future<Map<String, dynamic>> patch(String path,
+      {Map<String, dynamic>? data}) async {
     try {
       final response = await _dio.patch(path, data: data);
       return response.data as Map<String, dynamic>;
@@ -210,7 +214,8 @@ class _AuthInterceptor extends QueuedInterceptor {
   _AuthInterceptor(this.apiClient);
 
   @override
-  void onRequest(RequestOptions options, RequestInterceptorHandler handler) async {
+  void onRequest(
+      RequestOptions options, RequestInterceptorHandler handler) async {
     final token = apiClient._token;
     if (token != null && token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
@@ -228,7 +233,7 @@ class _AuthInterceptor extends QueuedInterceptor {
     // Handle 401 Unauthorized - token expired
     if (err.response?.statusCode == 401 && !_isRefreshing) {
       _isRefreshing = true;
-      
+
       try {
         // Try to refresh the token
         final token = apiClient._token;
@@ -237,21 +242,21 @@ class _AuthInterceptor extends QueuedInterceptor {
             '${ApiConfig.authEndpoint}/refresh',
             options: Options(headers: {'Authorization': 'Bearer $token'}),
           );
-          
+
           if (response.statusCode == 200) {
             final data = response.data as Map<String, dynamic>;
             final newToken = data['data']['token'] as String;
-            
+
             // Save new token
             await SecureStorage().saveToken(newToken);
             apiClient.setToken(newToken);
-            
+
             // Retry the failed request
             final options = err.requestOptions;
             options.headers['Authorization'] = 'Bearer $newToken';
-            
+
             _isRefreshing = false;
-            
+
             // Retry the original request
             final retryResponse = await apiClient._dio.fetch(options);
             return handler.resolve(retryResponse);
@@ -262,10 +267,10 @@ class _AuthInterceptor extends QueuedInterceptor {
         await SecureStorage().clearAll();
         apiClient.clearToken();
       }
-      
+
       _isRefreshing = false;
     }
-    
+
     handler.next(err);
   }
 }
@@ -282,7 +287,7 @@ class _AnalyticsInterceptor extends Interceptor {
       err.stackTrace,
       reason: 'api_error: ${err.requestOptions.path}',
     );
-    
+
     _analytics.setCustomKey('api_path', err.requestOptions.path);
     _analytics.setCustomKey('api_method', err.requestOptions.method);
     if (err.response != null) {

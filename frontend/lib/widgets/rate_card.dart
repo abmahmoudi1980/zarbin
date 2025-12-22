@@ -4,7 +4,7 @@ import '../utils/persian_formatter.dart';
 import 'rate_change_indicator.dart';
 
 /// RateCard - Displays a single market rate with all details
-/// 
+///
 /// Features:
 /// - Rate type label (USD, Gold, Bahar Azadi)
 /// - Current rate value in Persian numerals
@@ -86,7 +86,8 @@ class RateCard extends StatelessWidget {
 
               // Main rate value
               Container(
-                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
                 decoration: BoxDecoration(
                   color: Colors.grey.shade50,
                   borderRadius: BorderRadius.circular(8),

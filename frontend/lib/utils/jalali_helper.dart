@@ -45,13 +45,14 @@ class JalaliHelper {
   }) {
     final jalali = Jalali.fromDateTime(date);
     final monthName = _getMonthName(jalali.month, shortMonth);
-    
+
     String formatted = '$monthName ${jalali.day}, ${jalali.year}';
-    
+
     if (includeTime) {
-      formatted += ' ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
+      formatted +=
+          ' ${date.hour.toString().padLeft(2, '0')}:${date.minute.toString().padLeft(2, '0')}';
     }
-    
+
     return formatted;
   }
 
@@ -67,9 +68,9 @@ class JalaliHelper {
       'پنج‌شنبه', // Thursday
       'جمعه', // Friday
     ];
-    
+
     const shortDayNames = ['ش', 'ی', 'د', 'س', 'چ', 'پ', 'ج'];
-    
+
     final dayIndex = jalali.weekDay % 7;
     return shortForm ? shortDayNames[dayIndex] : dayNames[dayIndex];
   }
@@ -79,10 +80,10 @@ class JalaliHelper {
     final jalali = Jalali.fromDateTime(date);
     final firstDayOfYear = Jalali(jalali.year, 1, 1).toDateTime();
     final firstDayOfYearJalali = Jalali.fromDateTime(firstDayOfYear);
-    
+
     final dayOfYear = jalali.dayOfYear;
     final firstDayWeekday = firstDayOfYearJalali.weekDay;
-    
+
     return ((dayOfYear - 1 + firstDayWeekday) ~/ 7) + 1;
   }
 
@@ -117,7 +118,7 @@ class JalaliHelper {
   static int daysBetween(DateTime date1, DateTime date2) {
     final jalali1 = Jalali.fromDateTime(date1);
     final jalali2 = Jalali.fromDateTime(date2);
-    
+
     return jalali2.toDateTime().difference(jalali1.toDateTime()).inDays;
   }
 

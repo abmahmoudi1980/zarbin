@@ -84,11 +84,11 @@ class Transaction extends HiveObject {
       goldRateAtCreation: json['gold_rate_at_creation'] as int,
       notes: json['notes'] as String?,
       createdAt: json['created_at'] != null
-        ? DateTime.parse(json['created_at'] as String)
-        : DateTime.now(),
+          ? DateTime.parse(json['created_at'] as String)
+          : DateTime.now(),
       updatedAt: json['updated_at'] != null
-        ? DateTime.parse(json['updated_at'] as String)
-        : DateTime.now(),
+          ? DateTime.parse(json['updated_at'] as String)
+          : DateTime.now(),
       isSynced: true,
     );
   }

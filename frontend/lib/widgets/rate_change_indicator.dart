@@ -3,7 +3,7 @@ import '../models/market_rate.dart';
 import '../utils/persian_formatter.dart';
 
 /// RateChangeIndicator - Shows rate change with up/down arrows and percentage
-/// 
+///
 /// Features:
 /// - Up arrow (green) for rate increases
 /// - Down arrow (red) for rate decreases
@@ -66,7 +66,9 @@ class _RateChangeIndicatorState extends State<RateChangeIndicator> {
   @override
   Widget build(BuildContext context) {
     final color = _getChangeColor();
-    final percentStr = _changePercent > 0 ? '+${_changePercent.toStringAsFixed(2)}' : _changePercent.toStringAsFixed(2);
+    final percentStr = _changePercent > 0
+        ? '+${_changePercent.toStringAsFixed(2)}'
+        : _changePercent.toStringAsFixed(2);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),

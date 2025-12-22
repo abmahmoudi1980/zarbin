@@ -19,7 +19,8 @@ class AnalyticsService {
 
     // Enable/disable collection based on config
     await _analytics.setAnalyticsCollectionEnabled(ApiConfig.enableAnalytics);
-    await _crashlytics.setCrashlyticsCollectionEnabled(ApiConfig.enableAnalytics);
+    await _crashlytics
+        .setCrashlyticsCollectionEnabled(ApiConfig.enableAnalytics);
 
     if (kDebugMode) {
       // Force disable in debug mode if needed, or keep enabled for testing
@@ -62,7 +63,8 @@ class AnalyticsService {
   }
 
   // Log non-fatal errors
-  Future<void> logError(dynamic error, StackTrace stack, {String? reason}) async {
+  Future<void> logError(dynamic error, StackTrace stack,
+      {String? reason}) async {
     if (!ApiConfig.enableAnalytics) return;
     await _crashlytics.recordError(error, stack, reason: reason);
   }

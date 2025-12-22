@@ -36,8 +36,8 @@ class MarketRate extends HiveObject {
       rateType: json['rate_type'] as String,
       valueInToman: json['value_in_toman'] as int,
       timestamp: json['timestamp'] != null
-        ? DateTime.parse(json['timestamp'] as String)
-        : DateTime.now(),
+          ? DateTime.parse(json['timestamp'] as String)
+          : DateTime.now(),
       cachedAt: DateTime.now(),
     );
   }

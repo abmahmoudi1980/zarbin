@@ -61,7 +61,8 @@ class DatabaseService {
   // Insert transaction
   Future<String> saveTransaction(Transaction transaction) async {
     final db = await database;
-    final id = transaction.id ?? DateTime.now().millisecondsSinceEpoch.toString();
+    final id =
+        transaction.id ?? DateTime.now().millisecondsSinceEpoch.toString();
 
     await db.insert(
       transactionsTable,
@@ -89,7 +90,7 @@ class DatabaseService {
   // Get all transactions for user
   Future<List<Transaction>> getAllTransactions([String? userId]) async {
     final db = await database;
-    
+
     List<Map<String, dynamic>> maps;
     if (userId != null) {
       maps = await db.query(
@@ -237,7 +238,8 @@ class DatabaseService {
       categoryId: map['category_id'] as String?,
       categoryName: map['category_name'] as String?,
       transactionDate: map['transaction_date'] as String?,
-      usdRateAtCreation: (map['usd_rate_at_creation'] as num?)?.toDouble() ?? 0.0,
+      usdRateAtCreation:
+          (map['usd_rate_at_creation'] as num?)?.toDouble() ?? 0.0,
       goldRateAtCreation: (map['gold_rate_at_creation'] as num?)?.toInt() ?? 0,
       notes: map['notes'] as String?,
       createdAt: DateTime.parse(map['created_at'] as String),

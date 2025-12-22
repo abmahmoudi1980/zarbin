@@ -43,15 +43,15 @@ class User extends HiveObject {
       mobileNumber: json['mobile_number'] as String,
       token: json['token'] as String?,
       accountStatus: json['account_status'] as String? ?? 'active',
-      lastLoginAt: json['last_login_at'] != null 
-        ? DateTime.parse(json['last_login_at'] as String)
-        : null,
+      lastLoginAt: json['last_login_at'] != null
+          ? DateTime.parse(json['last_login_at'] as String)
+          : null,
       createdAt: json['created_at'] != null
-        ? DateTime.parse(json['created_at'] as String)
-        : DateTime.now(),
+          ? DateTime.parse(json['created_at'] as String)
+          : DateTime.now(),
       deletedAt: json['deleted_at'] != null
-        ? DateTime.parse(json['deleted_at'] as String)
-        : null,
+          ? DateTime.parse(json['deleted_at'] as String)
+          : null,
     );
   }
 

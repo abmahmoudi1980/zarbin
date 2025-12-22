@@ -113,7 +113,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       prefixIcon: const Icon(Icons.lock),
                       suffixIcon: IconButton(
                         icon: Icon(
-                          _hidePassword ? Icons.visibility : Icons.visibility_off,
+                          _hidePassword
+                              ? Icons.visibility
+                              : Icons.visibility_off,
                         ),
                         onPressed: () {
                           setState(() => _hidePassword = !_hidePassword);

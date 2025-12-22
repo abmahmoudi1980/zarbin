@@ -112,7 +112,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(provider.error ?? 'Failed to create transaction')),
+          SnackBar(
+              content: Text(provider.error ?? 'Failed to create transaction')),
         );
       }
     }
@@ -148,7 +149,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     final rateProvider = context.read<MarketRateProvider>();
     final usdRate = rateProvider.currentUsdRate;
     if (usdRate <= 0) return '0 USD';
-    
+
     final usdEquivalent = amount / usdRate;
 
     return '${usdEquivalent.toStringAsFixed(2)} USD';
@@ -194,8 +195,9 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
             // Dual Currency Display (T092)
             DualCurrencyDisplay(
               amountToman: int.tryParse(
-                PersianFormatter.toEnglish(_amountController.text),
-              ) ?? 0,
+                    PersianFormatter.toEnglish(_amountController.text),
+                  ) ??
+                  0,
               usdEquivalent: _calculateUsdEquivalent(),
             ),
             const SizedBox(height: 24.0),

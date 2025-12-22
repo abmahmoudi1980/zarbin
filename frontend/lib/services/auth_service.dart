@@ -37,7 +37,8 @@ class AuthService {
   }
 
   // Verify OTP and login
-  Future<Map<String, dynamic>> verifyOtp(String mobileNumber, String code) async {
+  Future<Map<String, dynamic>> verifyOtp(
+      String mobileNumber, String code) async {
     try {
       final response = await _apiClient.verifyOtp(mobileNumber, code);
       if (response.statusCode == 200) {

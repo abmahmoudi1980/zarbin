@@ -12,7 +12,8 @@ class CategoryBreakdownData {
   factory CategoryBreakdownData.fromJson(Map<String, dynamic> json) {
     return CategoryBreakdownData(
       categories: (json['breakdown'] as List)
-          .map((item) => CategorySpending.fromJson(item as Map<String, dynamic>))
+          .map(
+              (item) => CategorySpending.fromJson(item as Map<String, dynamic>))
           .toList(),
       totalSpending: json['total_spending'] as int,
       currentMonth: json['current_month'] as String,

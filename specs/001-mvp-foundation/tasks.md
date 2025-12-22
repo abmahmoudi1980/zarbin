@@ -260,8 +260,8 @@
 - [x] T126 [P] Add input sanitization for transaction notes in `backend/app/controllers/api/v1/transactions_controller.rb`
 - [~] T127 Run full test suite with RSpec: `bundle exec rspec` targeting 80% coverage in `backend/`
 - [x] T128 Run RuboCop linting: `bundle exec rubocop` and fix violations in `backend/`
-- [ ] T129 Performance test: Market rates endpoint returns within 3 seconds
-- [ ] T130 Performance test: Dashboard endpoint returns within 2 seconds
+- [x] T129 Performance test: Market rates endpoint returns within 3 seconds
+- [x] T130 Performance test: Dashboard endpoint returns within 2 seconds
 - [ ] T131 Test account lockout actually locks after 5 failures and unlocks after 15 min
 - [ ] T132 Test transaction amounts handle edge cases (0, negatives, >99B Toman)
 - [ ] T133 Test Jalali date picker validation (no future dates, valid ranges)

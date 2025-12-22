@@ -42,7 +42,7 @@ module Api
 
       def format_jalali_timestamp(time)
         # Convert Gregorian datetime to Jalali format (YYYY/MM/DD HH:MM:SS)
-        RateFormatterService.format_jalali_datetime(time) + ":#{time.strftime('%S')}"
+        ::RateFormatterService.format_jalali_datetime(time) + ":#{time.strftime('%S')}"
       end
 
       # GET /api/v1/dashboard/spending-breakdown

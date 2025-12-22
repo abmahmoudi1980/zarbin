@@ -146,12 +146,19 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
   void _showTransactionDetails(Transaction transaction) {
     showModalBottomSheet(
       context: context,
+      isScrollControlled: true,
       builder: (context) => Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+        padding: EdgeInsets.only(
+          left: 16.0,
+          right: 16.0,
+          top: 16.0,
+          bottom: MediaQuery.of(context).viewInsets.bottom + 16.0,
+        ),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
             // Header
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -218,8 +225,9 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   /// Builds a detail row for transaction details view
   Widget _buildDetailRow(String label, String? value) {

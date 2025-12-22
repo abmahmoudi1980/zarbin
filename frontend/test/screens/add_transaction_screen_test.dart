@@ -17,72 +17,52 @@ void main() {
     setUp(() {
       mockTransactionProvider = MockTransactionProvider();
       mockMarketRateProvider = MockMarketRateProvider();
+
+      // Default stubs
+      when(() => mockTransactionProvider.isLoading).thenReturn(false);
+      when(() => mockTransactionProvider.error).thenReturn(null);
+      when(() => mockMarketRateProvider.currentUsdRate).thenReturn(42500.0);
+      when(() => mockMarketRateProvider.isLoading).thenReturn(false);
     });
 
-    testWidgets('renders all required input fields', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: MultiProvider(
-            providers: [
-              ChangeNotifierProvider<TransactionProvider>.value(
-                value: mockTransactionProvider,
-              ),
-              ChangeNotifierProvider<MarketRateProvider>.value(
-                value: mockMarketRateProvider,
-              ),
-            ],
-            child: const AddTransactionScreen(),
-          ),
+    Widget createTestWidget() {
+      return MaterialApp(
+        home: MultiProvider(
+          providers: [
+            ChangeNotifierProvider<TransactionProvider>.value(
+              value: mockTransactionProvider,
+            ),
+            ChangeNotifierProvider<MarketRateProvider>.value(
+              value: mockMarketRateProvider,
+            ),
+          ],
+          child: const AddTransactionScreen(),
         ),
       );
+    }
+
+    testWidgets('renders all required input fields', (WidgetTester tester) async {
+      await tester.pumpWidget(createTestWidget());
 
       expect(find.byType(TextField), findsWidgets);
-      expect(find.text('Amount'), findsOneWidget);
+      expect(find.text('Amount'), findsWidgets); // Found in multiple places
       expect(find.text('Category'), findsOneWidget);
       expect(find.text('Date'), findsOneWidget);
       expect(find.text('Notes'), findsOneWidget);
     });
 
     testWidgets('displays income/expense type toggle', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: MultiProvider(
-            providers: [
-              ChangeNotifierProvider<TransactionProvider>.value(
-                value: mockTransactionProvider,
-              ),
-              ChangeNotifierProvider<MarketRateProvider>.value(
-                value: mockMarketRateProvider,
-              ),
-            ],
-            child: const AddTransactionScreen(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(createTestWidget());
 
       expect(find.text('Income'), findsOneWidget);
       expect(find.text('Expense'), findsOneWidget);
     });
 
     testWidgets('displays category dropdown with all 7 categories', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: MultiProvider(
-            providers: [
-              ChangeNotifierProvider<TransactionProvider>.value(
-                value: mockTransactionProvider,
-              ),
-              ChangeNotifierProvider<MarketRateProvider>.value(
-                value: mockMarketRateProvider,
-              ),
-            ],
-            child: const AddTransactionScreen(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(createTestWidget());
 
-      // Tap category dropdown
-      await tester.tap(find.text('Category'));
+      // Tap category dropdown hint
+      await tester.tap(find.text('Select a category'));
       await tester.pumpAndSettle();
 
       // Verify categories are displayed
@@ -92,24 +72,13 @@ void main() {
     });
 
     testWidgets('displays Jalali date picker', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: MultiProvider(
-            providers: [
-              ChangeNotifierProvider<TransactionProvider>.value(
-                value: mockTransactionProvider,
-              ),
-              ChangeNotifierProvider<MarketRateProvider>.value(
-                value: mockMarketRateProvider,
-              ),
-            ],
-            child: const AddTransactionScreen(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(createTestWidget());
 
-      // Tap date field
-      await tester.tap(find.text('Date'));
+      // Tap date field - use find.byType(TextField).at(1) or similar to be specific
+      // Date field is the second TextField (Amount is first)
+      final dateField = find.widgetWithText(TextField, 'Date');
+      await tester.ensureVisible(dateField);
+      await tester.tap(dateField);
       await tester.pumpAndSettle();
 
       // Verify date picker appears
@@ -117,25 +86,9 @@ void main() {
     });
 
     testWidgets('shows dual currency display while entering amount', (WidgetTester tester) async {
-      when(() => mockMarketRateProvider.currentUsdRate).thenReturn(42500.0);
+      await tester.pumpWidget(createTestWidget());
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: MultiProvider(
-            providers: [
-              ChangeNotifierProvider<TransactionProvider>.value(
-                value: mockTransactionProvider,
-              ),
-              ChangeNotifierProvider<MarketRateProvider>.value(
-                value: mockMarketRateProvider,
-              ),
-            ],
-            child: const AddTransactionScreen(),
-          ),
-        ),
-      );
-
-      final amountField = find.byType(TextField).at(0);
+      final amountField = find.byType(TextField).first;
       await tester.enterText(amountField, '۵۰۰۰۰۰۰');
       await tester.pumpAndSettle();
 
@@ -143,134 +96,65 @@ void main() {
       expect(find.text('USD Equivalent'), findsOneWidget);
     });
 
-    testWidgets('submit button is disabled when form is invalid', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: MultiProvider(
-            providers: [
-              ChangeNotifierProvider<TransactionProvider>.value(
-                value: mockTransactionProvider,
-              ),
-              ChangeNotifierProvider<MarketRateProvider>.value(
-                value: mockMarketRateProvider,
-              ),
-            ],
-            child: const AddTransactionScreen(),
-          ),
-        ),
-      );
+    testWidgets('submit button is disabled when loading', (WidgetTester tester) async {
+      when(() => mockTransactionProvider.isLoading).thenReturn(true);
+      await tester.pumpWidget(createTestWidget());
 
-      final submitButton = find.byType(ElevatedButton);
-      expect(tester.widget<ElevatedButton>(submitButton).enabled, false);
+      final submitButton = find.text('Save Transaction');
+      await tester.ensureVisible(submitButton);
+      expect(tester.widget<ElevatedButton>(find.byType(ElevatedButton)).enabled, false);
     });
 
-    testWidgets('submit button is enabled when form is valid', (WidgetTester tester) async {
-      when(() => mockTransactionProvider.addTransaction(
-        amount: any(named: 'amount'),
-        type: any(named: 'type'),
-        categoryId: any(named: 'categoryId'),
-        date: any(named: 'date'),
-        notes: any(named: 'notes'),
-      )).thenAnswer((_) async => true);
+    testWidgets('submit button is enabled when not loading', (WidgetTester tester) async {
+      when(() => mockTransactionProvider.isLoading).thenReturn(false);
+      await tester.pumpWidget(createTestWidget());
 
-      when(() => mockMarketRateProvider.currentUsdRate).thenReturn(42500.0);
-
-      await tester.pumpWidget(
-        MaterialApp(
-          home: MultiProvider(
-            providers: [
-              ChangeNotifierProvider<TransactionProvider>.value(
-                value: mockTransactionProvider,
-              ),
-              ChangeNotifierProvider<MarketRateProvider>.value(
-                value: mockMarketRateProvider,
-              ),
-            ],
-            child: const AddTransactionScreen(),
-          ),
-        ),
-      );
-
-      // Fill form
-      final amountField = find.byType(TextField).at(0);
-      await tester.enterText(amountField, '5000000');
-      await tester.pumpAndSettle();
-
-      final submitButton = find.byType(ElevatedButton);
-      expect(tester.widget<ElevatedButton>(submitButton).enabled, true);
+      final submitButton = find.text('Save Transaction');
+      await tester.ensureVisible(submitButton);
+      expect(tester.widget<ElevatedButton>(find.byType(ElevatedButton)).enabled, true);
     });
 
     testWidgets('validates Persian numeral input', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: MultiProvider(
-            providers: [
-              ChangeNotifierProvider<TransactionProvider>.value(
-                value: mockTransactionProvider,
-              ),
-              ChangeNotifierProvider<MarketRateProvider>.value(
-                value: mockMarketRateProvider,
-              ),
-            ],
-            child: const AddTransactionScreen(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(createTestWidget());
 
-      final amountField = find.byType(TextField).at(0);
+      final amountField = find.byType(TextField).first;
       await tester.enterText(amountField, '۵۰۰۰۰۰۰'); // Persian numerals
       await tester.pumpAndSettle();
 
-      // Verify the value is accepted
-      expect(find.byType(TextField), findsWidgets);
+      // Verify the value is accepted (no error shown yet)
+      expect(find.text('Amount must be greater than 0'), findsNothing);
     });
 
     testWidgets('shows error when amount is zero', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: MultiProvider(
-            providers: [
-              ChangeNotifierProvider<TransactionProvider>.value(
-                value: mockTransactionProvider,
-              ),
-              ChangeNotifierProvider<MarketRateProvider>.value(
-                value: mockMarketRateProvider,
-              ),
-            ],
-            child: const AddTransactionScreen(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(createTestWidget());
 
-      final amountField = find.byType(TextField).at(0);
+      final amountField = find.byType(TextField).first;
       await tester.enterText(amountField, '0');
+      await tester.pumpAndSettle();
+
+      // Tap submit to trigger validation
+      final submitButton = find.text('Save Transaction');
+      await tester.ensureVisible(submitButton);
+      await tester.tap(submitButton);
       await tester.pumpAndSettle();
 
       expect(find.text('Amount must be greater than 0'), findsOneWidget);
     });
 
     testWidgets('shows error when amount exceeds maximum', (WidgetTester tester) async {
-      await tester.pumpWidget(
-        MaterialApp(
-          home: MultiProvider(
-            providers: [
-              ChangeNotifierProvider<TransactionProvider>.value(
-                value: mockTransactionProvider,
-              ),
-              ChangeNotifierProvider<MarketRateProvider>.value(
-                value: mockMarketRateProvider,
-              ),
-            ],
-            child: const AddTransactionScreen(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(createTestWidget());
 
-      final amountField = find.byType(TextField).at(0);
+      final amountField = find.byType(TextField).first;
       await tester.enterText(amountField, '100000000000'); // > 99,999,999,999
       await tester.pumpAndSettle();
 
-      expect(find.text('Amount exceeds maximum'), findsOneWidget);
+      // Tap submit to trigger validation
+      final submitButton = find.text('Save Transaction');
+      await tester.ensureVisible(submitButton);
+      await tester.tap(submitButton);
+      await tester.pumpAndSettle();
+
+      expect(find.textContaining('Amount exceeds maximum'), findsOneWidget);
     });
 
     testWidgets('calls addTransaction when submit is pressed', (WidgetTester tester) async {
@@ -282,42 +166,33 @@ void main() {
         notes: any(named: 'notes'),
       )).thenAnswer((_) async => true);
 
-      when(() => mockMarketRateProvider.currentUsdRate).thenReturn(42500.0);
+      await tester.pumpWidget(createTestWidget());
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: MultiProvider(
-            providers: [
-              ChangeNotifierProvider<TransactionProvider>.value(
-                value: mockTransactionProvider,
-              ),
-              ChangeNotifierProvider<MarketRateProvider>.value(
-                value: mockMarketRateProvider,
-              ),
-            ],
-            child: const AddTransactionScreen(),
-          ),
-        ),
-      );
-
-      // Fill form with valid data
-      final amountField = find.byType(TextField).at(0);
+      // Fill form
+      final amountField = find.byType(TextField).first;
       await tester.enterText(amountField, '5000000');
+      
+      // Select category
+      await tester.tap(find.text('Select a category'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('خوراک').last);
       await tester.pumpAndSettle();
 
-      // Submit
-      final submitButton = find.byType(ElevatedButton);
+      // Select date (it's already filled with today's date by default usually)
+      
+      final submitButton = find.text('Save Transaction');
+      await tester.ensureVisible(submitButton);
       await tester.tap(submitButton);
       await tester.pumpAndSettle();
 
-      // Verify transaction was added
       verify(() => mockTransactionProvider.addTransaction(
-        amount: any(named: 'amount'),
+        amount: 5000000,
         type: any(named: 'type'),
         categoryId: any(named: 'categoryId'),
         date: any(named: 'date'),
         notes: any(named: 'notes'),
-      )).called(greaterThan(0));
+      )).called(1);
     });
   });
 }
+

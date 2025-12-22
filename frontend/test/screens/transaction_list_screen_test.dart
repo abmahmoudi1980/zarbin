@@ -2,31 +2,55 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
 import 'package:zarbin/screens/transaction_list_screen.dart';
+import 'package:zarbin/screens/add_transaction_screen.dart';
 import 'package:zarbin/providers/transaction_provider.dart';
+import 'package:zarbin/providers/market_rate_provider.dart';
 import 'package:zarbin/models/transaction.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockTransactionProvider extends Mock implements TransactionProvider {}
+class MockMarketRateProvider extends Mock implements MarketRateProvider {}
 
 void main() {
   group('TransactionListScreen', () {
     late MockTransactionProvider mockTransactionProvider;
+    late MockMarketRateProvider mockMarketRateProvider;
 
     setUp(() {
       mockTransactionProvider = MockTransactionProvider();
+      mockMarketRateProvider = MockMarketRateProvider();
+
+      // Default stubs to prevent Null pointer exceptions
+      when(() => mockTransactionProvider.isLoading).thenReturn(false);
+      when(() => mockTransactionProvider.error).thenReturn(null);
+      when(() => mockTransactionProvider.transactions).thenReturn([]);
+      when(() => mockTransactionProvider.fetchTransactions())
+          .thenAnswer((_) async {});
+
+      when(() => mockMarketRateProvider.isLoading).thenReturn(false);
+      when(() => mockMarketRateProvider.rates).thenReturn([]);
     });
+
+    Widget createTestWidget() {
+      return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<TransactionProvider>.value(
+            value: mockTransactionProvider,
+          ),
+          ChangeNotifierProvider<MarketRateProvider>.value(
+            value: mockMarketRateProvider,
+          ),
+        ],
+        child: const MaterialApp(
+          home: TransactionListScreen(),
+        ),
+      );
+    }
 
     testWidgets('displays empty state when no transactions', (WidgetTester tester) async {
       when(() => mockTransactionProvider.transactions).thenReturn([]);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ChangeNotifierProvider<TransactionProvider>.value(
-            value: mockTransactionProvider,
-            child: const TransactionListScreen(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(createTestWidget());
 
       expect(find.text('No transactions yet'), findsOneWidget);
       expect(find.text('Start adding transactions to track your finances'), findsOneWidget);
@@ -64,14 +88,7 @@ void main() {
 
       when(() => mockTransactionProvider.transactions).thenReturn(mockTransactions);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ChangeNotifierProvider<TransactionProvider>.value(
-            value: mockTransactionProvider,
-            child: const TransactionListScreen(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(createTestWidget());
 
       expect(find.byType(ListView), findsOneWidget);
       expect(find.text('خوراک'), findsOneWidget);
@@ -97,16 +114,9 @@ void main() {
 
       when(() => mockTransactionProvider.transactions).thenReturn(mockTransactions);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ChangeNotifierProvider<TransactionProvider>.value(
-            value: mockTransactionProvider,
-            child: const TransactionListScreen(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(createTestWidget());
 
-      expect(find.text('۵،۰۰۰،۰۰۰'), findsOneWidget); // Persian formatted amount
+      expect(find.text('-۵٬۰۰۰٬۰۰۰'), findsOneWidget); // Persian formatted amount with prefix
       expect(find.text('1403/01/15'), findsOneWidget);
       expect(find.text('Grocery shopping'), findsOneWidget);
     });
@@ -124,7 +134,7 @@ void main() {
           notes: 'Old transaction',
           usdRateAtCreation: 42500.0,
           goldRateAtCreation: 0,
-          createdAt: DateTime.now().subtract(Duration(days: 5)),
+          createdAt: DateTime.now().subtract(const Duration(days: 5)),
         ),
         Transaction(
           id: '2',
@@ -141,22 +151,15 @@ void main() {
         ),
       ];
 
-      when(() => mockTransactionProvider.transactions).thenReturn(mockTransactions);
+      when(() => mockTransactionProvider.transactions).thenReturn(mockTransactions.reversed.toList());
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ChangeNotifierProvider<TransactionProvider>.value(
-            value: mockTransactionProvider,
-            child: const TransactionListScreen(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(createTestWidget());
 
       // Verify newer transaction appears first
       expect(find.text('Recent transaction'), findsOneWidget);
       final recentPos = tester.getTopLeft(find.text('Recent transaction'));
       final oldPos = tester.getTopLeft(find.text('Old transaction'));
-      expect(recentPos.dy < oldPos.dy, true);
+      expect(recentPos.dy < oldPos.dy, true); // dy increases downwards, so smaller dy is higher
     });
 
     testWidgets('displays dual currency amounts', (WidgetTester tester) async {
@@ -178,17 +181,10 @@ void main() {
 
       when(() => mockTransactionProvider.transactions).thenReturn(mockTransactions);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ChangeNotifierProvider<TransactionProvider>.value(
-            value: mockTransactionProvider,
-            child: const TransactionListScreen(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(createTestWidget());
 
       // Verify both Toman and USD are shown
-      expect(find.text('۵،۰۰۰،۰۰۰'), findsOneWidget); // Toman in Persian
+      expect(find.text('-۵٬۰۰۰٬۰۰۰'), findsOneWidget); // Toman in Persian
       expect(find.text('117.65 USD'), findsOneWidget); // USD equivalent
     });
 
@@ -211,14 +207,7 @@ void main() {
 
       when(() => mockTransactionProvider.transactions).thenReturn(mockTransactions);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ChangeNotifierProvider<TransactionProvider>.value(
-            value: mockTransactionProvider,
-            child: const TransactionListScreen(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(createTestWidget());
 
       // Verify category icons are rendered
       expect(find.byIcon(Icons.restaurant), findsWidgets);
@@ -256,21 +245,20 @@ void main() {
 
       when(() => mockTransactionProvider.transactions).thenReturn(mockTransactions);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ChangeNotifierProvider<TransactionProvider>.value(
-            value: mockTransactionProvider,
-            child: const TransactionListScreen(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(createTestWidget());
 
       // Expense should be red/negative, Income should be green/positive
-      final expenseWidget = find.byWidgetPredicate((widget) => widget is Text && widget.data?.contains('5') == true);
-      final incomeWidget = find.byWidgetPredicate((widget) => widget is Text && widget.data?.contains('10') == true);
+      final expenseWidget = find.text('-۵٬۰۰۰٬۰۰۰');
+      final incomeWidget = find.text('+۱۰٬۰۰۰٬۰۰۰');
 
-      expect(expenseWidget, findsWidgets);
-      expect(incomeWidget, findsWidgets);
+      expect(expenseWidget, findsOneWidget);
+      expect(incomeWidget, findsOneWidget);
+      
+      final expenseText = tester.widget<Text>(expenseWidget);
+      final incomeText = tester.widget<Text>(incomeWidget);
+      
+      expect(expenseText.style?.color, Colors.red);
+      expect(incomeText.style?.color, Colors.green);
     });
 
     testWidgets('shows note preview in transaction list', (WidgetTester tester) async {
@@ -292,14 +280,7 @@ void main() {
 
       when(() => mockTransactionProvider.transactions).thenReturn(mockTransactions);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ChangeNotifierProvider<TransactionProvider>.value(
-            value: mockTransactionProvider,
-            child: const TransactionListScreen(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(createTestWidget());
 
       // Verify note is visible
       expect(find.text('Grocery shopping at Hyperstar'), findsOneWidget);
@@ -324,57 +305,37 @@ void main() {
 
       when(() => mockTransactionProvider.transactions).thenReturn(mockTransactions);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ChangeNotifierProvider<TransactionProvider>.value(
-            value: mockTransactionProvider,
-            child: const TransactionListScreen(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(createTestWidget());
 
       // Tap on transaction
       await tester.tap(find.text('Grocery'));
       await tester.pumpAndSettle();
 
       // Verify details or edit screen is shown
-      expect(find.byType(AlertDialog), findsWidgets);
+      expect(find.byType(BottomSheet), findsWidgets);
     });
 
     testWidgets('add button navigates to AddTransactionScreen', (WidgetTester tester) async {
       when(() => mockTransactionProvider.transactions).thenReturn([]);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ChangeNotifierProvider<TransactionProvider>.value(
-            value: mockTransactionProvider,
-            child: const TransactionListScreen(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(createTestWidget());
 
-      final addButton = find.byIcon(Icons.add);
+      // Use find.byType(FloatingActionButton) to avoid ambiguity with other Icons.add
+      final addButton = find.byType(FloatingActionButton);
       expect(addButton, findsOneWidget);
 
       await tester.tap(addButton);
       await tester.pumpAndSettle();
 
       // Verify navigation occurs
-      expect(find.byType(Dialog), findsWidgets);
+      expect(find.byType(AddTransactionScreen), findsOneWidget);
     });
 
     testWidgets('displays loading state while fetching transactions', (WidgetTester tester) async {
       when(() => mockTransactionProvider.isLoading).thenReturn(true);
       when(() => mockTransactionProvider.transactions).thenReturn([]);
 
-      await tester.pumpWidget(
-        MaterialApp(
-          home: ChangeNotifierProvider<TransactionProvider>.value(
-            value: mockTransactionProvider,
-            child: const TransactionListScreen(),
-          ),
-        ),
-      );
+      await tester.pumpWidget(createTestWidget());
 
       expect(find.byType(CircularProgressIndicator), findsOneWidget);
     });

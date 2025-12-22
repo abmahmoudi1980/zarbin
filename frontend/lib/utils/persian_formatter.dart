@@ -14,6 +14,7 @@ class PersianFormatter {
     '7': '۷',
     '8': '۸',
     '9': '۹',
+    ',': '٬',
   };
 
   // Convert English digits to Persian
@@ -36,7 +37,7 @@ class PersianFormatter {
 
   // Format number with thousand separators (Persian style)
   static String formatNumber(int number) {
-    final formatter = NumberFormat('#,###');
+    final formatter = NumberFormat('#,###', 'en_US');
     return toPersianDigits(formatter.format(number));
   }
 

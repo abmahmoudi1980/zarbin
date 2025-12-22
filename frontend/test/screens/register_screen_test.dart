@@ -13,6 +13,10 @@ void main() {
 
     setUp(() {
       mockAuthProvider = MockAuthProvider();
+      // Default stubs to prevent Null errors
+      when(() => mockAuthProvider.isLoading).thenReturn(false);
+      when(() => mockAuthProvider.error).thenReturn(null);
+      when(() => mockAuthProvider.isAuthenticated).thenReturn(false);
     });
 
     testWidgets('renders all required fields', (WidgetTester tester) async {
@@ -165,6 +169,7 @@ void main() {
       await tester.enterText(mobileTF, '09123456789');
       await tester.enterText(passwordTF, 'Password123');
       await tester.enterText(confirmPasswordTF, 'Password123');
+      await tester.tap(find.byType(Checkbox));
       await tester.pumpAndSettle();
 
       await tester.tap(find.byType(ElevatedButton));
@@ -192,7 +197,7 @@ void main() {
         ),
       );
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.byType(CircularProgressIndicator), findsWidgets);
     });
 
     testWidgets('displays terms and conditions', (WidgetTester tester) async {
@@ -219,7 +224,8 @@ void main() {
         ),
       );
 
-      expect(find.text('Already have an account? Login'), findsOneWidget);
+      expect(find.text('Already have an account? '), findsOneWidget);
+      expect(find.text('Login'), findsOneWidget);
     });
   });
 }

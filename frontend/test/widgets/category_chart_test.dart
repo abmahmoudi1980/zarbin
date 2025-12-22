@@ -61,6 +61,7 @@ void main() {
     testWidgets('displays percentage for each category',
         (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
+      await tester.pumpAndSettle();
 
       expect(find.text('62.5%'), findsWidgets);
       expect(find.text('37.5%'), findsWidgets);
@@ -69,6 +70,7 @@ void main() {
     testWidgets('displays category amounts in Persian numerals',
         (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
+      await tester.pumpAndSettle();
 
       // Persian numerals for 5,000,000 and 3,000,000
       expect(find.text('۵٬۰۰۰٬۰۰۰'), findsWidgets);
@@ -77,6 +79,7 @@ void main() {
 
     testWidgets('displays category icons', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
+      await tester.pumpAndSettle();
 
       // Check that icon widgets are rendered
       expect(find.byIcon(Icons.fastfood), findsWidgets);
@@ -86,6 +89,7 @@ void main() {
     testWidgets('displays legend with category names',
         (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
+      await tester.pumpAndSettle();
 
       expect(find.text('غذا'), findsWidgets);
       expect(find.text('حمل‌ونقل'), findsWidgets);
@@ -93,14 +97,17 @@ void main() {
 
     testWidgets('displays total spending amount', (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
+      await tester.pumpAndSettle();
 
-      // Persian numerals for 8,000,000
-      expect(find.text('۸٬۰۰۰٬۰۰۰'), findsWidgets);
+      // PieChart centerText might not be a Text widget
+      final pieChart = tester.widget<pc.PieChart>(find.byType(pc.PieChart));
+      expect(pieChart.centerText, '۸٬۰۰۰٬۰۰۰');
     });
 
     testWidgets('displays current month in Jalali format',
         (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
+      await tester.pumpAndSettle();
 
       expect(find.text('1403/09'), findsWidgets);
     });

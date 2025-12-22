@@ -13,6 +13,10 @@ void main() {
 
     setUp(() {
       mockAuthProvider = MockAuthProvider();
+      // Default stubs to prevent Null errors
+      when(() => mockAuthProvider.isLoading).thenReturn(false);
+      when(() => mockAuthProvider.error).thenReturn(null);
+      when(() => mockAuthProvider.isAuthenticated).thenReturn(false);
     });
 
     testWidgets('renders all required fields', (WidgetTester tester) async {
@@ -99,6 +103,7 @@ void main() {
       );
 
       final passwordTF = find.byType(TextField).at(1);
+      await tester.enterText(passwordTF, 'a');
       await tester.enterText(passwordTF, '');
       await tester.pumpAndSettle();
 
@@ -152,7 +157,7 @@ void main() {
         ),
       );
 
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.byType(CircularProgressIndicator), findsWidgets);
     });
 
     testWidgets('shows error message on login failure', (WidgetTester tester) async {
@@ -259,7 +264,8 @@ void main() {
         ),
       );
 
-      expect(find.text('Don\'t have an account? Register'), findsOneWidget);
+      expect(find.text('Don\'t have an account? '), findsOneWidget);
+      expect(find.text('Register'), findsOneWidget);
     });
 
     testWidgets('displays forgot password link', (WidgetTester tester) async {

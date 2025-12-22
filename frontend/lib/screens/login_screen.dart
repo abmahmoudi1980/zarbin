@@ -18,7 +18,20 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _hidePassword = true;
 
   @override
+  void initState() {
+    super.initState();
+    _mobileController.addListener(_updateState);
+    _passwordController.addListener(_updateState);
+  }
+
+  void _updateState() {
+    setState(() {});
+  }
+
+  @override
   void dispose() {
+    _mobileController.removeListener(_updateState);
+    _passwordController.removeListener(_updateState);
     _mobileController.dispose();
     _passwordController.dispose();
     super.dispose();
@@ -70,6 +83,7 @@ class _LoginScreenState extends State<LoginScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
             child: Form(
               key: _formKey,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,

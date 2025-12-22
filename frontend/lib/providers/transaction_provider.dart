@@ -22,7 +22,11 @@ class TransactionProvider extends ChangeNotifier {
         _databaseService = databaseService;
 
   // Getters
-  List<Transaction> get transactions => _transactions;
+  List<Transaction> get transactions {
+    final sortedList = List<Transaction>.from(_transactions);
+    sortedList.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return sortedList;
+  }
   bool get isLoading => _isLoading;
   String? get error => _error;
 

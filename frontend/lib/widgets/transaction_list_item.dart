@@ -53,25 +53,8 @@ class TransactionListItem extends StatelessWidget {
   /// Gets amount display with +/- prefix and Persian numerals
   String _getFormattedAmount() {
     final prefix = transaction.transactionType == 'income' ? '+' : '-';
-    final formatted = _formatTomanWithSeparators(transaction.amountToman);
+    final formatted = PersianFormatter.formatNumber(transaction.amountToman);
     return '$prefix$formatted';
-  }
-
-  /// Formats amount with thousands separators and Persian numerals
-  String _formatTomanWithSeparators(int amount) {
-    final formatted = amount.toString();
-    final reversed = formatted.split('').reversed.toList();
-
-    final withSeparators = <String>[];
-    for (int i = 0; i < reversed.length; i++) {
-      if (i > 0 && i % 3 == 0) {
-        withSeparators.add('،');
-      }
-      withSeparators.add(reversed[i]);
-    }
-
-    final result = withSeparators.reversed.join('');
-    return PersianFormatter.toPersianDigits(result);
   }
 
   /// Truncates notes to preview length

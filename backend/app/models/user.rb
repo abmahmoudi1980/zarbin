@@ -32,7 +32,8 @@ class User < ApplicationRecord
   validates :failed_login_attempts, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
 
   # Enums
-  enum :account_status, { active: 'active', otp_pending: 'otp_pending', suspended: 'suspended', deleted: 'deleted', locked: 'locked' }
+  enum :account_status, 
+       { active: 'active', otp_pending: 'otp_pending', suspended: 'suspended', deleted: 'deleted', locked: 'locked' }
 
   # Scopes
   scope :active_only, -> { where(account_status: :active) }
@@ -55,7 +56,7 @@ class User < ApplicationRecord
     return false if account_locked? || locked_account?
     
     # Use has_secure_password's authenticate method
-    if super(password)
+    if super
       reset_failed_attempts
       update(last_login_at: Time.current)
       true

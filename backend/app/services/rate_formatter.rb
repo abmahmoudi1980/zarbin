@@ -122,7 +122,7 @@ class RateFormatterService
       y = g_y + 4800 - a
       m = gm + (12 * a) - 2
 
-      jd = (g_d + ((153 * m + 2) / 5).to_i + (365 * y).to_i + (y / 4).to_i -
+      jd = (g_d + (((153 * m) + 2) / 5).to_i + (365 * y).to_i + (y / 4).to_i -
             (y / 100).to_i + (y / 400).to_i - 32045) -
            ((1948440 + (365 * jy).to_i + ((jy / 33).to_i * 8) + (((jy % 33) + 3) / 4).to_i - 38840 - 1).to_i)
 
@@ -145,7 +145,7 @@ class RateFormatterService
 
     # Check if a Jalali year is a leap year
     def is_leap_jalali(jy)
-      ((((jy + 1309) * 682 - 110) % 2816) < 682)
+      (((((jy + 1309) * 682) - 110) % 2816) < 682)
     end
 
     def calculate_stale_minutes(timestamp)

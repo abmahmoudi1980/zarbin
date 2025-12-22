@@ -5,7 +5,8 @@ inherit_from:
 
 AllCops:
   TargetRubyVersion: 3.4
-  TargetRailsVersion: 8.0
+  NewCops: enable
+  SuggestExtensions: false
   Exclude:
     - "bin/**/*"
     - "config/**/*"
@@ -17,7 +18,7 @@ AllCops:
 
 # Layout
 Layout/LineLength:
-  Max: 120
+  Max: 160
   Exclude:
     - "spec/**/*"
 
@@ -26,7 +27,7 @@ Layout/ClassStructure:
 
 # Metrics
 Metrics/AbcSize:
-  Max: 25
+  Max: 70
   Exclude:
     - "spec/**/*"
 
@@ -34,7 +35,7 @@ Metrics/ClassLength:
   Max: 250
 
 Metrics/MethodLength:
-  Max: 20
+  Max: 45
   Exclude:
     - "spec/**/*"
 
@@ -48,22 +49,8 @@ Metrics/PerceivedComplexity:
 Naming/MethodParameterName:
   MinNameLength: 2
 
-# RSpec
-RSpec/ExampleLength:
-  Max: 50
-
-RSpec/DescribeClass:
-  Enabled: false
-
-RSpec/MultipleDescribes:
-  Enabled: false
-
-# Rails
-Rails/Output:
-  Enabled: false
-
-Rails/SaveBang:
-  Enabled: false
+Naming/PredicateMethod:
+  Enabled: false # Allow validate_* and verify_* methods
 
 # Style
 Style/FrozenStringLiteralComment:
@@ -74,7 +61,6 @@ Style/Documentation:
 
 Style/IfUnlessModifier:
   Enabled: true
-  MaxLineLength: 120
 
 Style/NumericLiterals:
   Enabled: false

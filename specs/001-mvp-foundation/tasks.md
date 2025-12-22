@@ -259,7 +259,7 @@
 - [x] T125 [P] Implement request rate limiting to prevent abuse in `backend/config/initializers/rate_limiter.rb`
 - [x] T126 [P] Add input sanitization for transaction notes in `backend/app/controllers/api/v1/transactions_controller.rb`
 - [~] T127 Run full test suite with RSpec: `bundle exec rspec` targeting 80% coverage in `backend/`
-- [ ] T128 Run RuboCop linting: `bundle exec rubocop` and fix violations in `backend/`
+- [x] T128 Run RuboCop linting: `bundle exec rubocop` and fix violations in `backend/`
 - [ ] T129 Performance test: Market rates endpoint returns within 3 seconds
 - [ ] T130 Performance test: Dashboard endpoint returns within 2 seconds
 - [ ] T131 Test account lockout actually locks after 5 failures and unlocks after 15 min

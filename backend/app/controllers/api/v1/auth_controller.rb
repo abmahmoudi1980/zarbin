@@ -140,7 +140,7 @@ module Api
       # POST /api/v1/auth/refresh
       # Refresh JWT token for continued session
       def refresh
-        token = request.headers['Authorization']&.split(' ')&.last
+        token = request.headers['Authorization']&.split&.last
 
         unless token
           Rails.logger.warn("[AUTH] Token refresh failed - no token provided")

@@ -63,7 +63,7 @@ class ApplicationController < ActionController::API
     return nil unless auth_header
 
     # Extract token from "Bearer <token>"
-    auth_header.split(' ').last
+    auth_header.split.last
   end
 
   def record_not_found(exception)

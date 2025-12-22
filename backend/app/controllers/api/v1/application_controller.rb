@@ -36,7 +36,7 @@ module Api
         return nil unless auth_header
 
         # Extract "Bearer <token>"
-        auth_header.split(' ').last if auth_header.start_with?('Bearer ')
+        auth_header.split.last if auth_header.start_with?('Bearer ')
       end
 
       def decode_jwt(token)

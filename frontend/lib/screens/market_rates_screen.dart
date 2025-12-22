@@ -118,104 +118,14 @@ class _MarketRatesScreenState extends State<MarketRatesScreen> {
     }
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          // Timestamp header
-          if (provider.lastFetchTime != null)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: _buildTimestampHeader(provider),
-            ),
-
-          // Stale indicator
-          if (provider.isStale)
-            Padding(
-              padding: const EdgeInsets.only(bottom: 16),
-              child: _buildStaleIndicator(provider),
-            ),
-
           // Rate cards
           ..._buildRateCards(provider),
 
-          // Last updated info
-          Padding(
-            padding: const EdgeInsets.only(top: 24),
-            child: Text(
-              'آخرین بروزرسانی: ${_formatLastUpdate(provider)}',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 12,
-                color: Colors.grey,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildTimestampHeader(MarketRateProvider provider) {
-    final jalaliDate = JalaliHelper.toJalaliString(provider.lastFetchTime!);
-    final timeStr =
-        '${provider.lastFetchTime!.hour.toString().padLeft(2, '0')}:${provider.lastFetchTime!.minute.toString().padLeft(2, '0')}';
-
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Icon(Icons.calendar_today, size: 16, color: Colors.blue),
-                const SizedBox(width: 8),
-                Text(
-                  '$jalaliDate ساعت $timeStr',
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-            if (provider.isLoading)
-              const Padding(
-                padding: EdgeInsets.only(top: 8),
-                child: SizedBox(
-                  height: 16,
-                  width: 16,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
-              ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildStaleIndicator(MarketRateProvider provider) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.orange.shade100,
-        border: Border.all(color: Colors.orange),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.info, color: Colors.orange),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              'این نرخ ها ${provider.staleMinutes} دقیقه قدیمی هستند',
-              style: const TextStyle(
-                fontSize: 12,
-                color: Colors.orange,
-              ),
-            ),
-          ),
+          const SizedBox(height: 16),
         ],
       ),
     );
@@ -223,25 +133,7 @@ class _MarketRatesScreenState extends State<MarketRatesScreen> {
 
   List<Widget> _buildRateCards(MarketRateProvider provider) {
     return provider.rates.map((rate) {
-      return Padding(
-        padding: const EdgeInsets.only(bottom: 12),
-        child: RateCard(rate: rate),
-      );
+      return RateCard(rate: rate);
     }).toList();
-  }
-
-  String _formatLastUpdate(MarketRateProvider provider) {
-    final now = DateTime.now();
-    final diff = now.difference(provider.lastFetchTime!);
-
-    if (diff.inSeconds < 60) {
-      return 'اکنون';
-    } else if (diff.inMinutes < 60) {
-      return '${diff.inMinutes} دقیقه پیش';
-    } else if (diff.inHours < 24) {
-      return '${diff.inHours} ساعت پیش';
-    } else {
-      return '${diff.inDays} روز پیش';
-    }
   }
 }

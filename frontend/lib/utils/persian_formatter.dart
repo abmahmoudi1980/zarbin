@@ -1,5 +1,6 @@
 // lib/utils/persian_formatter.dart
 import 'package:intl/intl.dart';
+import 'package:shamsi_date/shamsi_date.dart';
 
 class PersianFormatter {
   // Persian digit mapping
@@ -45,6 +46,16 @@ class PersianFormatter {
   static String formatToman(int amount) {
     final formatted = formatNumber(amount);
     return '$formatted تومان';
+  }
+
+  // Format DateTime to Jalali string with time
+  static String formatDateTime(DateTime dateTime) {
+    final jalali = Jalali.fromDateTime(dateTime);
+    final dateStr =
+        '${jalali.year}/${jalali.month.toString().padLeft(2, '0')}/${jalali.day.toString().padLeft(2, '0')}';
+    final timeStr =
+        '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+    return toPersianDigits('$dateStr $timeStr');
   }
 
   // Format currency with symbol

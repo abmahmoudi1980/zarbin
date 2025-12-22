@@ -24,126 +24,123 @@ class RateCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Card(
-      elevation: isStale ? 1 : 2,
-      child: Container(
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
-          border: isStale
-              ? Border.all(color: Colors.orange.shade200)
-              : Border.all(color: Colors.transparent),
-        ),
+      margin: const EdgeInsets.only(bottom: 16),
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () {},
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Header with label and stale indicator
+              // Header with label and change indicator
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          _getLabel(),
-                          style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
+                  Row(
+                    children: [
+                      _getIcon(colorScheme),
+                      const SizedBox(width: 12),
+                      Text(
+                        _getLabel(),
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
                         ),
-                        const SizedBox(height: 4),
-                        if (isStale)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 4),
-                            child: Row(
-                              children: [
-                                const Icon(
-                                  Icons.warning,
-                                  size: 12,
-                                  color: Colors.orange,
-                                ),
-                                const SizedBox(width: 4),
-                                const Text(
-                                  'نرخ قدیمی است',
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.orange,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   RateChangeIndicator(rate: rate),
                 ],
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(height: 20),
 
               // Main rate value
-              Container(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade50,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'نرخ کنونی',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
-                      ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: [
+                  Text(
+                    'نرخ کنونی',
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
                     ),
-                    const SizedBox(height: 4),
-                    Text(
-                      PersianFormatter.formatNumber(rate.valueInToman),
-                      style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    textBaseline: TextBaseline.alphabetic,
+                    children: [
+                      Text(
+                        PersianFormatter.formatNumber(rate.valueInToman),
+                        style: theme.textTheme.headlineMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                          color: colorScheme.primary,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      'تومان',
-                      style: TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey.shade600,
+                      const SizedBox(width: 4),
+                      Text(
+                        'تومان',
+                        style: theme.textTheme.labelLarge?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ),
 
+              const SizedBox(height: 16),
+              const Divider(height: 1),
               const SizedBox(height: 12),
 
-              // Footer with timestamp
+              // Footer with timestamp and stale indicator
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    child: Text(
-                      'زمان: ${_formatTimestamp()}',
-                      style: const TextStyle(
-                        fontSize: 12,
-                        color: Colors.grey,
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.access_time_rounded,
+                        size: 14,
+                        color: colorScheme.onSurfaceVariant,
                       ),
-                    ),
+                      const SizedBox(width: 4),
+                      Text(
+                        'به‌روزرسانی: ${PersianFormatter.formatDateTime(rate.timestamp)}',
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
                   ),
                   if (isStale)
-                    Text(
-                      '${_getStaleMinutes()} دقیقه قدیمی',
-                      style: const TextStyle(
-                        fontSize: 11,
-                        color: Colors.orange,
-                        fontWeight: FontWeight.w500,
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: colorScheme.errorContainer,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            Icons.warning_amber_rounded,
+                            size: 12,
+                            color: colorScheme.onErrorContainer,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            'نرخ قدیمی',
+                            style: theme.textTheme.labelSmall?.copyWith(
+                              color: colorScheme.onErrorContainer,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                 ],
@@ -152,6 +149,38 @@ class RateCard extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _getIcon(ColorScheme colorScheme) {
+    IconData iconData;
+    Color iconColor;
+
+    switch (rate.rateType) {
+      case 'usd':
+        iconData = Icons.attach_money_rounded;
+        iconColor = Colors.green;
+        break;
+      case 'gold_gram':
+        iconData = Icons.workspace_premium_rounded;
+        iconColor = Colors.amber.shade700;
+        break;
+      case 'bahar_coin':
+        iconData = Icons.toll_rounded;
+        iconColor = Colors.orange.shade800;
+        break;
+      default:
+        iconData = Icons.trending_up_rounded;
+        iconColor = colorScheme.primary;
+    }
+
+    return Container(
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: iconColor.withOpacity(0.1),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Icon(iconData, color: iconColor, size: 20),
     );
   }
 
@@ -166,15 +195,5 @@ class RateCard extends StatelessWidget {
       default:
         return rate.rateType;
     }
-  }
-
-  String _formatTimestamp() {
-    final time = rate.timestamp;
-    return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
-  }
-
-  int _getStaleMinutes() {
-    final now = DateTime.now();
-    return now.difference(rate.timestamp).inMinutes;
   }
 }

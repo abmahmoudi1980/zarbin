@@ -163,60 +163,72 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildBalanceCards(DashboardData dashboard) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Column(
       children: [
         BalanceCard(
-          label: 'تومان',
+          label: 'موجودی کل (تومان)',
           amount: PersianFormatter.formatNumber(dashboard.totalToman),
-          currency: '﷼',
-          color: Colors.blue,
+          currency: 'تومان',
+          color: colorScheme.primary,
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 4),
         BalanceCard(
-          label: 'دلار آمریکا',
-          amount: dashboard.totalUsdEquivalent.toStringAsFixed(2),
-          currency: '\$',
-          color: Colors.green,
+          label: 'معادل دلار آمریکا',
+          amount: PersianFormatter.toPersianDigits(dashboard.totalUsdEquivalent.toStringAsFixed(2)),
+          currency: 'دلار',
+          color: Colors.green.shade700,
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 4),
         BalanceCard(
-          label: 'طلا (گرم)',
-          amount: dashboard.totalGoldGramsEquivalent.toStringAsFixed(3),
-          currency: 'g',
-          color: Colors.amber,
+          label: 'معادل طلا (گرم)',
+          amount: PersianFormatter.toPersianDigits(dashboard.totalGoldGramsEquivalent.toStringAsFixed(3)),
+          currency: 'گرم',
+          color: Colors.amber.shade800,
         ),
       ],
     );
   }
 
   Widget _buildZeroBalancePrompt() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.blue.shade50,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.blue.shade200),
+        color: colorScheme.secondaryContainer.withOpacity(0.5),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: colorScheme.secondaryContainer),
       ),
       child: Column(
         children: [
-          Icon(Icons.info_outline, color: Colors.blue.shade700, size: 32),
-          const SizedBox(height: 12),
+          Icon(Icons.account_balance_wallet_outlined, color: colorScheme.secondary, size: 48),
+          const SizedBox(height: 16),
           Text(
             'شروع به ثبت تراکنش‌ها کنید',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.w600,
-              color: Colors.blue.shade900,
+            style: theme.textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.bold,
+              color: colorScheme.onSecondaryContainer,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             'برای دیدن داشبورد خود، ابتدا یک تراکنش اضافه کنید.',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.blue.shade700,
+            style: theme.textTheme.bodyMedium?.copyWith(
+              color: colorScheme.onSecondaryContainer.withOpacity(0.8),
             ),
+          ),
+          const SizedBox(height: 20),
+          FilledButton.icon(
+            onPressed: () {
+              // Navigate to add transaction
+            },
+            icon: const Icon(Icons.add_rounded),
+            label: const Text('افزودن تراکنش'),
           ),
         ],
       ),
@@ -238,8 +250,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   Widget _buildCategoryBreakdownSection() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Card(
-      elevation: 2,
       child: InkWell(
         onTap: () {
           Navigator.of(context).push(
@@ -248,33 +262,49 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
           );
         },
+        borderRadius: BorderRadius.circular(16),
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Text(
-                    'تفکیک هزینه‌های ماه',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(
+                          Icons.pie_chart_rounded,
+                          color: colorScheme.onPrimaryContainer,
+                          size: 20,
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        'تفکیک هزینه‌های ماه',
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
                   ),
                   Icon(
-                    Icons.arrow_forward,
-                    color: Colors.grey[600],
+                    Icons.chevron_right_rounded,
+                    color: colorScheme.onSurfaceVariant,
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 16),
               Text(
-                'برای مشاهده تفصیلات، ضربه بزنید',
-                style: TextStyle(
-                  fontSize: 12,
-                  color: Colors.grey[600],
+                'برای مشاهده تحلیل دقیق هزینه‌ها بر اساس دسته‌بندی، ضربه بزنید.',
+                style: theme.textTheme.bodySmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
                 ),
               ),
             ],

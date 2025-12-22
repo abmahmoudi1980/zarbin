@@ -7,13 +7,21 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-
 import 'package:zarbin/main.dart';
+import 'package:zarbin/providers/auth_provider.dart';
+import 'package:zarbin/providers/market_rate_provider.dart';
+import 'package:zarbin/providers/dashboard_provider.dart';
+import 'package:zarbin/services/api_client.dart';
+import 'package:zarbin/services/secure_storage.dart';
 
 void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+    await tester.pumpWidget(ZarbinApp(
+      authProvider: AuthProvider(apiClient: ApiClient(), secureStorage: SecureStorage()),
+      marketRateProvider: MarketRateProvider(apiClient: ApiClient()),
+      dashboardProvider: DashboardProvider(apiClient: ApiClient()),
+    ));
 
     // Verify that our counter starts at 0.
     expect(find.text('0'), findsOneWidget);

@@ -2,12 +2,14 @@ import 'package:flutter/foundation.dart';
 import 'package:zarbin/models/transaction.dart';
 import 'package:zarbin/services/api_client.dart';
 import 'package:zarbin/services/database_service.dart';
+import 'package:zarbin/services/analytics_service.dart';
 
 /// TransactionProvider - Manages transaction state for the application
 /// Handles CRUD operations, caching, and synchronization with backend
 class TransactionProvider extends ChangeNotifier {
   final ApiClient _apiClient;
   final DatabaseService _databaseService;
+  final AnalyticsService _analytics = AnalyticsService();
 
   List<Transaction> _transactions = [];
   bool _isLoading = false;
@@ -99,6 +101,15 @@ class TransactionProvider extends ChangeNotifier {
           response['data'] as Map<String, dynamic>,
         );
 
+        await _analytics.logEvent(
+          name: 'transaction_added',
+          parameters: {
+            'type': type,
+            'category_id': categoryId,
+            'amount': amount,
+          },
+        );
+
         _transactions.insert(0, newTransaction); // Add to top (newest first)
 
         // Cache locally
@@ -113,8 +124,9 @@ class TransactionProvider extends ChangeNotifier {
         notifyListeners();
         return false;
       }
-    } catch (e) {
+    } catch (e, stack) {
       _error = e.toString();
+      await _analytics.logError(e, stack, reason: 'add_transaction_failed');
       _isLoading = false;
       notifyListeners();
       return false;

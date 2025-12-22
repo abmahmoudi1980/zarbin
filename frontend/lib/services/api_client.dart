@@ -2,10 +2,12 @@
 import 'package:dio/dio.dart';
 import '../config/api_config.dart';
 import 'secure_storage.dart';
+import 'analytics_service.dart';
 
 class ApiClient {
   late Dio _dio;
   String? _token;
+  final AnalyticsService _analytics = AnalyticsService();
 
   ApiClient() {
     _initializeDio();
@@ -27,6 +29,7 @@ class ApiClient {
 
     // Add interceptors
     _dio.interceptors.add(_AuthInterceptor(this));
+    _dio.interceptors.add(_AnalyticsInterceptor(_analytics));
     _dio.interceptors.add(
       LogInterceptor(
         requestBody: true,
@@ -254,6 +257,29 @@ class _AuthInterceptor extends QueuedInterceptorsManager {
       _isRefreshing = false;
     }
     
+    super.onError(err, handler);
+  }
+}
+
+class _AnalyticsInterceptor extends Interceptor {
+  final AnalyticsService _analytics;
+
+  _AnalyticsInterceptor(this._analytics);
+
+  @override
+  void onError(DioException err, ErrorInterceptorHandler handler) {
+    _analytics.logError(
+      err,
+      err.stackTrace,
+      reason: 'api_error: ${err.requestOptions.path}',
+    );
+    
+    _analytics.setCustomKey('api_path', err.requestOptions.path);
+    _analytics.setCustomKey('api_method', err.requestOptions.method);
+    if (err.response != null) {
+      _analytics.setCustomKey('api_status_code', err.response!.statusCode ?? 0);
+    }
+
     super.onError(err, handler);
   }
 }

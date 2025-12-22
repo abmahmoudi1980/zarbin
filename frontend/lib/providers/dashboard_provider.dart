@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import '../models/market_rate.dart';
 import '../services/api_client.dart';
+import '../services/analytics_service.dart';
 
 /// Dashboard data model
 class DashboardData {
@@ -37,6 +38,7 @@ class DashboardData {
 
 class DashboardProvider extends ChangeNotifier {
   final ApiClient _apiClient;
+  final AnalyticsService _analytics = AnalyticsService();
   
   DashboardData? _dashboard;
   bool _isLoading = false;
@@ -64,8 +66,11 @@ class DashboardProvider extends ChangeNotifier {
       _dashboard = DashboardData.fromJson(dashboardJson);
       _lastFetchTime = DateTime.now();
       _error = null;
-    } catch (e) {
+      
+      await _analytics.logEvent(name: 'dashboard_fetched');
+    } catch (e, stack) {
       _error = 'Failed to fetch dashboard: $e';
+      await _analytics.logError(e, stack, reason: 'fetch_dashboard_failed');
     } finally {
       _isLoading = false;
       notifyListeners();

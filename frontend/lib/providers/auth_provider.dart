@@ -2,10 +2,12 @@ import 'package:flutter/foundation.dart';
 import 'package:zarbin/services/api_client.dart';
 import 'package:zarbin/services/secure_storage.dart';
 import 'package:zarbin/models/user.dart';
+import 'package:zarbin/services/analytics_service.dart';
 
 class AuthProvider extends ChangeNotifier {
   final ApiClient _apiClient;
   final SecureStorage _secureStorage;
+  final AnalyticsService _analytics = AnalyticsService();
 
   User? _currentUser;
   String? _token;
@@ -47,14 +49,16 @@ class AuthProvider extends ChangeNotifier {
       if (response['success'] == true) {
         // Save mobile number for OTP verification
         await _secureStorage.savePendingMobileNumber(mobileNumber);
+        await _analytics.logSignUp(method: 'mobile_number');
         notifyListeners();
         return true;
       } else {
         _setError(response['error'] ?? 'Registration failed');
         return false;
       }
-    } catch (e) {
+    } catch (e, stack) {
       _setError('Registration error: $e');
+      await _analytics.logError(e, stack, reason: 'registration_failed');
       return false;
     } finally {
       _setLoading(false);
@@ -88,6 +92,9 @@ class AuthProvider extends ChangeNotifier {
         // Save token
         await _secureStorage.saveToken(_token!);
         await _secureStorage.savePendingMobileNumber(''); // Clear pending
+        
+        await _analytics.setUserId(_currentUser!.id.toString());
+        await _analytics.logEvent(name: 'otp_verified');
 
         notifyListeners();
         return true;
@@ -95,8 +102,9 @@ class AuthProvider extends ChangeNotifier {
         _setError(response['error'] ?? 'OTP verification failed');
         return false;
       }
-    } catch (e) {
+    } catch (e, stack) {
       _setError('OTP verification error: $e');
+      await _analytics.logError(e, stack, reason: 'otp_verification_failed');
       return false;
     } finally {
       _setLoading(false);
@@ -119,13 +127,15 @@ class AuthProvider extends ChangeNotifier {
       );
 
       if (response['success'] == true) {
+        await _analytics.logEvent(name: 'otp_resent');
         return true;
       } else {
         _setError(response['error'] ?? 'Failed to resend OTP');
         return false;
       }
-    } catch (e) {
+    } catch (e, stack) {
       _setError('Resend OTP error: $e');
+      await _analytics.logError(e, stack, reason: 'resend_otp_failed');
       return false;
     } finally {
       _setLoading(false);
@@ -162,14 +172,18 @@ class AuthProvider extends ChangeNotifier {
         // Set API client token
         _apiClient.setToken(_token!);
 
+        await _analytics.setUserId(_currentUser!.id.toString());
+        await _analytics.logLogin(method: 'mobile_number');
+
         notifyListeners();
         return true;
       } else {
         _setError(response['error'] ?? 'Login failed');
         return false;
       }
-    } catch (e) {
+    } catch (e, stack) {
       _setError('Login error: $e');
+      await _analytics.logError(e, stack, reason: 'login_failed');
       return false;
     } finally {
       _setLoading(false);

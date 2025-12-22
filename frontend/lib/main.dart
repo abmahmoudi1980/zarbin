@@ -1,9 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/foundation.dart';
+import 'services/analytics_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Firebase
+  try {
+    await Firebase.initializeApp();
+    
+    // Configure Crashlytics
+    if (!kIsWeb) {
+      // Pass all uncaught errors from the framework to Crashlytics.
+      FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+      // Pass all uncaught asynchronous errors that aren't handled by the Flutter framework to Crashlytics
+      PlatformDispatcher.instance.onError = (error, stack) {
+        FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+        return true;
+      };
+    }
+    
+    // Initialize Analytics Service
+    await AnalyticsService().init();
+  } catch (e) {
+    debugPrint('Firebase initialization failed: $e');
+    // Continue app execution even if Firebase fails (e.g. missing config files in dev)
+  }
   
   // Initialize Jalali date formatting for Persian locale
   await initializeDateFormatting('fa', null);
@@ -19,6 +46,11 @@ class ZarbinApp extends StatelessWidget {
     return MaterialApp(
       title: 'Zarbin - Financial Advisor',
       debugShowCheckedModeBanner: false,
+      
+      // Analytics Observer
+      navigatorObservers: [
+        AnalyticsService().getAnalyticsObserver(),
+      ],
       
       // Localization for Persian language
       localizationsDelegates: const [

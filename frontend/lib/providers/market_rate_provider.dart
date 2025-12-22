@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import '../models/market_rate.dart';
 import '../services/api_client.dart';
+import '../services/analytics_service.dart';
 
 /// MarketRateProvider - State management for market rates
 /// 
@@ -13,6 +14,7 @@ import '../services/api_client.dart';
 
 class MarketRateProvider extends ChangeNotifier {
   final ApiClient _apiClient;
+  final AnalyticsService _analytics = AnalyticsService();
   
   List<MarketRate> _rates = [];
   bool _isLoading = false;
@@ -65,8 +67,11 @@ class MarketRateProvider extends ChangeNotifier {
       
       _lastFetchTime = DateTime.now();
       _error = null;
-    } catch (e) {
+      
+      await _analytics.logEvent(name: 'rates_fetched');
+    } catch (e, stack) {
       _error = 'Failed to fetch rates: $e';
+      await _analytics.logError(e, stack, reason: 'fetch_rates_failed');
       // Keep existing rates even if fetch fails
     } finally {
       _isLoading = false;

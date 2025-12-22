@@ -70,6 +70,10 @@ class User < ApplicationRecord
     locked_until.present? && locked_until > Time.current
   end
 
+  def locked?
+    account_locked?
+  end
+
   def locked_account?
     account_locked?
   end

@@ -100,11 +100,17 @@ class Transaction < ApplicationRecord
     return unless transaction_date.is_a?(String)
     
     # Allow ISO format dates (YYYY-MM-DD) which is what Date.to_s produces
-    return if transaction_date.match?(/^\d{4}-\d{2}-\d{2}$/)
+    if transaction_date.match?(/^\d{4}-\d{2}-\d{2}$/)
+      validate_no_future_date(transaction_date)
+      return
+    end
     
     # Allow ISO format with timestamps (YYYY-MM-DD HH:MM:SS) from Time/DateTime
-    return if transaction_date.match?(/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}/)
-    
+    if transaction_date.match?(/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}/)
+      validate_no_future_date(transaction_date)
+      return
+    end
+
     # Check Jalali format YYYY/MM/DD for strings
     unless transaction_date.match?(/^\d{4}\/\d{2}\/\d{2}$/)
       errors.add(:transaction_date, 'must be in YYYY/MM/DD format')
@@ -131,6 +137,31 @@ class Transaction < ApplicationRecord
     
     if day < 1 || day > max_day
       errors.add(:transaction_date, "invalid day for Jalali month #{month}")
+    end
+    
+    # Validate no future dates
+    begin
+      date_obj = Date.parse(transaction_date)
+      validate_no_future_date(date_obj)
+    rescue ArgumentError
+      # Date parsing failed, let other validations catch it
+    end
+  end
+
+  def validate_no_future_date(date_value)
+    date_obj = case date_value
+               when String
+                 Date.parse(date_value)
+               when Date, Time, DateTime
+                 date_value.to_date
+               else
+                 nil
+               end
+
+    return unless date_obj
+
+    if date_obj > Date.current
+      errors.add(:transaction_date, "cannot be in the future (max date: #{Date.current.strftime('%Y-%m-%d')})")
     end
   end
 

@@ -262,9 +262,9 @@
 - [x] T128 Run RuboCop linting: `bundle exec rubocop` and fix violations in `backend/`
 - [x] T129 Performance test: Market rates endpoint returns within 3 seconds
 - [x] T130 Performance test: Dashboard endpoint returns within 2 seconds
-- [ ] T131 Test account lockout actually locks after 5 failures and unlocks after 15 min
-- [ ] T132 Test transaction amounts handle edge cases (0, negatives, >99B Toman)
-- [ ] T133 Test Jalali date picker validation (no future dates, valid ranges)
+- [x] T131 Test account lockout actually locks after 5 failures and unlocks after 15 min
+- [x] T132 Test transaction amounts handle edge cases (0, negatives, >99B Toman)
+- [x] T133 Test Jalali date picker validation (no future dates, valid ranges)
 
 ### Frontend Polish
 

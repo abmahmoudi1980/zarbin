@@ -23,7 +23,7 @@ class Transaction < ApplicationRecord
   belongs_to :category, optional: true
 
   # Validations
-  validates :user_id, presence: true
+  validates :user, presence: true
   validates :amount_toman, presence: true, numericality: { 
     only_integer: true, 
     greater_than: 0,
@@ -35,6 +35,7 @@ class Transaction < ApplicationRecord
     message: '%{value} is not a valid transaction type' 
   }
   validates :transaction_date, presence: true
+  validate :validate_jalali_date_format
   validates :notes, length: { maximum: 500, message: 'cannot exceed 500 characters' }
   validates :usd_rate_at_creation, presence: true, numericality: { 
     only_float: true, 
@@ -91,6 +92,47 @@ class Transaction < ApplicationRecord
   end
 
   private
+
+  def validate_jalali_date_format
+    return if transaction_date.blank?
+    
+    # Only validate strings - Date/Time objects will be converted by ActiveRecord
+    return unless transaction_date.is_a?(String)
+    
+    # Allow ISO format dates (YYYY-MM-DD) which is what Date.to_s produces
+    return if transaction_date.match?(/^\d{4}-\d{2}-\d{2}$/)
+    
+    # Allow ISO format with timestamps (YYYY-MM-DD HH:MM:SS) from Time/DateTime
+    return if transaction_date.match?(/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}:\d{2}/)
+    
+    # Check Jalali format YYYY/MM/DD for strings
+    unless transaction_date.match?(/^\d{4}\/\d{2}\/\d{2}$/)
+      errors.add(:transaction_date, 'must be in YYYY/MM/DD format')
+      return
+    end
+
+    # Parse and validate Jalali date
+    year, month, day = transaction_date.split('/').map(&:to_i)
+    
+    # Validate month (1-12)
+    if month < 1 || month > 12
+      errors.add(:transaction_date, 'invalid Jalali month')
+      return
+    end
+    
+    # Validate day based on month
+    max_day = if month <= 6
+                31
+              elsif month <= 11
+                30
+              else
+                29 # Month 12, simplified (doesn't account for leap years)
+              end
+    
+    if day < 1 || day > max_day
+      errors.add(:transaction_date, "invalid day for Jalali month #{month}")
+    end
+  end
 
   def set_default_category
     self.category ||= Category.other

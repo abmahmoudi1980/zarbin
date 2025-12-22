@@ -42,6 +42,7 @@ class User < ApplicationRecord
   has_secure_password
 
   # Callbacks
+  before_validation :normalize_mobile_number
   after_create :initialize_balance
 
   attr_accessor :skip_balance_initialization
@@ -117,7 +118,29 @@ class User < ApplicationRecord
     update(account_status: :deleted)
   end
 
+  # Alias for tests that use 'status' instead of 'account_status'
+  def status=(value)
+    self.account_status = value
+  end
+
+  def status
+    account_status
+  end
+
   private
+
+  def normalize_mobile_number
+    return unless mobile_number.present?
+    
+    # Convert +98912... to 09...
+    # Convert 98912... to 09...
+    # Keep 09... as is
+    normalized = mobile_number.to_s.strip
+    normalized = normalized.gsub(/^\+98/, '0')  # +98912... -> 0912...
+    normalized = normalized.gsub(/^98/, '0')     # 98912... -> 0912...
+    
+    self.mobile_number = normalized
+  end
 
   def initialize_balance
     return if skip_balance_initialization

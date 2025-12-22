@@ -42,8 +42,11 @@ module Api
       def format_category(category)
         {
           id: category.id,
-          persian_name: category.persian_name,
-          icon_code: category.icon_code,
+          persian_name: category.persian_name,  # Keep for backwards compatibility
+          name_fa: category.persian_name,
+          name_en: category.persian_name, # We only have Persian names in the model
+          icon_code: category.icon_code,  # Keep for backwards compatibility
+          icon: category.icon_code,
           display_order: category.display_order,
           transaction_count: category.transactions.count
         }

@@ -14,7 +14,7 @@ class UserBalance < ApplicationRecord
   # Validations
   validates :user_id, presence: true, uniqueness: true
   validates :total_toman, numericality: { only_integer: true, greater_than_or_equal_to: 0 }
-  validates :total_usd_equivalent, numericality: { only_float: true, greater_than_or_equal_to: 0.0 }
+  validates :total_usd_equivalent, numericality: { greater_than_or_equal_to: 0 }
   validates :total_gold_grams_equivalent, numericality: { only_float: true, greater_than_or_equal_to: 0.0 }
 
   # Callbacks

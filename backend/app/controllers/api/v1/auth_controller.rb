@@ -98,7 +98,7 @@ module Api
       # POST /api/v1/auth/login
       # User login with mobile number and password
       def login
-        mobile_number = login_params[:mobile_number]
+        mobile_number = normalize_mobile_number(login_params[:mobile_number])
         password = login_params[:password]
 
         user = User.find_by(mobile_number:)
@@ -199,6 +199,15 @@ module Api
       def validate_mobile_number!(mobile_number)
         # Iranian mobile number: 09XXXXXXXXX
         mobile_number.match?(/\A09\d{9}\z/)
+      end
+
+      def normalize_mobile_number(mobile)
+        return nil unless mobile.present?
+        
+        normalized = mobile.to_s.strip
+        normalized = normalized.gsub(/^\+98/, '0')  # +98912... -> 0912...
+        normalized = normalized.gsub(/^98/, '0')     # 98912... -> 0912...
+        normalized
       end
 
       def success_response(data = {}, message = 'Success')

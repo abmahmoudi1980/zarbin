@@ -2,8 +2,9 @@
 
 FactoryBot.define do
   factory :transaction do
-    association :user
-    association :category
+    user { association :user, account_status: :active }
+    # Use "other" category or find existing one to avoid creating extra categories
+    category { Category.find_by(icon_code: 'other') || association(:category, :other) }
 
     amount_toman { 100_000 }
     transaction_type { 'expense' }

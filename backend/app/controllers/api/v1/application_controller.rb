@@ -7,17 +7,15 @@ module Api
       include ErrorHandler
 
       # Ensure auth endpoints are excluded from JWT verification.
-      # Use `except` on the before_action to avoid referencing actions that
-      # do not exist on other controllers (which can raise under Rails 7.1+).
-      before_action :verify_jwt_token, except: [:register, :login, :verify_otp]
+      before_action :verify_jwt_token
 
       attr_reader :current_user
 
       protected
 
       def verify_jwt_token
-        # Allow unauthenticated access to auth endpoints (register/login/verify_otp)
-        return if %w[register login verify_otp].include?(action_name)
+        # Allow unauthenticated access to specific auth endpoints
+        return if controller_name == 'auth' && %w[register login verify_otp refresh].include?(action_name)
         token = extract_token_from_headers
         return render_unauthorized('Token missing') unless token
 
@@ -25,6 +23,7 @@ module Api
           decoded = decode_jwt(token)
           @current_user = User.find(decoded['user_id'])
           return render_unauthorized('User not found') unless @current_user
+          return render_forbidden('Account is locked') if @current_user.account_status == 'locked'
         rescue JWT::DecodeError => e
           render_unauthorized("Invalid token: #{e.message}")
         rescue StandardError => e
@@ -60,6 +59,10 @@ module Api
 
       def render_unauthorized(message = 'Unauthorized')
         render_error(message, :unauthorized)
+      end
+
+      def render_forbidden(message = 'Forbidden')
+        render_error(message, :forbidden)
       end
 
       def render_not_found(message = 'Not found')

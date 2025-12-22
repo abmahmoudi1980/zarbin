@@ -3,7 +3,7 @@
 FactoryBot.define do
   factory :user do
     sequence(:mobile_number) { |n| format('090%08d', n) }
-    password_digest { BCrypt::Password.create('P4ssw0rd') }
+    password_digest { BCrypt::Password.create('TestPassword123') }
     # Let the DB/schema default apply (currently `otp_pending`).
     failed_login_attempts { 0 }
     locked_at { nil }

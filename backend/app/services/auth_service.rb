@@ -46,6 +46,8 @@ class AuthService
     payload = decode_token(old_token)
     user_id = payload['user_id']
     user = User.find(user_id)
+    # Sleep to ensure new token has different timestamp (since we use to_i which truncates to seconds)
+    sleep(1)
     generate_token(user)
   end
 

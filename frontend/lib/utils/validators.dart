@@ -174,7 +174,7 @@ class Validators {
   static bool _isJalaliLeapYear(int year) {
     try {
       final jalali = Jalali(year, 1, 1);
-      return jalali.isLeapYear;
+      return jalali.isLeapYear();
     } catch (e) {
       return false;
     }

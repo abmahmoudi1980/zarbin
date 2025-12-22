@@ -35,29 +35,29 @@ void main() {
     testWidgets('displays list of transactions', (WidgetTester tester) async {
       final mockTransactions = [
         Transaction(
-          id: 1,
-          userId: 1,
-          amountToman: 5_000_000,
+          id: '1',
+          userId: '1',
+          amountToman: 5000000,
           transactionType: 'expense',
-          categoryId: 1,
+          categoryId: '1',
           categoryName: 'خوراک',
           transactionDate: '1403/01/15',
           notes: 'Grocery shopping',
           usdRateAtCreation: 42500.0,
-          amountUsdEquivalent: 117.65,
+          goldRateAtCreation: 0,
           createdAt: DateTime.now(),
         ),
         Transaction(
-          id: 2,
-          userId: 1,
-          amountToman: 10_000_000,
+          id: '2',
+          userId: '1',
+          amountToman: 10000000,
           transactionType: 'income',
-          categoryId: 2,
+          categoryId: '2',
           categoryName: 'درآمد',
           transactionDate: '1403/01/20',
           notes: 'Monthly salary',
           usdRateAtCreation: 42500.0,
-          amountUsdEquivalent: 235.29,
+          goldRateAtCreation: 0,
           createdAt: DateTime.now(),
         ),
       ];
@@ -81,16 +81,16 @@ void main() {
     testWidgets('displays transaction details correctly', (WidgetTester tester) async {
       final mockTransactions = [
         Transaction(
-          id: 1,
-          userId: 1,
-          amountToman: 5_000_000,
+          id: '1',
+          userId: '1',
+          amountToman: 5000000,
           transactionType: 'expense',
-          categoryId: 1,
+          categoryId: '1',
           categoryName: 'خوراک',
           transactionDate: '1403/01/15',
           notes: 'Grocery shopping',
           usdRateAtCreation: 42500.0,
-          amountUsdEquivalent: 117.65,
+          goldRateAtCreation: 0,
           createdAt: DateTime.now(),
         ),
       ];
@@ -114,29 +114,29 @@ void main() {
     testWidgets('displays transactions sorted by date (newest first)', (WidgetTester tester) async {
       final mockTransactions = [
         Transaction(
-          id: 1,
-          userId: 1,
-          amountToman: 5_000_000,
+          id: '1',
+          userId: '1',
+          amountToman: 5000000,
           transactionType: 'expense',
-          categoryId: 1,
+          categoryId: '1',
           categoryName: 'خوراک',
           transactionDate: '1403/01/15',
           notes: 'Old transaction',
           usdRateAtCreation: 42500.0,
-          amountUsdEquivalent: 117.65,
+          goldRateAtCreation: 0,
           createdAt: DateTime.now().subtract(Duration(days: 5)),
         ),
         Transaction(
-          id: 2,
-          userId: 1,
-          amountToman: 10_000_000,
+          id: '2',
+          userId: '1',
+          amountToman: 10000000,
           transactionType: 'income',
-          categoryId: 2,
+          categoryId: '2',
           categoryName: 'درآمد',
           transactionDate: '1403/01/20',
           notes: 'Recent transaction',
           usdRateAtCreation: 42500.0,
-          amountUsdEquivalent: 235.29,
+          goldRateAtCreation: 0,
           createdAt: DateTime.now(),
         ),
       ];
@@ -154,24 +154,24 @@ void main() {
 
       // Verify newer transaction appears first
       expect(find.text('Recent transaction'), findsOneWidget);
-      final recentIndex = find.text('Recent transaction').evaluate().first;
-      final oldIndex = find.text('Old transaction').evaluate().first;
-      expect(recentIndex.size.height >= oldIndex.size.height, true);
+      final recentPos = tester.getTopLeft(find.text('Recent transaction'));
+      final oldPos = tester.getTopLeft(find.text('Old transaction'));
+      expect(recentPos.dy < oldPos.dy, true);
     });
 
     testWidgets('displays dual currency amounts', (WidgetTester tester) async {
       final mockTransactions = [
         Transaction(
-          id: 1,
-          userId: 1,
-          amountToman: 5_000_000,
+          id: '1',
+          userId: '1',
+          amountToman: 5000000,
           transactionType: 'expense',
-          categoryId: 1,
+          categoryId: '1',
           categoryName: 'خوراک',
           transactionDate: '1403/01/15',
           notes: 'Grocery',
           usdRateAtCreation: 42500.0,
-          amountUsdEquivalent: 117.65,
+          goldRateAtCreation: 0,
           createdAt: DateTime.now(),
         ),
       ];
@@ -195,16 +195,16 @@ void main() {
     testWidgets('displays category icons', (WidgetTester tester) async {
       final mockTransactions = [
         Transaction(
-          id: 1,
-          userId: 1,
-          amountToman: 5_000_000,
+          id: '1',
+          userId: '1',
+          amountToman: 5000000,
           transactionType: 'expense',
-          categoryId: 1,
+          categoryId: '1',
           categoryName: 'خوراک',
           transactionDate: '1403/01/15',
           notes: 'Food',
           usdRateAtCreation: 42500.0,
-          amountUsdEquivalent: 117.65,
+          goldRateAtCreation: 0,
           createdAt: DateTime.now(),
         ),
       ];
@@ -227,29 +227,29 @@ void main() {
     testWidgets('distinguishes income and expense transactions', (WidgetTester tester) async {
       final mockTransactions = [
         Transaction(
-          id: 1,
-          userId: 1,
-          amountToman: 5_000_000,
+          id: '1',
+          userId: '1',
+          amountToman: 5000000,
           transactionType: 'expense',
-          categoryId: 1,
+          categoryId: '1',
           categoryName: 'خوراک',
           transactionDate: '1403/01/15',
           notes: 'Expense',
           usdRateAtCreation: 42500.0,
-          amountUsdEquivalent: 117.65,
+          goldRateAtCreation: 0,
           createdAt: DateTime.now(),
         ),
         Transaction(
-          id: 2,
-          userId: 1,
-          amountToman: 10_000_000,
+          id: '2',
+          userId: '1',
+          amountToman: 10000000,
           transactionType: 'income',
-          categoryId: 2,
+          categoryId: '2',
           categoryName: 'درآمد',
           transactionDate: '1403/01/20',
           notes: 'Income',
           usdRateAtCreation: 42500.0,
-          amountUsdEquivalent: 235.29,
+          goldRateAtCreation: 0,
           createdAt: DateTime.now(),
         ),
       ];
@@ -266,8 +266,8 @@ void main() {
       );
 
       // Expense should be red/negative, Income should be green/positive
-      final expenseWidget = find.byType(Text).where((w) => w.widget.toString().contains('5'));
-      final incomeWidget = find.byType(Text).where((w) => w.widget.toString().contains('10'));
+      final expenseWidget = find.byWidgetPredicate((widget) => widget is Text && widget.data?.contains('5') == true);
+      final incomeWidget = find.byWidgetPredicate((widget) => widget is Text && widget.data?.contains('10') == true);
 
       expect(expenseWidget, findsWidgets);
       expect(incomeWidget, findsWidgets);
@@ -276,16 +276,16 @@ void main() {
     testWidgets('shows note preview in transaction list', (WidgetTester tester) async {
       final mockTransactions = [
         Transaction(
-          id: 1,
-          userId: 1,
-          amountToman: 5_000_000,
+          id: '1',
+          userId: '1',
+          amountToman: 5000000,
           transactionType: 'expense',
-          categoryId: 1,
+          categoryId: '1',
           categoryName: 'خوراک',
           transactionDate: '1403/01/15',
           notes: 'Grocery shopping at Hyperstar',
           usdRateAtCreation: 42500.0,
-          amountUsdEquivalent: 117.65,
+          goldRateAtCreation: 0,
           createdAt: DateTime.now(),
         ),
       ];
@@ -308,16 +308,16 @@ void main() {
     testWidgets('tapping transaction shows details or edit option', (WidgetTester tester) async {
       final mockTransactions = [
         Transaction(
-          id: 1,
-          userId: 1,
-          amountToman: 5_000_000,
+          id: '1',
+          userId: '1',
+          amountToman: 5000000,
           transactionType: 'expense',
-          categoryId: 1,
+          categoryId: '1',
           categoryName: 'خوراک',
           transactionDate: '1403/01/15',
           notes: 'Grocery',
           usdRateAtCreation: 42500.0,
-          amountUsdEquivalent: 117.65,
+          goldRateAtCreation: 0,
           createdAt: DateTime.now(),
         ),
       ];

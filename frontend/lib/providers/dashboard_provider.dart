@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import '../models/market_rate.dart';
+import '../models/category_breakdown.dart';
 import '../services/api_client.dart';
 import '../services/analytics_service.dart';
 
@@ -102,5 +103,16 @@ class DashboardProvider extends ChangeNotifier {
     _dashboard = null;
     _error = null;
     notifyListeners();
+  }
+
+  // Load spending breakdown by category
+  Future<CategoryBreakdownData> loadSpendingBreakdown() async {
+    try {
+      final response = await _apiClient.get('/transactions/summary/categories');
+      return CategoryBreakdownData.fromJson(response);
+    } catch (e, stack) {
+      await _analytics.logError(e, stack, reason: 'load_spending_breakdown_failed');
+      rethrow;
+    }
   }
 }

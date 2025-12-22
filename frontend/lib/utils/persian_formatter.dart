@@ -25,6 +25,15 @@ class PersianFormatter {
     return result;
   }
 
+  // Convert Persian digits to English
+  static String toEnglish(String input) {
+    String result = input;
+    _persianDigits.forEach((key, value) {
+      result = result.replaceAll(value, key);
+    });
+    return result;
+  }
+
   // Format number with thousand separators (Persian style)
   static String formatNumber(int number) {
     final formatter = NumberFormat('#,###');

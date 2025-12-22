@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import 'package:zarbin/screens/add_transaction_screen.dart';
 import 'package:zarbin/providers/transaction_provider.dart';
 import 'package:zarbin/providers/market_rate_provider.dart';
-import 'package:zarbin/models/category.dart';
 import 'package:mocktail/mocktail.dart';
 
 class MockTransactionProvider extends Mock implements TransactionProvider {}

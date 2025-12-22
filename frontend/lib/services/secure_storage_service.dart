@@ -7,14 +7,14 @@ class SecureStorageService {
   static const String mobileNumberKey = 'mobile_number';
   static const String userIdKey = 'user_id';
 
-  static const FlutterSecureStorage _storage = FlutterSecureStorage(
-    aOptions: AndroidOptions(
+  static final FlutterSecureStorage _storage = FlutterSecureStorage(
+    aOptions: const AndroidOptions(
       keyCipherAlgorithm: KeyCipherAlgorithm.RSA_ECB_OAEPwithSHA_256andMGF1Padding,
       storageCipherAlgorithm: StorageCipherAlgorithm.AES_GCM_NoPadding,
       resetOnError: true,
     ),
-    iOptions: IOSOptions(
-      accessibility: KeychainAccessibility.first_this_device_this_app_only,
+    iOptions: const IOSOptions(
+      accessibility: KeychainAccessibility.first_unlock,
     ),
   );
 

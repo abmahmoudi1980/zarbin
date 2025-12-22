@@ -71,7 +71,7 @@ class TransactionListItem extends StatelessWidget {
     }
 
     final result = withSeparators.reversed.join('');
-    return PersianFormatter.toPersian(result);
+    return PersianFormatter.toPersianDigits(result);
   }
 
   /// Truncates notes to preview length
@@ -94,7 +94,7 @@ class TransactionListItem extends StatelessWidget {
         leading: CircleAvatar(
           backgroundColor: _getTypeColor().withOpacity(0.1),
           child: Icon(
-            _getCategoryIcon(transaction.categoryName),
+            _getCategoryIcon(transaction.categoryName ?? ''),
             color: _getTypeColor(),
           ),
         ),
@@ -108,7 +108,7 @@ class TransactionListItem extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  transaction.categoryName,
+                  transaction.categoryName ?? 'Other',
                   style: const TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 15,

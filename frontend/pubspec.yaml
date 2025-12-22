@@ -1,6 +1,6 @@
 name: zarbin
 description: "AI-powered financial advisor for high-inflation economies. Track purchasing power, not just money."
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -15,7 +15,6 @@ dependencies:
   # State Management
   provider: ^6.1.0
   riverpod: ^2.4.0
-  riverpod_generator: ^2.3.0
 
   # Local Storage
   hive: ^2.2.3
@@ -33,23 +32,25 @@ dependencies:
   crypto: ^3.0.3
 
   # Jalali Calendar & Localization
-  shamsi_date: ^1.5.0
-  persian_datetime_picker: ^3.3.0
+  shamsi_date: any
+  persian_datetime_picker: any
   flutter_localizations:
     sdk: flutter
-  intl: ^0.19.0
+  intl: any
   faker: ^2.1.0
 
   # UI Components
   get: ^4.6.0
   cached_network_image: ^3.3.1
-  charts_flutter: ^0.12.0
   fl_chart: ^0.65.0
   shimmer: ^3.0.0
+  google_fonts: any
+  pie_chart: any
+  pull_to_refresh: ^2.0.0
 
   # Forms & Validation
   reactive_forms: ^16.1.0
-  form_builder_validators: ^9.1.0
+  form_builder_validators: any
 
   # Utilities
   uuid: ^4.0.0
@@ -59,9 +60,9 @@ dependencies:
   url_launcher: ^6.2.0
 
   # Logging & Analytics (Optional for MVP)
-  firebase_core: ^2.24.0
-  firebase_analytics: ^10.7.0
-  firebase_crashlytics: ^11.3.0
+  firebase_core: any
+  firebase_analytics: any
+  firebase_crashlytics: any
 
 dev_dependencies:
   flutter_test:
@@ -70,6 +71,7 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   test: ^1.25.0
   mockito: ^5.4.0
+  mocktail: any
   build_runner: ^2.4.0
   hive_generator: ^2.0.1
   riverpod_generator: ^2.3.0
@@ -80,9 +82,6 @@ flutter:
   # Assets
   assets:
     - assets/images/
-    - assets/icons/
-    - assets/locales/
-    - assets/data/
 
   # Fonts
   fonts:

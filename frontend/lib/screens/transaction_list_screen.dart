@@ -222,7 +222,7 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
   }
 
   /// Builds a detail row for transaction details view
-  Widget _buildDetailRow(String label, String value) {
+  Widget _buildDetailRow(String label, String? value) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
@@ -230,11 +230,11 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
         children: [
           Text(
             label,
-            style: const TextStyle(color: Colors.grey, fontSize: 14),
+            style: const TextStyle(color: Colors.grey),
           ),
           Text(
-            value,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+            value ?? 'N/A',
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -267,7 +267,8 @@ class _TransactionListScreenState extends State<TransactionListScreen> {
   }
 
   /// Deletes a transaction with confirmation
-  void _deleteTransaction(int transactionId) {
+  void _deleteTransaction(String? transactionId) {
+    if (transactionId == null) return;
     showDialog(
       context: context,
       builder: (context) => AlertDialog(

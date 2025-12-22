@@ -10,12 +10,9 @@
 //
 // To run: flutter test test/screens/market_rates_screen_test.dart
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-import 'package:provider/provider.dart';
 
-// These imports assume the screen and provider will be created in T042-T043
+// These imports assume the screen and provider will be created in T104-T106
 // import 'package:zarbin/screens/market_rates_screen.dart';
 // import 'package:zarbin/providers/market_rate_provider.dart';
 // import 'package:zarbin/services/api_client.dart';

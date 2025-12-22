@@ -32,6 +32,11 @@ class JalaliHelper {
     return toJalaliString(DateTime.now());
   }
 
+  // Format Jalali date to full string (YYYY/MM/DD)
+  static String formatFullDate(Jalali date) {
+    return '${date.year}/${date.month.toString().padLeft(2, '0')}/${date.day.toString().padLeft(2, '0')}';
+  }
+
   // Get Jalali date from DateTime with optional format
   static String formatJalaliDate(
     DateTime date, {
@@ -89,7 +94,7 @@ class JalaliHelper {
   // Check if Jalali year is leap year
   static bool isLeapYear(int jalaliYear) {
     final jalali = Jalali(jalaliYear, 1, 1);
-    return jalali.isLeapYear;
+    return jalali.isLeapYear();
   }
 
   // Get number of days in Jalali month

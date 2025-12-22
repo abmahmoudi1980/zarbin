@@ -21,9 +21,6 @@ class MarketRateProvider extends ChangeNotifier {
   String? _error;
   DateTime? _lastFetchTime;
   
-  // Cache duration - rates auto-expire after 5 minutes
-  static const Duration _cacheDuration = Duration(minutes: 5);
-  
   MarketRateProvider({required ApiClient apiClient}) : _apiClient = apiClient;
   
   // Getters
@@ -97,6 +94,9 @@ class MarketRateProvider extends ChangeNotifier {
   
   // Get USD rate
   MarketRate? get usdRate => getRateByType('usd');
+
+  // Convenience getter for tests and simple UI
+  double get currentUsdRate => usdRate?.valueInToman.toDouble() ?? 0.0;
   
   // Get Gold rate
   MarketRate? get goldRate => getRateByType('gold_gram');

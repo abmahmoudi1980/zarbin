@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:zarbin/models/category.dart';
 
 /// CategorySelector - Dropdown widget for selecting transaction category
 /// Displays all 7 predefined categories:

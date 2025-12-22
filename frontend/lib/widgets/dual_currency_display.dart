@@ -41,7 +41,7 @@ class _DualCurrencyDisplayState extends State<DualCurrencyDisplay> {
     }
 
     final result = withSeparators.reversed.join('');
-    return PersianFormatter.toPersian(result);
+    return PersianFormatter.toPersianDigits(result);
   }
 
   @override

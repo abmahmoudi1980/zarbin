@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zarbin/providers/transaction_provider.dart';
 import 'package:zarbin/providers/market_rate_provider.dart';
-import 'package:zarbin/utils/validators.dart';
 import 'package:zarbin/utils/persian_formatter.dart';
+import 'package:zarbin/utils/jalali_helper.dart';
 import 'package:zarbin/widgets/category_selector.dart';
 import 'package:zarbin/widgets/transaction_type_toggle.dart';
 import 'package:zarbin/widgets/amount_input_field.dart';
@@ -42,7 +42,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     _amountController = TextEditingController();
     _notesController = TextEditingController();
     _dateController = TextEditingController();
-    _selectedDate = Jalali.now().formatFullDate();
+    _selectedDate = JalaliHelper.formatFullDate(Jalali.now());
     _dateController.text = _selectedDate ?? '';
   }
 
@@ -67,7 +67,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       return;
     }
 
-    if (amount > 99_999_999_999) {
+    if (amount > 99999999999) {
       setState(() {
         _amountError = 'Amount exceeds maximum (99,999,999,999)';
       });
@@ -129,7 +129,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
 
     if (picked != null) {
       setState(() {
-        _selectedDate = picked.formatFullDate();
+        _selectedDate = JalaliHelper.formatFullDate(picked);
         _dateController.text = _selectedDate!;
         _dateError = null;
       });
@@ -146,7 +146,9 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     }
 
     final rateProvider = context.read<MarketRateProvider>();
-    final usdRate = rateProvider.currentUsdRate ?? 42500.0;
+    final usdRate = rateProvider.currentUsdRate;
+    if (usdRate <= 0) return '0 USD';
+    
     final usdEquivalent = amount / usdRate;
 
     return '${usdEquivalent.toStringAsFixed(2)} USD';

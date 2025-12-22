@@ -1,0 +1,448 @@
+Analyzing frontend...                                           
+
+   info • The line length exceeds the 80-character limit • lib/config/api_config.dart:10:81 • lines_longer_than_80_chars
+   info • Sort directive sections alphabetically • lib/main.dart:4:1 • directives_ordering
+   info • The line length exceeds the 80-character limit • lib/main.dart:19:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • lib/main.dart:21:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • lib/main.dart:32:81 • lines_longer_than_80_chars
+   info • Parameter 'key' could be a super parameter • lib/main.dart:42:9 • use_super_parameters
+   info • Unnecessary use of a block function body • lib/main.dart:45:38 • prefer_expression_function_bodies
+   info • Parameter 'key' could be a super parameter • lib/main.dart:94:9 • use_super_parameters
+   info • Unnecessary use of a block function body • lib/main.dart:97:38 • prefer_expression_function_bodies
+   info • Constructor declarations should be before non-constructor declarations • lib/models/category.dart:7:3 • sort_constructors_first
+   info • Constructor declarations should be before non-constructor declarations • lib/models/category.dart:14:11 • sort_constructors_first
+   info • Unnecessary use of a block function body • lib/models/category.dart:14:56 • prefer_expression_function_bodies
+   info • Constructor declarations should be before non-constructor declarations • lib/models/category_breakdown.dart:6:3 • sort_constructors_first
+   info • Constructor declarations should be before non-constructor declarations • lib/models/category_breakdown.dart:12:11 • sort_constructors_first
+   info • Unnecessary use of a block function body • lib/models/category_breakdown.dart:12:69 • prefer_expression_function_bodies
+   info • The line length exceeds the 80-character limit • lib/models/category_breakdown.dart:15:81 • lines_longer_than_80_chars
+   info • Constructor declarations should be before non-constructor declarations • lib/models/category_breakdown.dart:36:3 • sort_constructors_first
+   info • Constructor declarations should be before non-constructor declarations • lib/models/category_breakdown.dart:44:11 • sort_constructors_first
+   info • Unnecessary use of a block function body • lib/models/category_breakdown.dart:44:64 • prefer_expression_function_bodies
+   info • Constructor declarations should be before non-constructor declarations • lib/models/market_rate.dart:23:3 • sort_constructors_first
+   info • Constructor declarations should be before non-constructor declarations • lib/models/market_rate.dart:33:11 • sort_constructors_first
+   info • Unnecessary use of a block function body • lib/models/market_rate.dart:33:58 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/models/market_rate.dart:46:33 • prefer_expression_function_bodies
+   info • Use a raw string to avoid using escapes • lib/models/market_rate.dart:74:16 • use_raw_strings
+   info • Unnecessary use of a block function body • lib/models/market_rate.dart:108:44 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/models/market_rate.dart:113:37 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/models/market_rate.dart:118:21 • prefer_expression_function_bodies
+   info • Constructor declarations should be before non-constructor declarations • lib/models/transaction.dart:48:3 • sort_constructors_first
+   info • Constructor declarations should be before non-constructor declarations • lib/models/transaction.dart:74:11 • sort_constructors_first
+   info • Unnecessary use of a block function body • lib/models/transaction.dart:74:59 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/models/transaction.dart:122:34 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/models/transaction.dart:127:40 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/models/transaction.dart:138:35 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/models/transaction.dart:143:21 • prefer_expression_function_bodies
+   info • The line length exceeds the 80-character limit • lib/models/transaction.dart:144:81 • lines_longer_than_80_chars
+   info • Constructor declarations should be before non-constructor declarations • lib/models/user.dart:29:3 • sort_constructors_first
+   info • Constructor declarations should be before non-constructor declarations • lib/models/user.dart:40:11 • sort_constructors_first
+   info • Unnecessary use of a block function body • lib/models/user.dart:40:52 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/models/user.dart:59:33 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/models/user.dart:84:21 • prefer_expression_function_bodies
+   info • The line length exceeds the 80-character limit • lib/models/user.dart:85:81 • lines_longer_than_80_chars
+   info • Use relative imports for files in the 'lib' directory • lib/providers/auth_provider.dart:2:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/providers/auth_provider.dart:3:8 • prefer_relative_imports
+   info • Sort directive sections alphabetically • lib/providers/auth_provider.dart:4:1 • directives_ordering
+   info • Use relative imports for files in the 'lib' directory • lib/providers/auth_provider.dart:4:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/providers/auth_provider.dart:5:8 • prefer_relative_imports
+   info • Constructor declarations should be before non-constructor declarations • lib/providers/auth_provider.dart:17:3 • sort_constructors_first
+   info • Sort directive sections alphabetically • lib/providers/dashboard_provider.dart:3:1 • directives_ordering
+   info • Sort directive sections alphabetically • lib/providers/dashboard_provider.dart:5:1 • directives_ordering
+   info • Constructor declarations should be before non-constructor declarations • lib/providers/dashboard_provider.dart:14:3 • sort_constructors_first
+   info • Constructor declarations should be before non-constructor declarations • lib/providers/dashboard_provider.dart:21:11 • sort_constructors_first
+   info • Unnecessary use of a block function body • lib/providers/dashboard_provider.dart:21:61 • prefer_expression_function_bodies
+   info • The line length exceeds the 80-character limit • lib/providers/dashboard_provider.dart:24:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • lib/providers/dashboard_provider.dart:25:81 • lines_longer_than_80_chars
+   info • Constructor declarations should be before non-constructor declarations • lib/providers/dashboard_provider.dart:49:3 • sort_constructors_first
+   info • The line length exceeds the 80-character limit • lib/providers/dashboard_provider.dart:88:81 • lines_longer_than_80_chars
+   info • Unnecessary use of parentheses • lib/providers/dashboard_provider.dart:89:31 • unnecessary_parenthesis
+   info • The line length exceeds the 80-character limit • lib/providers/dashboard_provider.dart:89:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • lib/providers/dashboard_provider.dart:94:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • lib/providers/dashboard_provider.dart:114:81 • lines_longer_than_80_chars
+   info • Sort directive sections alphabetically • lib/providers/market_rate_provider.dart:4:1 • directives_ordering
+   info • Constructor declarations should be before non-constructor declarations • lib/providers/market_rate_provider.dart:24:3 • sort_constructors_first
+   info • Use relative imports for files in the 'lib' directory • lib/providers/transaction_provider.dart:2:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/providers/transaction_provider.dart:3:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/providers/transaction_provider.dart:4:8 • prefer_relative_imports
+   info • Sort directive sections alphabetically • lib/providers/transaction_provider.dart:5:1 • directives_ordering
+   info • Use relative imports for files in the 'lib' directory • lib/providers/transaction_provider.dart:5:8 • prefer_relative_imports
+   info • Constructor declarations should be before non-constructor declarations • lib/providers/transaction_provider.dart:18:3 • sort_constructors_first
+   info • The type of the right operand ('int') isn't a subtype or a supertype of the left operand ('String?') • lib/providers/transaction_provider.dart:223:51 • unrelated_type_equality_checks
+   info • Unnecessary use of a block function body • lib/providers/transaction_provider.dart:230:56 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/providers/transaction_provider.dart:235:63 • prefer_expression_function_bodies
+   info • The type of the right operand ('int') isn't a subtype or a supertype of the left operand ('String?') • lib/providers/transaction_provider.dart:236:52 • unrelated_type_equality_checks
+   info • Unnecessary use of a block function body • lib/providers/transaction_provider.dart:240:24 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/providers/transaction_provider.dart:246:25 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/providers/transaction_provider.dart:252:23 • prefer_expression_function_bodies
+   info • Use relative imports for files in the 'lib' directory • lib/screens/add_transaction_screen.dart:3:8 • prefer_relative_imports
+   info • Sort directive sections alphabetically • lib/screens/add_transaction_screen.dart:4:1 • directives_ordering
+   info • Use relative imports for files in the 'lib' directory • lib/screens/add_transaction_screen.dart:4:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/screens/add_transaction_screen.dart:5:8 • prefer_relative_imports
+   info • Sort directive sections alphabetically • lib/screens/add_transaction_screen.dart:6:1 • directives_ordering
+   info • Use relative imports for files in the 'lib' directory • lib/screens/add_transaction_screen.dart:6:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/screens/add_transaction_screen.dart:7:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/screens/add_transaction_screen.dart:8:8 • prefer_relative_imports
+   info • Sort directive sections alphabetically • lib/screens/add_transaction_screen.dart:9:1 • directives_ordering
+   info • Use relative imports for files in the 'lib' directory • lib/screens/add_transaction_screen.dart:9:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/screens/add_transaction_screen.dart:10:8 • prefer_relative_imports
+   info • Sort directive sections alphabetically • lib/screens/add_transaction_screen.dart:11:1 • directives_ordering
+   info • Parameter 'key' could be a super parameter • lib/screens/add_transaction_screen.dart:22:9 • use_super_parameters
+   info • An 'async' function should have a 'Future' return type when it doesn't return a value • lib/screens/add_transaction_screen.dart:58:8 • avoid_void_async
+   info • The line length exceeds the 80-character limit • lib/screens/add_transaction_screen.dart:115:81 • lines_longer_than_80_chars
+   info • An 'async' function should have a 'Future' return type when it doesn't return a value • lib/screens/add_transaction_screen.dart:122:8 • avoid_void_async
+   info • Unnecessary type annotation on a local variable • lib/screens/add_transaction_screen.dart:123:11 • omit_local_variable_types
+   info • Unnecessary use of a block function body • lib/screens/add_transaction_screen.dart:158:38 • prefer_expression_function_bodies
+   info • Unnecessary use of a 'double' literal • lib/screens/add_transaction_screen.dart:165:39 • prefer_int_literals
+   info • Unnecessary use of a 'double' literal • lib/screens/add_transaction_screen.dart:178:36 • prefer_int_literals
+   info • Unnecessary use of a 'double' literal • lib/screens/add_transaction_screen.dart:192:36 • prefer_int_literals
+   info • Unnecessary use of a 'double' literal • lib/screens/add_transaction_screen.dart:201:36 • prefer_int_literals
+   info • Unnecessary use of a 'double' literal • lib/screens/add_transaction_screen.dart:212:36 • prefer_int_literals
+   info • Unnecessary use of a 'double' literal • lib/screens/add_transaction_screen.dart:230:36 • prefer_int_literals
+   info • Unnecessary use of a 'double' literal • lib/screens/add_transaction_screen.dart:244:36 • prefer_int_literals
+   info • Unnecessary use of a block function body • lib/screens/add_transaction_screen.dart:248:47 • prefer_expression_function_bodies
+   info • Unnecessary use of a 'double' literal • lib/screens/add_transaction_screen.dart:252:67 • prefer_int_literals
+   info • Unnecessary use of a block function body • lib/screens/add_transaction_screen.dart:278:4 • prefer_expression_function_bodies
+   info • Use relative imports for files in the 'lib' directory • lib/screens/category_breakdown_screen.dart:3:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/screens/category_breakdown_screen.dart:4:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/screens/category_breakdown_screen.dart:5:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/screens/category_breakdown_screen.dart:6:8 • prefer_relative_imports
+   info • Sort directive sections alphabetically • lib/screens/category_breakdown_screen.dart:7:1 • directives_ordering
+   info • Use relative imports for files in the 'lib' directory • lib/screens/category_breakdown_screen.dart:7:8 • prefer_relative_imports
+   info • Parameter 'key' could be a super parameter • lib/screens/category_breakdown_screen.dart:10:9 • use_super_parameters
+   info • The line length exceeds the 80-character limit • lib/screens/category_breakdown_screen.dart:39:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a block function body • lib/screens/category_breakdown_screen.dart:46:38 • prefer_expression_function_bodies
+   info • Parameter 'key' could be a super parameter • lib/screens/dashboard_screen.dart:21:9 • use_super_parameters
+   info • Unnecessary use of a block function body • lib/screens/dashboard_screen.dart:75:38 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/screens/dashboard_screen.dart:89:45 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/screens/dashboard_screen.dart:166:54 • prefer_expression_function_bodies
+   info • Use a raw string to avoid using escapes • lib/screens/dashboard_screen.dart:179:21 • use_raw_strings
+   info • Unnecessary use of a block function body • lib/screens/dashboard_screen.dart:193:36 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/screens/dashboard_screen.dart:227:53 • prefer_expression_function_bodies
+   info • Unnecessary use of a 'double' literal • lib/screens/dashboard_screen.dart:229:37 • prefer_int_literals
+   info • The line length exceeds the 80-character limit • lib/screens/dashboard_screen.dart:231:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a block function body • lib/screens/dashboard_screen.dart:241:43 • prefer_expression_function_bodies
+   info • Use relative imports for files in the 'lib' directory • lib/screens/login_screen.dart:3:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/screens/login_screen.dart:4:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/screens/login_screen.dart:5:8 • prefer_relative_imports
+   info • Parameter 'key' could be a super parameter • lib/screens/login_screen.dart:8:9 • use_super_parameters
+   info • Unnecessary duplication of receiver • lib/screens/login_screen.dart:33:5 • cascade_invocations
+   info • Unnecessary use of a block function body • lib/screens/login_screen.dart:52:38 • prefer_expression_function_bodies
+   info • The line length exceeds the 80-character limit • lib/screens/login_screen.dart:116:81 • lines_longer_than_80_chars
+   info • Parameter 'key' could be a super parameter • lib/screens/market_rates_screen.dart:19:9 • use_super_parameters
+   info • An 'async' function should have a 'Future' return type when it doesn't return a value • lib/screens/market_rates_screen.dart:40:8 • avoid_void_async
+   info • Unnecessary use of a block function body • lib/screens/market_rates_screen.dart:50:38 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/screens/market_rates_screen.dart:58:45 • prefer_expression_function_bodies
+   info • The line length exceeds the 80-character limit • lib/screens/market_rates_screen.dart:161:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a block function body • lib/screens/market_rates_screen.dart:197:60 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/screens/market_rates_screen.dart:223:61 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/screens/market_rates_screen.dart:224:38 • prefer_expression_function_bodies
+   info • Use relative imports for files in the 'lib' directory • lib/screens/otp_verification_screen.dart:3:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/screens/otp_verification_screen.dart:4:8 • prefer_relative_imports
+   info • Constructor declarations should be before non-constructor declarations • lib/screens/otp_verification_screen.dart:9:9 • sort_constructors_first
+   info • Parameter 'key' could be a super parameter • lib/screens/otp_verification_screen.dart:9:9 • use_super_parameters
+   info • Unnecessary duplication of receiver • lib/screens/otp_verification_screen.dart:65:5 • cascade_invocations
+   info • Unnecessary duplication of receiver • lib/screens/otp_verification_screen.dart:77:5 • cascade_invocations
+   info • Local variables should be final • lib/screens/otp_verification_screen.dart:82:5 • prefer_final_locals
+   info • Unnecessary type annotation on a local variable • lib/screens/otp_verification_screen.dart:82:5 • omit_local_variable_types
+   info • Local variables should be final • lib/screens/otp_verification_screen.dart:83:5 • prefer_final_locals
+   info • Unnecessary type annotation on a local variable • lib/screens/otp_verification_screen.dart:83:5 • omit_local_variable_types
+   info • The line length exceeds the 80-character limit • lib/screens/otp_verification_screen.dart:84:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a block function body • lib/screens/otp_verification_screen.dart:88:38 • prefer_expression_function_bodies
+   info • Use relative imports for files in the 'lib' directory • lib/screens/register_screen.dart:3:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/screens/register_screen.dart:4:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/screens/register_screen.dart:5:8 • prefer_relative_imports
+   info • Parameter 'key' could be a super parameter • lib/screens/register_screen.dart:8:9 • use_super_parameters
+   info • Unnecessary duplication of receiver • lib/screens/register_screen.dart:47:5 • cascade_invocations
+   info • Unnecessary use of a block function body • lib/screens/register_screen.dart:58:38 • prefer_expression_function_bodies
+   info • The line length exceeds the 80-character limit • lib/screens/register_screen.dart:123:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • lib/screens/register_screen.dart:139:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • lib/screens/register_screen.dart:154:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • lib/screens/register_screen.dart:157:81 • lines_longer_than_80_chars
+   info • Use relative imports for files in the 'lib' directory • lib/screens/transaction_list_screen.dart:3:8 • prefer_relative_imports
+   info • Sort directive sections alphabetically • lib/screens/transaction_list_screen.dart:4:1 • directives_ordering
+   info • Use relative imports for files in the 'lib' directory • lib/screens/transaction_list_screen.dart:4:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/screens/transaction_list_screen.dart:5:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/screens/transaction_list_screen.dart:6:8 • prefer_relative_imports
+   info • Parameter 'key' could be a super parameter • lib/screens/transaction_list_screen.dart:18:9 • use_super_parameters
+   info • Unnecessary use of a block function body • lib/screens/transaction_list_screen.dart:35:29 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/screens/transaction_list_screen.dart:49:38 • prefer_expression_function_bodies
+   info • Unnecessary use of a 'double' literal • lib/screens/transaction_list_screen.dart:122:61 • prefer_int_literals
+   info • Unnecessary use of a 'double' literal • lib/screens/transaction_list_screen.dart:150:39 • prefer_int_literals
+   info • Unnecessary use of a null check ('!') • lib/screens/transaction_list_screen.dart:183:57 • unnecessary_null_checks
+   info • Unnecessary use of a block function body • lib/screens/transaction_list_screen.dart:225:55 • prefer_expression_function_bodies
+   info • Unnecessary use of a 'double' literal • lib/screens/transaction_list_screen.dart:227:53 • prefer_int_literals
+   info • The line length exceeds the 80-character limit • lib/screens/transaction_list_screen.dart:276:81 • lines_longer_than_80_chars
+   info • Don't use 'BuildContext's across async gaps, guarded by an unrelated 'mounted' check • lib/screens/transaction_list_screen.dart:291:40 • use_build_context_synchronously
+   info • Constructor declarations should be before non-constructor declarations • lib/services/analytics_service.dart:8:11 • sort_constructors_first
+   info • Constructor declarations should be before non-constructor declarations • lib/services/analytics_service.dart:9:3 • sort_constructors_first
+   info • The line length exceeds the 80-character limit • lib/services/analytics_service.dart:22:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • lib/services/analytics_service.dart:65:81 • lines_longer_than_80_chars
+   info • Sort directive sections alphabetically • lib/services/api_client.dart:5:1 • directives_ordering
+   info • Constructor declarations should be before non-constructor declarations • lib/services/api_client.dart:12:3 • sort_constructors_first
+   info • The method is used to change a property • lib/services/api_client.dart:45:8 • use_setters_to_change_properties
+   info • The line length exceeds the 80-character limit • lib/services/api_client.dart:54:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • lib/services/api_client.dart:64:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • lib/services/api_client.dart:74:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • lib/services/api_client.dart:84:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a block function body • lib/services/api_client.dart:104:62 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/services/api_client.dart:111:73 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/services/api_client.dart:121:60 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/services/api_client.dart:128:38 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/services/api_client.dart:133:46 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/services/api_client.dart:147:54 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/services/api_client.dart:152:45 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/services/api_client.dart:156:46 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/services/api_client.dart:161:47 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/services/api_client.dart:165:74 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/services/api_client.dart:172:5 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/services/api_client.dart:176:58 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/services/api_client.dart:183:5 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/services/api_client.dart:191:46 • prefer_expression_function_bodies
+   info • Constructor declarations should be before non-constructor declarations • lib/services/api_client.dart:210:3 • sort_constructors_first
+   info • An 'async' function should have a 'Future' return type when it doesn't return a value • lib/services/api_client.dart:213:8 • avoid_void_async
+   info • The line length exceeds the 80-character limit • lib/services/api_client.dart:213:81 • lines_longer_than_80_chars
+   info • An 'async' function should have a 'Future' return type when it doesn't return a value • lib/services/api_client.dart:227:8 • avoid_void_async
+   info • Constructor declarations should be before non-constructor declarations • lib/services/api_client.dart:276:3 • sort_constructors_first
+   info • Unnecessary duplication of receiver • lib/services/api_client.dart:286:5 • cascade_invocations
+   info • Unnecessary duplication of receiver • lib/services/api_client.dart:287:5 • cascade_invocations
+   info • Constructor declarations should be before non-constructor declarations • lib/services/auth_service.dart:12:11 • sort_constructors_first
+   info • Unnecessary use of a block function body • lib/services/auth_service.dart:12:25 • prefer_expression_function_bodies
+   info • Constructor declarations should be before non-constructor declarations • lib/services/auth_service.dart:16:3 • sort_constructors_first
+   info • The line length exceeds the 80-character limit • lib/services/auth_service.dart:40:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a block function body • lib/services/auth_service.dart:106:34 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/services/auth_service.dart:111:34 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/services/auth_service.dart:116:30 • prefer_expression_function_bodies
+   info • Sort directive sections alphabetically • lib/services/database_service.dart:3:1 • directives_ordering
+   info • The line length exceeds the 80-character limit • lib/services/database_service.dart:64:81 • lines_longer_than_80_chars
+   info • Missing a newline at the beginning of a multiline string • lib/services/database_service.dart:200:7 • leading_newlines_in_multiline_strings
+   info • Unnecessary use of a block function body • lib/services/database_service.dart:231:59 • prefer_expression_function_bodies
+   info • The line length exceeds the 80-character limit • lib/services/database_service.dart:240:81 • lines_longer_than_80_chars
+   info • Sort directive sections alphabetically • lib/services/hive_service.dart:5:1 • directives_ordering
+   info • Unnecessary type annotation on a local variable • lib/services/hive_service.dart:59:10 • omit_local_variable_types
+   info • Constructor declarations should be before non-constructor declarations • lib/services/market_rate_service.dart:11:11 • sort_constructors_first
+   info • Unnecessary use of a block function body • lib/services/market_rate_service.dart:11:31 • prefer_expression_function_bodies
+   info • Constructor declarations should be before non-constructor declarations • lib/services/market_rate_service.dart:15:3 • sort_constructors_first
+   info • Local variables should be final • lib/services/market_rate_service.dart:50:7 • prefer_final_locals
+   info • Unnecessary use of a block function body • lib/services/market_rate_service.dart:125:43 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/services/market_rate_service.dart:130:25 • prefer_expression_function_bodies
+   info • Constructor declarations should be before non-constructor declarations • lib/services/secure_storage.dart:12:3 • sort_constructors_first
+   info • Unnecessary use of a block function body • lib/services/secure_storage.dart:20:30 • prefer_expression_function_bodies
+   info • Unnecessary 'await' • lib/services/secure_storage.dart:21:12 • unnecessary_await_in_return
+   info • Unnecessary use of a block function body • lib/services/secure_storage.dart:33:31 • prefer_expression_function_bodies
+   info • Unnecessary 'await' • lib/services/secure_storage.dart:34:12 • unnecessary_await_in_return
+   info • Unnecessary use of a block function body • lib/services/secure_storage.dart:46:37 • prefer_expression_function_bodies
+   info • Unnecessary 'await' • lib/services/secure_storage.dart:47:12 • unnecessary_await_in_return
+   info • Unnecessary use of a block function body • lib/services/secure_storage.dart:63:44 • prefer_expression_function_bodies
+   info • Unnecessary 'await' • lib/services/secure_storage.dart:64:12 • unnecessary_await_in_return
+   info • Use 'const' with the constructor to improve performance • lib/services/secure_storage_service.dart:10:48 • prefer_const_constructors
+   info • The line length exceeds the 80-character limit • lib/services/secure_storage_service.dart:12:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a block function body • lib/services/secure_storage_service.dart:26:37 • prefer_expression_function_bodies
+   info • Unnecessary 'await' • lib/services/secure_storage_service.dart:27:12 • unnecessary_await_in_return
+   info • Unnecessary use of a block function body • lib/services/secure_storage_service.dart:44:44 • prefer_expression_function_bodies
+   info • Unnecessary 'await' • lib/services/secure_storage_service.dart:45:12 • unnecessary_await_in_return
+   info • Unnecessary use of a block function body • lib/services/secure_storage_service.dart:57:44 • prefer_expression_function_bodies
+   info • Unnecessary 'await' • lib/services/secure_storage_service.dart:58:12 • unnecessary_await_in_return
+   info • Unnecessary use of a block function body • lib/services/secure_storage_service.dart:70:38 • prefer_expression_function_bodies
+   info • Unnecessary 'await' • lib/services/secure_storage_service.dart:71:12 • unnecessary_await_in_return
+   info • Unnecessary use of a block function body • lib/services/secure_storage_service.dart:83:53 • prefer_expression_function_bodies
+   info • Unnecessary 'await' • lib/services/secure_storage_service.dart:84:12 • unnecessary_await_in_return
+   info • Unnecessary use of a block function body • lib/utils/category_icons.dart:21:48 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/utils/category_icons.dart:25:46 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/utils/font_loader.dart:7:72 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/utils/font_loader.dart:16:76 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/utils/font_loader.dart:25:75 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/utils/font_loader.dart:34:73 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/utils/font_loader.dart:44:69 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/utils/font_loader.dart:52:72 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/utils/font_loader.dart:92:35 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/utils/jalali_helper.dart:31:40 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/utils/jalali_helper.dart:36:45 • prefer_expression_function_bodies
+   info • Unnecessary type annotation on a local variable • lib/utils/jalali_helper.dart:49:5 • omit_local_variable_types
+   info • The line length exceeds the 80-character limit • lib/utils/jalali_helper.dart:52:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a block function body • lib/utils/jalali_helper.dart:90:73 • prefer_expression_function_bodies
+   info • Unnecessary type annotation on a local variable • lib/utils/persian_formatter.dart:21:5 • omit_local_variable_types
+   info • Unnecessary type annotation on a local variable • lib/utils/persian_formatter.dart:30:5 • omit_local_variable_types
+   info • Unnecessary use of parentheses • lib/utils/persian_formatter.dart:64:33 • unnecessary_parenthesis
+   info • The line length exceeds the 80-character limit • lib/utils/persian_formatter.dart:64:81 • lines_longer_than_80_chars
+   info • Unnecessary use of parentheses • lib/utils/persian_formatter.dart:66:33 • unnecessary_parenthesis
+   info • The line length exceeds the 80-character limit • lib/utils/persian_formatter.dart:66:81 • lines_longer_than_80_chars
+   info • Unnecessary use of parentheses • lib/utils/persian_formatter.dart:68:33 • unnecessary_parenthesis
+   info • The line length exceeds the 80-character limit • lib/utils/persian_formatter.dart:80:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • lib/utils/persian_formatter.dart:143:81 • lines_longer_than_80_chars
+   info • Use 'const' with the constructor to improve performance • lib/utils/validators.dart:102:15 • prefer_const_constructors
+   info • Use relative imports for files in the 'lib' directory • lib/widgets/amount_input_field.dart:2:8 • prefer_relative_imports
+   info • Constructor declarations should be before non-constructor declarations • lib/widgets/amount_input_field.dart:18:9 • sort_constructors_first
+   info • Parameter 'key' could be a super parameter • lib/widgets/amount_input_field.dart:18:9 • use_super_parameters
+   info • The line length exceeds the 80-character limit • lib/widgets/amount_input_field.dart:43:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a block function body • lib/widgets/amount_input_field.dart:52:38 • prefer_expression_function_bodies
+   info • Unnecessary use of a 'double' literal • lib/widgets/amount_input_field.dart:57:50 • prefer_int_literals
+   info • Unnecessary use of a 'double' literal • lib/widgets/amount_input_field.dart:100:49 • prefer_int_literals
+   info • Unnecessary use of a 'double' literal • lib/widgets/amount_input_field.dart:111:47 • prefer_int_literals
+   info • Constructor declarations should be before non-constructor declarations • lib/widgets/balance_card.dart:17:9 • sort_constructors_first
+   info • Parameter 'key' could be a super parameter • lib/widgets/balance_card.dart:17:9 • use_super_parameters
+   info • Unnecessary use of a block function body • lib/widgets/balance_card.dart:26:38 • prefer_expression_function_bodies
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/balance_card.dart:37:28 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/balance_card.dart:37:52 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/balance_card.dart:42:26 • deprecated_member_use
+   info • Use relative imports for files in the 'lib' directory • lib/widgets/category_list_item.dart:2:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/widgets/category_list_item.dart:3:8 • prefer_relative_imports
+   info • Sort directive sections alphabetically • lib/widgets/category_list_item.dart:4:1 • directives_ordering
+   info • Use relative imports for files in the 'lib' directory • lib/widgets/category_list_item.dart:4:8 • prefer_relative_imports
+   info • Constructor declarations should be before non-constructor declarations • lib/widgets/category_list_item.dart:10:9 • sort_constructors_first
+   info • Parameter 'key' could be a super parameter • lib/widgets/category_list_item.dart:10:9 • use_super_parameters
+   info • The line length exceeds the 80-character limit • lib/widgets/category_list_item.dart:54:81 • lines_longer_than_80_chars
+   info • Use relative imports for files in the 'lib' directory • lib/widgets/category_pie_chart.dart:3:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/widgets/category_pie_chart.dart:4:8 • prefer_relative_imports
+   info • Constructor declarations should be before non-constructor declarations • lib/widgets/category_pie_chart.dart:9:9 • sort_constructors_first
+   info • Parameter 'key' could be a super parameter • lib/widgets/category_pie_chart.dart:9:9 • use_super_parameters
+   info • Use 'const' with the constructor to improve performance • lib/widgets/category_pie_chart.dart:62:31 • prefer_const_constructors
+   info • Unnecessary use of a block function body • lib/widgets/category_pie_chart.dart:98:33 • prefer_expression_function_bodies
+   info • Closure should be a tearoff • lib/widgets/category_pie_chart.dart:103:18 • unnecessary_lambdas
+   info • Constructor declarations should be before non-constructor declarations • lib/widgets/category_selector.dart:10:9 • sort_constructors_first
+   info • Parameter 'key' could be a super parameter • lib/widgets/category_selector.dart:10:9 • use_super_parameters
+   info • Unnecessary use of a block function body • lib/widgets/category_selector.dart:33:38 • prefer_expression_function_bodies
+   info • Unnecessary use of a 'double' literal • lib/widgets/category_selector.dart:38:44 • prefer_int_literals
+   info • 'value' is deprecated and shouldn't be used. Use initialValue instead. This will set the initial value for the form field. This feature was deprecated after v3.33.0-1.0.pre • lib/widgets/category_selector.dart:49:11 • deprecated_member_use
+   info • Unnecessary use of a block function body • lib/widgets/category_selector.dart:60:45 • prefer_expression_function_bodies
+   info • The line length exceeds the 80-character limit • lib/widgets/category_selector.dart:65:81 • lines_longer_than_80_chars
+   info • Use relative imports for files in the 'lib' directory • lib/widgets/dual_currency_display.dart:2:8 • prefer_relative_imports
+   info • Constructor declarations should be before non-constructor declarations • lib/widgets/dual_currency_display.dart:15:9 • sort_constructors_first
+   info • Parameter 'key' could be a super parameter • lib/widgets/dual_currency_display.dart:15:9 • use_super_parameters
+   info • Unnecessary type annotation on a local variable • lib/widgets/dual_currency_display.dart:36:10 • omit_local_variable_types
+   info • Unnecessary use of a block function body • lib/widgets/dual_currency_display.dart:48:38 • prefer_expression_function_bodies
+   info • Unnecessary use of a 'double' literal • lib/widgets/dual_currency_display.dart:50:37 • prefer_int_literals
+   info • Unnecessary use of a block function body • lib/widgets/error_dialog.dart:14:39 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/widgets/error_dialog.dart:58:6 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/widgets/error_dialog.dart:71:6 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/widgets/error_dialog.dart:84:6 • prefer_expression_function_bodies
+   info • Unnecessary use of a block function body • lib/widgets/error_dialog.dart:96:6 • prefer_expression_function_bodies
+   info • Don't use 'BuildContext's across async gaps • lib/widgets/error_dialog.dart:98:28 • use_build_context_synchronously
+   info • Unnecessary use of a block function body • lib/widgets/error_dialog.dart:118:6 • prefer_expression_function_bodies
+   info • Don't use 'BuildContext's across async gaps • lib/widgets/error_dialog.dart:120:28 • use_build_context_synchronously
+   info • Constructor declarations should be before non-constructor declarations • lib/widgets/loading_overlay.dart:8:9 • sort_constructors_first
+   info • Parameter 'key' could be a super parameter • lib/widgets/loading_overlay.dart:8:9 • use_super_parameters
+   info • Unnecessary use of a block function body • lib/widgets/loading_overlay.dart:16:38 • prefer_expression_function_bodies
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/loading_overlay.dart:23:35 • deprecated_member_use
+   info • Constructor declarations should be before non-constructor declarations • lib/widgets/offline_indicator.dart:8:9 • sort_constructors_first
+   info • Parameter 'key' could be a super parameter • lib/widgets/offline_indicator.dart:8:9 • use_super_parameters
+   info • Unnecessary use of a 'double' literal • lib/widgets/offline_indicator.dart:61:49 • prefer_int_literals
+   info • The line length exceeds the 80-character limit • lib/widgets/offline_indicator.dart:62:81 • lines_longer_than_80_chars
+   info • Constructor declarations should be before non-constructor declarations • lib/widgets/offline_indicator.dart:121:9 • sort_constructors_first
+   info • Parameter 'key' could be a super parameter • lib/widgets/offline_indicator.dart:121:9 • use_super_parameters
+   info • Constructor declarations should be before non-constructor declarations • lib/widgets/offline_indicator.dart:173:9 • sort_constructors_first
+   info • Parameter 'key' could be a super parameter • lib/widgets/offline_indicator.dart:173:9 • use_super_parameters
+   info • Constructor declarations should be before non-constructor declarations • lib/widgets/rate_card.dart:18:9 • sort_constructors_first
+   info • Parameter 'key' could be a super parameter • lib/widgets/rate_card.dart:18:9 • use_super_parameters
+   info • Unnecessary use of a block function body • lib/widgets/rate_card.dart:26:38 • prefer_expression_function_bodies
+   info • Use 'const' with the constructor to improve performance • lib/widgets/rate_card.dart:58:27 • prefer_const_constructors
+   info • Use 'const' with the constructor to improve performance • lib/widgets/rate_card.dart:60:36 • prefer_const_constructors
+   info • Use 'const' literals as arguments to constructors of '@immutable' classes • lib/widgets/rate_card.dart:61:41 • prefer_const_literals_to_create_immutables
+   info • The line length exceeds the 80-character limit • lib/widgets/rate_card.dart:89:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • lib/widgets/rate_card.dart:172:81 • lines_longer_than_80_chars
+   info • Constructor declarations should be before non-constructor declarations • lib/widgets/rate_change_indicator.dart:17:9 • sort_constructors_first
+   info • Parameter 'key' could be a super parameter • lib/widgets/rate_change_indicator.dart:17:9 • use_super_parameters
+   info • The line length exceeds the 80-character limit • lib/widgets/rate_change_indicator.dart:69:81 • lines_longer_than_80_chars
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/rate_change_indicator.dart:74:22 • deprecated_member_use
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/rate_change_indicator.dart:76:41 • deprecated_member_use
+   info • Use relative imports for files in the 'lib' directory • lib/widgets/transaction_list_item.dart:2:8 • prefer_relative_imports
+   info • Use relative imports for files in the 'lib' directory • lib/widgets/transaction_list_item.dart:3:8 • prefer_relative_imports
+   info • Constructor declarations should be before non-constructor declarations • lib/widgets/transaction_list_item.dart:20:9 • sort_constructors_first
+   info • Parameter 'key' could be a super parameter • lib/widgets/transaction_list_item.dart:20:9 • use_super_parameters
+   info • Unnecessary use of a block function body • lib/widgets/transaction_list_item.dart:49:25 • prefer_expression_function_bodies
+   info • Unnecessary type annotation on a local variable • lib/widgets/transaction_list_item.dart:66:10 • omit_local_variable_types
+   info • Unnecessary use of a block function body • lib/widgets/transaction_list_item.dart:87:38 • prefer_expression_function_bodies
+   info • 'withOpacity' is deprecated and shouldn't be used. Use .withValues() to avoid precision loss • lib/widgets/transaction_list_item.dart:95:44 • deprecated_member_use
+   info • Unnecessary use of a 'double' literal • lib/widgets/transaction_list_item.dart:181:55 • prefer_int_literals
+   info • Constructor declarations should be before non-constructor declarations • lib/widgets/transaction_type_toggle.dart:9:9 • sort_constructors_first
+   info • Parameter 'key' could be a super parameter • lib/widgets/transaction_type_toggle.dart:9:9 • use_super_parameters
+   info • Unnecessary use of a block function body • lib/widgets/transaction_type_toggle.dart:29:38 • prefer_expression_function_bodies
+   info • Unnecessary use of a 'double' literal • lib/widgets/transaction_type_toggle.dart:34:44 • prefer_int_literals
+   info • Dependencies not sorted alphabetically • pubspec.yaml:20:3 • sort_pub_dependencies
+   info • Dependencies not sorted alphabetically • pubspec.yaml:71:3 • sort_pub_dependencies
+   info • Sort directive sections alphabetically • test/screens/add_transaction_screen_test.dart:5:1 • directives_ordering
+   info • Sort directive sections alphabetically • test/screens/add_transaction_screen_test.dart:6:1 • directives_ordering
+   info • Sort directive sections alphabetically • test/screens/add_transaction_screen_test.dart:7:1 • directives_ordering
+   info • The line length exceeds the 80-character limit • test/screens/add_transaction_screen_test.dart:22:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/add_transaction_screen_test.dart:67:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/add_transaction_screen_test.dart:119:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a 'double' literal • test/screens/add_transaction_screen_test.dart:120:68 • prefer_int_literals
+   info • The line length exceeds the 80-character limit • test/screens/add_transaction_screen_test.dart:146:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/add_transaction_screen_test.dart:167:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a 'double' literal • test/screens/add_transaction_screen_test.dart:176:68 • prefer_int_literals
+   info • The line length exceeds the 80-character limit • test/screens/add_transaction_screen_test.dart:252:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/add_transaction_screen_test.dart:276:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a 'double' literal • test/screens/add_transaction_screen_test.dart:285:68 • prefer_int_literals
+   info • The line length exceeds the 80-character limit • test/screens/dashboard_screen_test.dart:45:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/dashboard_screen_test.dart:62:81 • lines_longer_than_80_chars
+   info • Sort directive sections alphabetically • test/screens/login_screen_test.dart:5:1 • directives_ordering
+   info • Sort directive sections alphabetically • test/screens/login_screen_test.dart:6:1 • directives_ordering
+   info • The line length exceeds the 80-character limit • test/screens/login_screen_test.dart:34:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/login_screen_test.dart:48:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/login_screen_test.dart:74:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/login_screen_test.dart:139:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/login_screen_test.dart:158:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/login_screen_test.dart:217:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/login_screen_test.dart:220:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/market_rates_screen_test.dart:22:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/market_rates_screen_test.dart:33:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/market_rates_screen_test.dart:90:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/market_rates_screen_test.dart:101:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/market_rates_screen_test.dart:111:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/market_rates_screen_test.dart:122:81 • lines_longer_than_80_chars
+   info • Sort directive sections alphabetically • test/screens/register_screen_test.dart:5:1 • directives_ordering
+   info • Sort directive sections alphabetically • test/screens/register_screen_test.dart:6:1 • directives_ordering
+   info • The line length exceeds the 80-character limit • test/screens/register_screen_test.dart:34:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/register_screen_test.dart:47:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/register_screen_test.dart:61:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/register_screen_test.dart:89:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/register_screen_test.dart:121:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/register_screen_test.dart:126:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/register_screen_test.dart:146:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/register_screen_test.dart:179:81 • lines_longer_than_80_chars
+   info • Sort directive sections alphabetically • test/screens/transaction_list_screen_test.dart:5:1 • directives_ordering
+   info • Sort directive sections alphabetically • test/screens/transaction_list_screen_test.dart:6:1 • directives_ordering
+   info • Sort directive sections alphabetically • test/screens/transaction_list_screen_test.dart:7:1 • directives_ordering
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:19:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:32:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a 'double' literal • test/screens/transaction_list_screen_test.dart:46:30 • prefer_int_literals
+   info • Unnecessary use of a 'double' literal • test/screens/transaction_list_screen_test.dart:59:30 • prefer_int_literals
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:65:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:81:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a 'double' literal • test/screens/transaction_list_screen_test.dart:92:30 • prefer_int_literals
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:98:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:109:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:114:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a 'double' literal • test/screens/transaction_list_screen_test.dart:125:30 • prefer_int_literals
+   info • Use 'const' with the constructor to improve performance • test/screens/transaction_list_screen_test.dart:127:46 • prefer_const_constructors
+   info • Unnecessary use of a 'double' literal • test/screens/transaction_list_screen_test.dart:138:30 • prefer_int_literals
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:144:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a 'double' literal • test/screens/transaction_list_screen_test.dart:173:30 • prefer_int_literals
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:179:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a 'double' literal • test/screens/transaction_list_screen_test.dart:206:30 • prefer_int_literals
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:212:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:227:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a 'double' literal • test/screens/transaction_list_screen_test.dart:238:30 • prefer_int_literals
+   info • Unnecessary use of a 'double' literal • test/screens/transaction_list_screen_test.dart:251:30 • prefer_int_literals
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:257:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:269:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:270:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:276:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a 'double' literal • test/screens/transaction_list_screen_test.dart:287:30 • prefer_int_literals
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:293:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:308:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a 'double' literal • test/screens/transaction_list_screen_test.dart:319:30 • prefer_int_literals
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:325:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:344:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:366:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:382:81 • lines_longer_than_80_chars
+   info • The line length exceeds the 80-character limit • test/screens/transaction_list_screen_test.dart:383:81 • lines_longer_than_80_chars
+   info • Unnecessary use of a block function body • test/widgets/category_chart_test.dart:34:31 • prefer_expression_function_bodies
+   info • Unnecessary use of a 'double' literal • test/widgets/category_chart_test.dart:126:25 • prefer_int_literals
+   info • Unnecessary use of a 'double' literal • test/widgets/category_chart_test.dart:181:25 • prefer_int_literals
+   info • Unnecessary use of a 'double' literal • test/widgets/category_chart_test.dart:210:25 • prefer_int_literals
+   info • Unnecessary use of a block function body • test/widgets/category_chart_test.dart:221:44 • prefer_expression_function_bodies
+   info • Unnecessary use of a 'double' literal • test/widgets/category_chart_test.dart:235:45 • prefer_int_literals
+   info • Use 'const' with the constructor to improve performance • test/widgets/category_chart_test.dart:243:30 • prefer_const_constructors
+   info • The line length exceeds the 80-character limit • test/widgets/category_chart_test.dart:281:81 • lines_longer_than_80_chars
+

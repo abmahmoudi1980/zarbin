@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../providers/market_rate_provider.dart';
 import '../utils/jalali_helper.dart';
-import '../utils/persian_formatter.dart';
 import '../widgets/rate_card.dart';
 
 /// MarketRatesScreen - Main screen displaying live market rates

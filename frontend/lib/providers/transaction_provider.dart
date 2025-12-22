@@ -85,7 +85,7 @@ class TransactionProvider extends ChangeNotifier {
     try {
       final response = await _apiClient.post(
         '/transactions',
-        body: {
+        data: {
           'transaction': {
             'amount_toman': amount,
             'transaction_type': type,
@@ -149,7 +149,7 @@ class TransactionProvider extends ChangeNotifier {
     try {
       final response = await _apiClient.patch(
         '/transactions/$id',
-        body: {
+        data: {
           'transaction': {
             'amount_toman': amount,
             'transaction_type': type,
@@ -166,7 +166,7 @@ class TransactionProvider extends ChangeNotifier {
         );
 
         // Update in list
-        final index = _transactions.indexWhere((t) => t.id == id);
+        final index = _transactions.indexWhere((t) => t.id == id.toString());
         if (index >= 0) {
           _transactions[index] = updatedTransaction;
         }
@@ -192,7 +192,7 @@ class TransactionProvider extends ChangeNotifier {
   }
 
   /// Deletes a transaction
-  Future<bool> deleteTransaction(int id) async {
+  Future<bool> deleteTransaction(String id) async {
     _isLoading = true;
     _error = null;
     notifyListeners();

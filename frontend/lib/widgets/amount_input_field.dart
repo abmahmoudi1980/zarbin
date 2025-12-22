@@ -22,7 +22,7 @@ class AmountInputField extends StatefulWidget {
     required this.placeholder,
     this.errorText,
     required this.onChanged,
-    this.maxAmount = 99_999_999_999,
+    this.maxAmount = 99999999999,
   }) : super(key: key);
 
   @override
@@ -33,7 +33,7 @@ class _AmountInputFieldState extends State<AmountInputField> {
   /// Converts input to Persian numerals and validates
   void _onChanged(String value) {
     // Convert any English numerals to Persian for display
-    final persianValue = PersianFormatter.toPersian(value);
+    final persianValue = PersianFormatter.toPersianDigits(value);
     
     // Update controller if changed
     if (persianValue != value) {

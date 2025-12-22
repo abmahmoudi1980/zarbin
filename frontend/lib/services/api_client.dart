@@ -80,6 +80,16 @@ class ApiClient {
     }
   }
 
+  // PATCH request helper
+  Future<Map<String, dynamic>> patch(String path, {Map<String, dynamic>? data}) async {
+    try {
+      final response = await _dio.patch(path, data: data);
+      return response.data as Map<String, dynamic>;
+    } on DioException catch (e) {
+      throw Exception('PATCH $path failed: ${e.message}');
+    }
+  }
+
   // DELETE request helper
   Future<Map<String, dynamic>> delete(String path) async {
     try {
@@ -193,10 +203,9 @@ class ApiClient {
   }
 }
 
-class _AuthInterceptor extends QueuedInterceptorsManager {
+class _AuthInterceptor extends QueuedInterceptor {
   final ApiClient apiClient;
   bool _isRefreshing = false;
-  final List<DioException> _failedQueue = [];
 
   _AuthInterceptor(this.apiClient);
 
@@ -206,12 +215,12 @@ class _AuthInterceptor extends QueuedInterceptorsManager {
     if (token != null && token.isNotEmpty) {
       options.headers['Authorization'] = 'Bearer $token';
     }
-    super.onRequest(options, handler);
+    handler.next(options);
   }
 
   @override
   void onResponse(Response response, ResponseInterceptorHandler handler) {
-    super.onResponse(response, handler);
+    handler.next(response);
   }
 
   @override
@@ -257,7 +266,7 @@ class _AuthInterceptor extends QueuedInterceptorsManager {
       _isRefreshing = false;
     }
     
-    super.onError(err, handler);
+    handler.next(err);
   }
 }
 

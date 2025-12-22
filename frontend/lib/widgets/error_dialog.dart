@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
 class ErrorDialog {
-  static void show(
+  static Future<void> show(
     BuildContext context, {
     required String title,
     required String message,
     VoidCallback? onRetry,
     String? actionButtonText,
-  }) {
-    showDialog(
+  }) async {
+    await showDialog(
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {

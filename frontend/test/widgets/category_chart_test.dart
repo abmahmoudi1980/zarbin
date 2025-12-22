@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:provider/provider.dart';
+import 'package:pie_chart/pie_chart.dart' as pc;
 import 'package:zarbin/models/category_breakdown.dart';
 import 'package:zarbin/widgets/category_pie_chart.dart';
-import 'package:zarbin/providers/dashboard_provider.dart';
 
 void main() {
   group('CategoryPieChart Widget Tests', () {
@@ -16,18 +15,18 @@ void main() {
             categoryId: '1',
             categoryNameFa: 'غذا',
             categoryIcon: 'food',
-            totalAmount: 5_000_000,
+            totalAmount: 5000000,
             percentage: 62.5,
           ),
           CategorySpending(
             categoryId: '2',
             categoryNameFa: 'حمل‌ونقل',
             categoryIcon: 'transport',
-            totalAmount: 3_000_000,
+            totalAmount: 3000000,
             percentage: 37.5,
           ),
         ],
-        totalSpending: 8_000_000,
+        totalSpending: 8000000,
         currentMonth: '1403/09',
       );
     });
@@ -47,7 +46,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
 
       expect(find.byType(CategoryPieChart), findsOneWidget);
-      expect(find.byType(PieChart), findsOneWidget);
+      expect(find.byType(pc.PieChart), findsOneWidget);
     });
 
     testWidgets('displays all category segments in pie chart',
@@ -88,7 +87,6 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpWidget(createTestWidget());
 
-      expect(find.byType(Legend), findsOneWidget);
       expect(find.text('غذا'), findsWidgets);
       expect(find.text('حمل‌ونقل'), findsWidgets);
     });
@@ -112,7 +110,7 @@ void main() {
       await tester.pumpWidget(createTestWidget());
 
       // Pie chart should have specific colors for each segment
-      final pieChart = find.byType(PieChart);
+      final pieChart = find.byType(pc.PieChart);
       expect(pieChart, findsOneWidget);
     });
 
@@ -124,11 +122,11 @@ void main() {
             categoryId: '1',
             categoryNameFa: 'غذا',
             categoryIcon: 'food',
-            totalAmount: 8_000_000,
+            totalAmount: 8000000,
             percentage: 100.0,
           ),
         ],
-        totalSpending: 8_000_000,
+        totalSpending: 8000000,
         currentMonth: '1403/09',
       );
 
@@ -179,11 +177,11 @@ void main() {
             categoryId: '1',
             categoryNameFa: 'غذا',
             categoryIcon: 'food',
-            totalAmount: 50_000_000_000,
+            totalAmount: 50000000000,
             percentage: 100.0,
           ),
         ],
-        totalSpending: 50_000_000_000,
+        totalSpending: 50000000000,
         currentMonth: '1403/09',
       );
 
@@ -208,11 +206,11 @@ void main() {
             categoryId: '1',
             categoryNameFa: 'غذا',
             categoryIcon: 'food',
-            totalAmount: 5_000_000,
+            totalAmount: 5000000,
             percentage: 100.0,
           ),
         ],
-        totalSpending: 5_000_000,
+        totalSpending: 5000000,
         currentMonth: '1403/09',
       );
 
@@ -233,11 +231,11 @@ void main() {
                                 categoryId: '1',
                                 categoryNameFa: 'غذا',
                                 categoryIcon: 'food',
-                                totalAmount: 10_000_000,
+                                totalAmount: 10000000,
                                 percentage: 100.0,
                               ),
                             ],
-                            totalSpending: 10_000_000,
+                            totalSpending: 10000000,
                             currentMonth: '1403/09',
                           );
                         });

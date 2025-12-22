@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/dashboard_provider.dart';
 import '../providers/market_rate_provider.dart';
-import '../services/api_client.dart';
 import '../utils/persian_formatter.dart';
 import '../widgets/balance_card.dart';
 import 'category_breakdown_screen.dart';
@@ -55,7 +54,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  void _loadDashboard() async {
+  Future<void> _loadDashboard() async {
     try {
       await _dashboardProvider.fetchDashboard();
       // Also update with current rates
@@ -229,7 +228,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Text(
-        'آخرین بروزرسانی: ${PersianFormatter.convertToPersianNumerals(dashboard.lastUpdated)}',
+        'آخرین بروزرسانی: ${PersianFormatter.toPersianDigits(dashboard.lastUpdated)}',
         textAlign: TextAlign.center,
         style: TextStyle(
           fontSize: 12,

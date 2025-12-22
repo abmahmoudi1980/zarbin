@@ -18,16 +18,20 @@ class ApiConfig {
   static const int sendTimeout = 10;
 
   // API Endpoints
+  static const String authEndpoint = '/auth';
   static const String authRegister = '/auth/register';
   static const String authVerifyOtp = '/auth/verify-otp';
   static const String authLogin = '/auth/login';
 
+  static const String ratesEndpoint = '/rates';
   static const String marketRates = '/rates';
   static const String marketRatesHistory = '/rates/history';
 
+  static const String transactionsEndpoint = '/transactions';
   static const String transactions = '/transactions';
   static const String transactionDetail = '/transactions/:id';
   static const String balance = '/balance';
+  static const String categoriesEndpoint = '/categories';
   static const String categories = '/categories';
   static const String dashboard = '/dashboard';
 

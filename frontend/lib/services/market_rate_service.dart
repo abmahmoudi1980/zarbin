@@ -37,7 +37,7 @@ class MarketRateService {
         return rates;
       }
       return [];
-    } on DioException catch (e) {
+    } on DioException catch (_) {
       // Return cached rates if API fails
       return HiveService.getMarketRates();
     }
@@ -57,7 +57,7 @@ class MarketRateService {
         return MarketRate.fromJson(response.data as Map<String, dynamic>);
       }
       return cached;
-    } on DioException catch (e) {
+    } on DioException catch (_) {
       // Return cached rate if API fails
       return HiveService.getMarketRateByType(rateType);
     }

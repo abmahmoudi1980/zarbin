@@ -120,12 +120,12 @@ class Transaction extends HiveObject {
 
   // Calculate USD equivalent
   double get amountUsdEquivalent {
-    return (amountToman / usdRateAtCreation).roundToDouble(2);
+    return double.parse((amountToman / usdRateAtCreation).toStringAsFixed(2));
   }
 
   // Calculate gold gram equivalent
   double get amountGoldGramsEquivalent {
-    return (amountToman / goldRateAtCreation).roundToDouble(2);
+    return double.parse((amountToman / goldRateAtCreation).toStringAsFixed(2));
   }
 
   // Check if income

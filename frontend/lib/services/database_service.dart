@@ -1,5 +1,5 @@
 // lib/services/database_service.dart
-import 'package:sqflite/sqflite.dart';
+import 'package:sqflite/sqflite.dart' as sqflite;
 import 'package:path/path.dart';
 import '../models/transaction.dart';
 
@@ -8,60 +8,61 @@ class DatabaseService {
   static const int databaseVersion = 1;
   static const String transactionsTable = 'transactions';
 
-  static Database? _database;
+  static sqflite.Database? _database;
 
-  static Future<Database> get database async {
+  static Future<sqflite.Database> get database async {
     _database ??= await _initDatabase();
     return _database!;
   }
 
-  static Future<Database> _initDatabase() async {
-    final databasePath = await getDatabasesPath();
+  static Future<sqflite.Database> _initDatabase() async {
+    final databasePath = await sqflite.getDatabasesPath();
     final path = join(databasePath, databaseName);
 
-    return openDatabase(
+    return sqflite.openDatabase(
       path,
       version: databaseVersion,
       onCreate: _onCreate,
     );
   }
 
-  static Future<void> _onCreate(Database db, int version) async {
+  static Future<void> _onCreate(sqflite.Database db, int version) async {
     await db.execute('''
       CREATE TABLE $transactionsTable (
         id TEXT PRIMARY KEY,
-        user_id TEXT NOT NULL,
+        user_id TEXT,
         amount_toman INTEGER NOT NULL,
         transaction_type TEXT NOT NULL,
         category_id TEXT,
         category_name TEXT,
         transaction_date TEXT NOT NULL,
-        usd_rate_at_creation REAL NOT NULL,
-        gold_rate_at_creation INTEGER NOT NULL,
         notes TEXT,
+        usd_rate_at_creation REAL,
+        gold_rate_at_creation INTEGER,
+        is_synced INTEGER DEFAULT 0,
         created_at TEXT NOT NULL,
-        updated_at TEXT NOT NULL,
-        is_synced INTEGER NOT NULL DEFAULT 0
+        updated_at TEXT NOT NULL
       )
     ''');
 
-    // Create indexes for faster queries
     await db.execute('''
       CREATE INDEX idx_user_id ON $transactionsTable(user_id)
     ''');
+
     await db.execute('''
       CREATE INDEX idx_transaction_date ON $transactionsTable(transaction_date)
     ''');
+
     await db.execute('''
       CREATE INDEX idx_is_synced ON $transactionsTable(is_synced)
     ''');
   }
 
   // Insert transaction
-  static Future<String> insertTransaction(Transaction transaction) async {
+  Future<String> saveTransaction(Transaction transaction) async {
     final db = await database;
     final id = transaction.id ?? DateTime.now().millisecondsSinceEpoch.toString();
-    
+
     await db.insert(
       transactionsTable,
       {
@@ -72,33 +73,43 @@ class DatabaseService {
         'category_id': transaction.categoryId,
         'category_name': transaction.categoryName,
         'transaction_date': transaction.transactionDate,
+        'notes': transaction.notes,
         'usd_rate_at_creation': transaction.usdRateAtCreation,
         'gold_rate_at_creation': transaction.goldRateAtCreation,
-        'notes': transaction.notes,
+        'is_synced': transaction.isSynced ? 1 : 0,
         'created_at': transaction.createdAt.toIso8601String(),
         'updated_at': transaction.updatedAt.toIso8601String(),
-        'is_synced': transaction.isSynced ? 1 : 0,
       },
+      conflictAlgorithm: sqflite.ConflictAlgorithm.replace,
     );
 
     return id;
   }
 
   // Get all transactions for user
-  static Future<List<Transaction>> getTransactions(String userId) async {
+  Future<List<Transaction>> getAllTransactions([String? userId]) async {
     final db = await database;
-    final maps = await db.query(
-      transactionsTable,
-      where: 'user_id = ?',
-      whereArgs: [userId],
-      orderBy: 'transaction_date DESC',
-    );
+    
+    List<Map<String, dynamic>> maps;
+    if (userId != null) {
+      maps = await db.query(
+        transactionsTable,
+        where: 'user_id = ?',
+        whereArgs: [userId],
+        orderBy: 'transaction_date DESC',
+      );
+    } else {
+      maps = await db.query(
+        transactionsTable,
+        orderBy: 'transaction_date DESC',
+      );
+    }
 
     return List.generate(maps.length, (i) => _mapToTransaction(maps[i]));
   }
 
   // Get unsynced transactions
-  static Future<List<Transaction>> getUnsyncedTransactions(String userId) async {
+  Future<List<Transaction>> getUnsyncedTransactions(String userId) async {
     final db = await database;
     final maps = await db.query(
       transactionsTable,
@@ -110,7 +121,7 @@ class DatabaseService {
   }
 
   // Get transactions for specific Jalali month
-  static Future<List<Transaction>> getTransactionsForMonth(
+  Future<List<Transaction>> getTransactionsForMonth(
     String userId,
     int year,
     int month,
@@ -130,7 +141,7 @@ class DatabaseService {
   }
 
   // Update transaction
-  static Future<void> updateTransaction(Transaction transaction) async {
+  Future<void> updateTransaction(Transaction transaction) async {
     final db = await database;
     await db.update(
       transactionsTable,
@@ -141,6 +152,8 @@ class DatabaseService {
         'category_name': transaction.categoryName,
         'transaction_date': transaction.transactionDate,
         'notes': transaction.notes,
+        'usd_rate_at_creation': transaction.usdRateAtCreation,
+        'gold_rate_at_creation': transaction.goldRateAtCreation,
         'updated_at': transaction.updatedAt.toIso8601String(),
         'is_synced': transaction.isSynced ? 1 : 0,
       },
@@ -150,7 +163,7 @@ class DatabaseService {
   }
 
   // Delete transaction
-  static Future<void> deleteTransaction(String id) async {
+  Future<void> deleteTransaction(String id) async {
     final db = await database;
     await db.delete(
       transactionsTable,
@@ -160,7 +173,7 @@ class DatabaseService {
   }
 
   // Mark transaction as synced
-  static Future<void> markAsSynced(String id) async {
+  Future<void> markAsSynced(String id) async {
     final db = await database;
     await db.update(
       transactionsTable,
@@ -171,17 +184,17 @@ class DatabaseService {
   }
 
   // Get transaction count for user
-  static Future<int> getTransactionCount(String userId) async {
+  Future<int> getTransactionCount(String userId) async {
     final db = await database;
     final result = await db.rawQuery(
       'SELECT COUNT(*) as count FROM $transactionsTable WHERE user_id = ?',
       [userId],
     );
-    return Sqflite.firstIntValue(result) ?? 0;
+    return sqflite.Sqflite.firstIntValue(result) ?? 0;
   }
 
   // Calculate total for user
-  static Future<int> calculateTotalForUser(String userId) async {
+  Future<int> calculateTotalForUser(String userId) async {
     final db = await database;
     final result = await db.rawQuery(
       '''SELECT SUM(
@@ -193,11 +206,11 @@ class DatabaseService {
       ) as total FROM $transactionsTable WHERE user_id = ?''',
       [userId],
     );
-    return Sqflite.firstIntValue(result) ?? 0;
+    return sqflite.Sqflite.firstIntValue(result) ?? 0;
   }
 
   // Clear all transactions for user (for account deletion)
-  static Future<void> clearUserTransactions(String userId) async {
+  Future<void> clearUserTransactions(String userId) async {
     final db = await database;
     await db.delete(
       transactionsTable,
@@ -207,7 +220,7 @@ class DatabaseService {
   }
 
   // Close database
-  static Future<void> closeDatabase() async {
+  Future<void> closeDatabase() async {
     if (_database != null) {
       await _database!.close();
       _database = null;
@@ -215,7 +228,7 @@ class DatabaseService {
   }
 
   // Helper: Convert map to Transaction
-  static Transaction _mapToTransaction(Map<String, dynamic> map) {
+  Transaction _mapToTransaction(Map<String, dynamic> map) {
     return Transaction(
       id: map['id'] as String?,
       userId: map['user_id'] as String,
@@ -224,8 +237,8 @@ class DatabaseService {
       categoryId: map['category_id'] as String?,
       categoryName: map['category_name'] as String?,
       transactionDate: map['transaction_date'] as String?,
-      usdRateAtCreation: map['usd_rate_at_creation'] as double,
-      goldRateAtCreation: map['gold_rate_at_creation'] as int,
+      usdRateAtCreation: (map['usd_rate_at_creation'] as num?)?.toDouble() ?? 0.0,
+      goldRateAtCreation: (map['gold_rate_at_creation'] as num?)?.toInt() ?? 0,
       notes: map['notes'] as String?,
       createdAt: DateTime.parse(map['created_at'] as String),
       updatedAt: DateTime.parse(map['updated_at'] as String),

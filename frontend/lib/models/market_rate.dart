@@ -106,7 +106,7 @@ class MarketRate extends HiveObject {
 
   // Convert amount from Toman to this currency
   double convertFromToman(int amountToman) {
-    return (amountToman / valueInToman).roundToDouble(2);
+    return double.parse((amountToman / valueInToman).toStringAsFixed(2));
   }
 
   // Convert amount from this currency to Toman

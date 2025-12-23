@@ -32,7 +32,7 @@ class MarketRate extends HiveObject {
   // Factory constructor from JSON (API response)
   factory MarketRate.fromJson(Map<String, dynamic> json) {
     return MarketRate(
-      id: json['id'] as String?,
+      id: json['id']?.toString(),
       rateType: json['rate_type'] as String,
       valueInToman: json['value_in_toman'] as int,
       timestamp: json['timestamp'] != null

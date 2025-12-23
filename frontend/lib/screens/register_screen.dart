@@ -4,6 +4,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:zarbin/providers/auth_provider.dart';
 import 'package:zarbin/utils/validators.dart';
 import 'package:zarbin/widgets/loading_overlay.dart';
+import 'otp_verification_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -44,7 +45,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  void _handleRegister() {
+  void _handleRegister() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -60,10 +61,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    authProvider.registerUser(
+    final success = await authProvider.registerUser(
       mobileNumber: _mobileController.text,
       password: _passwordController.text,
     );
+
+    if (success && mounted) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => OtpVerificationScreen(
+            mobileNumber: _mobileController.text,
+          ),
+        ),
+      );
+    }
   }
 
   void _navigateToLogin() {

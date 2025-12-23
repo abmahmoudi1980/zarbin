@@ -225,7 +225,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           const SizedBox(height: 20),
           FilledButton.icon(
             onPressed: () {
-              // Navigate to add transaction
+              Navigator.pushNamed(context, '/add-transaction');
             },
             icon: const Icon(Icons.add_rounded),
             label: const Text('افزودن تراکنش'),

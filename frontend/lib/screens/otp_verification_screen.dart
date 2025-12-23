@@ -50,7 +50,7 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     });
   }
 
-  void _handleVerifyOtp() {
+  void _handleVerifyOtp() async {
     if (_otpController.text.isEmpty || _otpController.text.length != 6) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -62,10 +62,14 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     }
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    authProvider.verifyOtp(
+    final success = await authProvider.verifyOtp(
       mobileNumber: widget.mobileNumber,
       otpCode: _otpController.text,
     );
+
+    if (success && mounted) {
+      Navigator.of(context).pushNamedAndRemoveUntil('/dashboard', (route) => false);
+    }
   }
 
   void _handleResendOtp() {

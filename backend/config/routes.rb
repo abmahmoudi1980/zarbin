@@ -15,13 +15,17 @@ Rails.application.routes.draw do
       post '/auth/refresh', to: 'auth#refresh'
 
       # Market rates (public)
-      get '/rates', to: 'rates#index'
-      get '/rates/history', to: 'rates#history'
+      get '/rates', to: 'rates#index', as: :rates
+      get '/rates/latest', to: 'rates#latest', as: :rates_latest
+      get '/rates/current/:rate_type', to: 'rates#current', as: :rates_current
+      get '/rates/history', to: 'rates#history', as: :rates_history
 
       # Protected routes (require authentication)
+      get '/transactions/summary/monthly', to: 'transactions#monthly_summary'
       resources :transactions, only: [:create, :index, :show, :update, :destroy]
       get '/balance', to: 'balance#show'
       get '/categories', to: 'categories#index'
+      post '/categories/seed', to: 'categories#seed'
       get '/dashboard', to: 'dashboard#show'
       get '/dashboard/spending-breakdown', to: 'dashboard#spending_breakdown'
     end

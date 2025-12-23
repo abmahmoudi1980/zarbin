@@ -10,13 +10,16 @@ import 'package:provider/provider.dart';
 import 'services/analytics_service.dart';
 import 'services/api_client.dart';
 import 'services/secure_storage.dart';
+import 'services/database_service.dart';
 import 'providers/auth_provider.dart';
 import 'providers/market_rate_provider.dart';
 import 'providers/dashboard_provider.dart';
+import 'providers/transaction_provider.dart';
 import 'screens/login_screen.dart';
 import 'screens/register_screen.dart';
 import 'screens/market_rates_screen.dart';
 import 'screens/dashboard_screen.dart';
+import 'screens/add_transaction_screen.dart';
 import 'config/theme.dart';
 
 void main() async {
@@ -53,6 +56,9 @@ void main() async {
   // Initialize Jalali date formatting for Persian locale
   await initializeDateFormatting('fa', null);
 
+  // Initialize Database Service
+  await DatabaseService.database;
+
   // Create Providers
   final authProvider = AuthProvider(
     apiClient: apiClient,
@@ -67,6 +73,11 @@ void main() async {
     apiClient: apiClient,
   );
 
+  final transactionProvider = TransactionProvider(
+    apiClient: apiClient,
+    databaseService: DatabaseService(),
+  );
+
   // Restore session if token exists
   await authProvider.restoreSession();
 
@@ -74,6 +85,7 @@ void main() async {
     authProvider: authProvider,
     marketRateProvider: marketRateProvider,
     dashboardProvider: dashboardProvider,
+    transactionProvider: transactionProvider,
   ));
 }
 
@@ -81,12 +93,14 @@ class ZarbinApp extends StatelessWidget {
   final AuthProvider authProvider;
   final MarketRateProvider marketRateProvider;
   final DashboardProvider dashboardProvider;
+  final TransactionProvider transactionProvider;
 
   const ZarbinApp({
     Key? key,
     required this.authProvider,
     required this.marketRateProvider,
     required this.dashboardProvider,
+    required this.transactionProvider,
   }) : super(key: key);
 
   @override
@@ -96,6 +110,7 @@ class ZarbinApp extends StatelessWidget {
         ChangeNotifierProvider.value(value: authProvider),
         ChangeNotifierProvider.value(value: marketRateProvider),
         ChangeNotifierProvider.value(value: dashboardProvider),
+        ChangeNotifierProvider.value(value: transactionProvider),
       ],
       child: MaterialApp(
         title: 'Zarbin - Financial Advisor',
@@ -128,6 +143,7 @@ class ZarbinApp extends StatelessWidget {
         '/register': (context) => const RegisterScreen(),
         '/rates': (context) => const MarketRatesScreen(),
         '/dashboard': (context) => const DashboardScreen(),
+        '/add-transaction': (context) => const AddTransactionScreen(),
       },
     ),);
   }

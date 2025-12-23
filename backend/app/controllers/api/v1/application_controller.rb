@@ -44,7 +44,7 @@ module Api
       end
 
       def jwt_secret
-        @jwt_secret ||= ENV['JWT_SECRET'] || Rails.application.secrets.jwt_secret
+        @jwt_secret ||= ENV['JWT_SECRET'].presence || Rails.application.secret_key_base
       end
 
       def render_success(data = {}, status = :ok)

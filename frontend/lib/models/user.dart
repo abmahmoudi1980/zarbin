@@ -39,7 +39,7 @@ class User extends HiveObject {
   // Factory constructor from JSON (API response)
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'] as String?,
+      id: json['id']?.toString(),
       mobileNumber: json['mobile_number'] as String,
       token: json['token'] as String?,
       accountStatus: json['account_status'] as String? ?? 'active',

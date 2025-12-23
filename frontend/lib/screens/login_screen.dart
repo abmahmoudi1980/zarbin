@@ -38,16 +38,20 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  void _handleLogin() {
+  void _handleLogin() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
 
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    authProvider.loginUser(
+    final success = await authProvider.loginUser(
       mobileNumber: _mobileController.text,
       password: _passwordController.text,
     );
+
+    if (success && mounted) {
+      Navigator.of(context).pushReplacementNamed('/dashboard');
+    }
   }
 
   void _navigateToRegister() {

@@ -22,7 +22,6 @@ class ApiClient {
         contentType: 'application/json',
         headers: {
           'Accept': 'application/json',
-          'User-Agent': 'Zarbin/1.0',
         },
       ),
     );
@@ -193,13 +192,13 @@ class ApiClient {
 
   // User Balance Endpoints
   Future<Response<dynamic>> getUserBalance() async {
-    return _dio.get('${ApiConfig.baseUrl}/api/v1/user-balance');
+    return _dio.get(ApiConfig.balance);
   }
 
   // Dashboard Endpoints
   Future<Map<String, dynamic>> getDashboard() async {
     try {
-      final response = await _dio.get('${ApiConfig.baseUrl}/api/v1/dashboard');
+      final response = await _dio.get(ApiConfig.dashboard);
       return response.data as Map<String, dynamic>;
     } on DioException catch (e) {
       throw Exception('Failed to fetch dashboard: ${e.message}');

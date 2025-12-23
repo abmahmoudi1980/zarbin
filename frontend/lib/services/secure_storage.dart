@@ -1,4 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart';
 
 class SecureStorage {
   static const String _tokenKey = 'jwt_token';
@@ -8,69 +10,147 @@ class SecureStorage {
   static const String _tokenExpiryKey = 'token_expiry';
 
   final FlutterSecureStorage _storage;
+  SharedPreferences? _prefs;
 
   SecureStorage({FlutterSecureStorage? storage})
       : _storage = storage ?? const FlutterSecureStorage();
 
+  Future<void> _initPrefs() async {
+    if (kIsWeb && _prefs == null) {
+      _prefs = await SharedPreferences.getInstance();
+    }
+  }
+
   // Token management
   Future<void> saveToken(String token) async {
-    await _storage.write(key: _tokenKey, value: token);
+    if (kIsWeb) {
+      await _initPrefs();
+      await _prefs?.setString(_tokenKey, token);
+    } else {
+      await _storage.write(key: _tokenKey, value: token);
+    }
   }
 
   Future<String?> getToken() async {
-    return await _storage.read(key: _tokenKey);
+    if (kIsWeb) {
+      await _initPrefs();
+      return _prefs?.getString(_tokenKey);
+    } else {
+      return await _storage.read(key: _tokenKey);
+    }
   }
 
   Future<void> deleteToken() async {
-    await _storage.delete(key: _tokenKey);
+    if (kIsWeb) {
+      await _initPrefs();
+      await _prefs?.remove(_tokenKey);
+    } else {
+      await _storage.delete(key: _tokenKey);
+    }
   }
 
   // User ID management
   Future<void> saveUserId(String userId) async {
-    await _storage.write(key: _userIdKey, value: userId);
+    if (kIsWeb) {
+      await _initPrefs();
+      await _prefs?.setString(_userIdKey, userId);
+    } else {
+      await _storage.write(key: _userIdKey, value: userId);
+    }
   }
 
   Future<String?> getUserId() async {
-    return await _storage.read(key: _userIdKey);
+    if (kIsWeb) {
+      await _initPrefs();
+      return _prefs?.getString(_userIdKey);
+    } else {
+      return await _storage.read(key: _userIdKey);
+    }
   }
 
   Future<void> deleteUserId() async {
-    await _storage.delete(key: _userIdKey);
+    if (kIsWeb) {
+      await _initPrefs();
+      await _prefs?.remove(_userIdKey);
+    } else {
+      await _storage.delete(key: _userIdKey);
+    }
   }
 
   // Mobile number management
   Future<void> saveMobileNumber(String mobileNumber) async {
-    await _storage.write(key: _mobileNumberKey, value: mobileNumber);
+    if (kIsWeb) {
+      await _initPrefs();
+      await _prefs?.setString(_mobileNumberKey, mobileNumber);
+    } else {
+      await _storage.write(key: _mobileNumberKey, value: mobileNumber);
+    }
   }
 
   Future<String?> getMobileNumber() async {
-    return await _storage.read(key: _mobileNumberKey);
+    if (kIsWeb) {
+      await _initPrefs();
+      return _prefs?.getString(_mobileNumberKey);
+    } else {
+      return await _storage.read(key: _mobileNumberKey);
+    }
   }
 
   Future<void> deleteMobileNumber() async {
-    await _storage.delete(key: _mobileNumberKey);
+    if (kIsWeb) {
+      await _initPrefs();
+      await _prefs?.remove(_mobileNumberKey);
+    } else {
+      await _storage.delete(key: _mobileNumberKey);
+    }
   }
 
   // Pending mobile number (during OTP verification)
   Future<void> savePendingMobileNumber(String mobileNumber) async {
-    if (mobileNumber.isEmpty) {
-      await _storage.delete(key: _pendingMobileNumberKey);
+    if (kIsWeb) {
+      await _initPrefs();
+      if (mobileNumber.isEmpty) {
+        await _prefs?.remove(_pendingMobileNumberKey);
+      } else {
+        await _prefs?.setString(_pendingMobileNumberKey, mobileNumber);
+      }
     } else {
-      await _storage.write(key: _pendingMobileNumberKey, value: mobileNumber);
+      if (mobileNumber.isEmpty) {
+        await _storage.delete(key: _pendingMobileNumberKey);
+      } else {
+        await _storage.write(key: _pendingMobileNumberKey, value: mobileNumber);
+      }
     }
   }
 
   Future<String?> getPendingMobileNumber() async {
-    return await _storage.read(key: _pendingMobileNumberKey);
+    if (kIsWeb) {
+      await _initPrefs();
+      return _prefs?.getString(_pendingMobileNumberKey);
+    } else {
+      return await _storage.read(key: _pendingMobileNumberKey);
+    }
   }
 
   // Token expiry management
   Future<void> saveTokenExpiry(DateTime expiry) async {
-    await _storage.write(key: _tokenExpiryKey, value: expiry.toIso8601String());
+    if (kIsWeb) {
+      await _initPrefs();
+      await _prefs?.setString(_tokenExpiryKey, expiry.toIso8601String());
+    } else {
+      await _storage.write(key: _tokenExpiryKey, value: expiry.toIso8601String());
+    }
   }
 
   Future<DateTime?> getTokenExpiry() async {
-    final value = await _storage.read(key: _tokenExpiryKey);
+    String? value;
+    if (kIsWeb) {
+      await _initPrefs();
+      value = _prefs?.getString(_tokenExpiryKey);
+    } else {
+      value = await _storage.read(key: _tokenExpiryKey);
+    }
+    
     if (value == null) return null;
     return DateTime.parse(value);
   }
@@ -86,7 +166,13 @@ class SecureStorage {
     await deleteToken();
     await deleteUserId();
     await deleteMobileNumber();
-    await _storage.delete(key: _pendingMobileNumberKey);
-    await _storage.delete(key: _tokenExpiryKey);
+    if (kIsWeb) {
+      await _initPrefs();
+      await _prefs?.remove(_pendingMobileNumberKey);
+      await _prefs?.remove(_tokenExpiryKey);
+    } else {
+      await _storage.delete(key: _pendingMobileNumberKey);
+      await _storage.delete(key: _tokenExpiryKey);
+    }
   }
 }

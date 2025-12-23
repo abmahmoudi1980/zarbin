@@ -17,6 +17,7 @@ gem "jwt", "~> 2.7"
 # API & Serialization
 gem "jsonapi-serializer"
 gem "rack-cors"
+gem "dotenv-rails", groups: [:development, :test]
 
 # External Services
 gem "kavenegar-ruby"

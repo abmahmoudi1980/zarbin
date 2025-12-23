@@ -93,6 +93,9 @@ class AuthProvider extends ChangeNotifier {
         await _secureStorage.saveToken(_token!);
         await _secureStorage.savePendingMobileNumber(''); // Clear pending
 
+        // Set API client token
+        _apiClient.setToken(_token!);
+
         await _analytics.setUserId(_currentUser!.id.toString());
         await _analytics.logEvent(name: 'otp_verified');
 

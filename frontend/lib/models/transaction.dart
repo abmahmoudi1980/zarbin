@@ -73,11 +73,11 @@ class Transaction extends HiveObject {
   // Factory constructor from JSON (API response)
   factory Transaction.fromJson(Map<String, dynamic> json) {
     return Transaction(
-      id: json['id'] as String?,
-      userId: json['user_id'] as String,
+      id: json['id']?.toString(),
+      userId: json['user_id'].toString(),
       amountToman: json['amount_toman'] as int,
       transactionType: json['transaction_type'] as String,
-      categoryId: json['category']?['id'] as String?,
+      categoryId: json['category']?['id']?.toString(),
       categoryName: json['category']?['persian_name'] as String?,
       transactionDate: json['transaction_date'] as String?,
       usdRateAtCreation: (json['usd_rate_at_creation'] as num).toDouble(),

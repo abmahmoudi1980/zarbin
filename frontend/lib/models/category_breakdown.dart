@@ -44,7 +44,7 @@ class CategorySpending {
 
   factory CategorySpending.fromJson(Map<String, dynamic> json) {
     return CategorySpending(
-      categoryId: json['category_id'] as String,
+      categoryId: json['category_id'].toString(),
       categoryNameFa: json['category_name_fa'] as String,
       categoryIcon: json['category_icon'] as String,
       totalAmount: json['total_amount'] as int,

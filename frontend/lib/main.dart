@@ -29,12 +29,12 @@ void main() async {
   final apiClient = ApiClient();
   final secureStorage = SecureStorage();
 
-  // Initialize Firebase
-  try {
-    await Firebase.initializeApp();
+  // Initialize Firebase (skip for web until configured)
+  if (!kIsWeb) {
+    try {
+      await Firebase.initializeApp();
 
-    // Configure Crashlytics
-    if (!kIsWeb) {
+      // Configure Crashlytics
       // Pass all uncaught errors from the framework to Crashlytics.
       FlutterError.onError =
           FirebaseCrashlytics.instance.recordFlutterFatalError;
@@ -44,20 +44,28 @@ void main() async {
         FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
         return true;
       };
-    }
 
-    // Initialize Analytics Service
-    await AnalyticsService().init();
-  } catch (e) {
-    debugPrint('Firebase initialization failed: $e');
-    // Continue app execution even if Firebase fails (e.g. missing config files in dev)
+      // Initialize Analytics Service
+      await AnalyticsService().init();
+    } catch (e) {
+      debugPrint('Firebase initialization failed: $e');
+      // Continue app execution even if Firebase fails (e.g. missing config files in dev)
+    }
+  } else {
+    debugPrint('Running on web - Firebase initialization skipped');
   }
 
   // Initialize Jalali date formatting for Persian locale
   await initializeDateFormatting('fa', null);
 
-  // Initialize Database Service
-  await DatabaseService.database;
+  // Initialize Database Service (skip for web - sqflite not supported)
+  if (!kIsWeb) {
+    try {
+      await DatabaseService.database;
+    } catch (e) {
+      debugPrint('Database initialization failed: $e');
+    }
+  }
 
   // Create Providers
   final authProvider = AuthProvider(

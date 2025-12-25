@@ -178,8 +178,8 @@ class MarketRateProvider extends ChangeNotifier {
   @override
   void addListener(VoidCallback listener) {
     super.addListener(listener);
-    // Fetch rates when first listener is added
-    if (_rates.isEmpty && !_isLoading) {
+    // Fetch rates when listener is added if we don't have data or it's stale
+    if (!_isLoading && (_rates.isEmpty || isStale)) {
       fetchRates();
     }
   }

@@ -29,6 +29,13 @@ class _MarketRatesScreenState extends State<MarketRatesScreen> {
   void initState() {
     super.initState();
     _refreshController = RefreshController(initialRefresh: false);
+    
+    // Fetch rates on screen load - force refresh to get latest data
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        context.read<MarketRateProvider>().refreshRates();
+      }
+    });
   }
 
   @override

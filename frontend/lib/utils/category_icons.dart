@@ -4,6 +4,7 @@ class CategoryIcons {
   static const Map<String, IconData> _iconMap = {
     'food': Icons.fastfood,
     'غذا': Icons.fastfood,
+    'grocery': Icons.shopping_cart,
     'transport': Icons.directions_car,
     'حمل‌ونقل': Icons.directions_car,
     'bills': Icons.receipt,

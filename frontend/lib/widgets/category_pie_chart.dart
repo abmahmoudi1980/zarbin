@@ -192,6 +192,7 @@ class CategoryPieChart extends StatelessWidget {
     switch (iconName) {
       case 'food':
       case 'fastfood':
+      case 'grocery':
         return Icons.fastfood;
       case 'transport':
       case 'directions_car':

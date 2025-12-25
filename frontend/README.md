@@ -100,8 +100,27 @@ flutter pub run custom_lint
 - ✅ Offline-first architecture
 - ✅ RTL layout support
 - ✅ Real-time market rates
+- ✅ **Automatic rate refresh** (every 5 minutes) - New in v0.2.0
 - ✅ Category-based transaction tracking
 - ✅ Net worth dashboard
+
+### Auto-Refresh Feature (v0.2.0)
+
+The market rates screen automatically updates exchange rates every 5 minutes while visible:
+
+- **Automatic Updates**: Rates refresh periodically without manual intervention
+- **Visual Feedback**: Subtle progress indicator shows when data is updating
+- **Battery Efficient**: Auto-refresh pauses when app is backgrounded
+- **Smart Coordination**: Pull-to-refresh resets the 5-minute timer
+- **Non-Blocking**: UI remains fully interactive during updates
+- **Lifecycle Aware**: Automatically resumes refreshing when app returns to foreground
+
+**User Experience**:
+- Open market rates screen → Auto-refresh starts automatically
+- Wait 5 minutes → Rates update with subtle indicator
+- Background the app → Auto-refresh pauses (saves battery)
+- Return to app → Immediate refresh + auto-refresh resumes
+- Pull to refresh → Manual update + timer resets
 
 ## Architecture
 

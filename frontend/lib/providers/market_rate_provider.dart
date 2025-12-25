@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +14,7 @@ import '../services/analytics_service.dart';
 /// - Manage loading/error states
 /// - Notify listeners when rates update
 /// - Track staleness of rate data
+/// - Auto-refresh rates periodically (every 5 minutes)
 
 class MarketRateProvider extends ChangeNotifier {
   final ApiClient _apiClient;
@@ -22,6 +24,12 @@ class MarketRateProvider extends ChangeNotifier {
   bool _isLoading = false;
   String? _error;
   DateTime? _lastFetchTime;
+  
+  // Auto-refresh state (T004)
+  Timer? _autoRefreshTimer;
+  bool _isAutoRefreshing = false;
+  bool _isManualRefreshing = false;
+  static const Duration _autoRefreshInterval = Duration(minutes: 5);
 
   MarketRateProvider({required ApiClient apiClient}) : _apiClient = apiClient {
     _loadCachedRates();
@@ -32,6 +40,7 @@ class MarketRateProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   String? get error => _error;
   DateTime? get lastFetchTime => _lastFetchTime;
+  bool get isAutoRefreshing => _isAutoRefreshing; // T004
 
   bool get isStale {
     if (_lastFetchTime == null) return true;
@@ -139,10 +148,23 @@ class MarketRateProvider extends ChangeNotifier {
   }
 
   // Refresh rates from API (pull-to-refresh)
+  // T017-T019: Coordinate with auto-refresh timer
   Future<void> refreshRates() async {
-    // Force refresh regardless of cache
-    _lastFetchTime = null;
-    await fetchRates();
+    // T017: Set manual refresh flag
+    _isManualRefreshing = true;
+    
+    // T018: Stop auto-refresh timer during manual refresh
+    stopAutoRefresh();
+    
+    try {
+      // Force refresh regardless of cache
+      _lastFetchTime = null;
+      await fetchRates();
+    } finally {
+      // T018: Restart auto-refresh timer after manual refresh completes
+      _isManualRefreshing = false;
+      startAutoRefresh();
+    }
   }
 
   // Get specific rate by type
@@ -172,6 +194,52 @@ class MarketRateProvider extends ChangeNotifier {
     _lastFetchTime = null;
     _error = null;
     notifyListeners();
+  }
+
+  // Auto-refresh methods (T005-T008)
+  
+  /// Start periodic auto-refresh with 5-minute interval (T005)
+  void startAutoRefresh() {
+    stopAutoRefresh(); // Cancel existing timer if any
+    _autoRefreshTimer = Timer.periodic(
+      _autoRefreshInterval,
+      (timer) => _performAutoRefresh(),
+    );
+  }
+
+  /// Stop periodic auto-refresh and clean up timer (T006)
+  void stopAutoRefresh() {
+    _autoRefreshTimer?.cancel();
+    _autoRefreshTimer = null;
+  }
+
+  /// Internal: Execute auto-refresh if not already refreshing (T007)
+  Future<void> _performAutoRefresh() async {
+    // Skip if manual or auto refresh already in progress
+    if (_isManualRefreshing || _isAutoRefreshing) {
+      return;
+    }
+
+    _isAutoRefreshing = true;
+    notifyListeners();
+
+    try {
+      await fetchRates();
+    } catch (e) {
+      // Errors are already handled in fetchRates()
+      // Just ensure we reset the flag
+      debugPrint('Auto-refresh error (will retry next cycle): $e');
+    } finally {
+      _isAutoRefreshing = false;
+      notifyListeners();
+    }
+  }
+
+  /// Override dispose to cancel timer (T008)
+  @override
+  void dispose() {
+    stopAutoRefresh();
+    super.dispose();
   }
 
   // Initialize and auto-fetch on first load

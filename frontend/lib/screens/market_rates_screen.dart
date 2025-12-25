@@ -22,26 +22,63 @@ class MarketRatesScreen extends StatefulWidget {
   State<MarketRatesScreen> createState() => _MarketRatesScreenState();
 }
 
-class _MarketRatesScreenState extends State<MarketRatesScreen> {
+class _MarketRatesScreenState extends State<MarketRatesScreen>
+    with WidgetsBindingObserver { // T023: Add WidgetsBindingObserver mixin
   late RefreshController _refreshController;
+  MarketRateProvider? _provider; // Store reference for disposal
 
   @override
   void initState() {
     super.initState();
     _refreshController = RefreshController(initialRefresh: false);
     
+    // T024: Register lifecycle observer
+    WidgetsBinding.instance.addObserver(this);
+    
     // Fetch rates on screen load - force refresh to get latest data
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
-        context.read<MarketRateProvider>().refreshRates();
+        _provider = context.read<MarketRateProvider>();
+        _provider!.refreshRates();
+        // T009: Start auto-refresh when screen is visible
+        _provider!.startAutoRefresh();
       }
     });
   }
 
   @override
   void dispose() {
+    // T010: Stop auto-refresh when screen is disposed
+    _provider?.stopAutoRefresh();
+    // T025: Unregister lifecycle observer
+    WidgetsBinding.instance.removeObserver(this);
     _refreshController.dispose();
     super.dispose();
+  }
+
+  // T026-T028: Handle app lifecycle state changes
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+    
+    if (_provider == null) return;
+    
+    switch (state) {
+      case AppLifecycleState.resumed:
+        // T027: App returned to foreground - refresh and restart timer
+        _provider!.refreshRates();
+        _provider!.startAutoRefresh();
+        break;
+      case AppLifecycleState.paused:
+        // T028: App went to background - stop timer to save battery
+        _provider!.stopAutoRefresh();
+        break;
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.detached:
+      case AppLifecycleState.hidden:
+        // No action needed for these states
+        break;
+    }
   }
 
   void _onRefresh() async {
@@ -63,11 +100,26 @@ class _MarketRatesScreenState extends State<MarketRatesScreen> {
       ),
       body: Consumer<MarketRateProvider>(
         builder: (context, provider, child) {
-          return SmartRefresher(
-            controller: _refreshController,
-            onRefresh: _onRefresh,
-            header: const WaterDropMaterialHeader(),
-            child: _buildContent(provider),
+          return Column(
+            children: [
+              // T012-T014: Subtle loading indicator for auto-refresh
+              if (provider.isAutoRefreshing)
+                LinearProgressIndicator(
+                  minHeight: 2,
+                  backgroundColor: Colors.transparent,
+                  valueColor: AlwaysStoppedAnimation<Color>(
+                    Theme.of(context).primaryColor.withOpacity(0.5),
+                  ),
+                ),
+              Expanded(
+                child: SmartRefresher(
+                  controller: _refreshController,
+                  onRefresh: _onRefresh,
+                  header: const WaterDropMaterialHeader(),
+                  child: _buildContent(provider),
+                ),
+              ),
+            ],
           );
         },
       ),

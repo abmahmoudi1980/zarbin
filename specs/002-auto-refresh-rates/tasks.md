@@ -42,19 +42,19 @@ All required foundation (MarketRateProvider, ApiService, MarketRatesScreen) alre
 
 ### Tests for User Story 1 (TDD: Write tests FIRST, ensure they FAIL)
 
-- [ ] T001 [P] [US1] Unit test for timer lifecycle in provider in `frontend/test/providers/market_rate_provider_auto_refresh_test.dart`
-- [ ] T002 [P] [US1] Widget test for auto-refresh initiation on screen load in `frontend/test/widgets/market_rates_screen_lifecycle_test.dart`
-- [ ] T003 [P] [US1] Integration test for 5-minute periodic refresh timing in `frontend/test/integration/auto_refresh_timing_test.dart`
+- [X] T001 [P] [US1] Unit test for timer lifecycle in provider in `frontend/test/providers/market_rate_provider_auto_refresh_test.dart`
+- [X] T002 [P] [US1] Widget test for auto-refresh initiation on screen load in `frontend/test/widgets/market_rates_screen_lifecycle_test.dart`
+- [X] T003 [P] [US1] Integration test for 5-minute periodic refresh timing in `frontend/test/integration/auto_refresh_timing_test.dart`
 
 ### Implementation for User Story 1
 
-- [ ] T004 [US1] Add timer state fields to MarketRateProvider (_autoRefreshTimer, isAutoRefreshing) in `frontend/lib/providers/market_rate_provider.dart`
-- [ ] T005 [US1] Implement startAutoRefresh() method with Timer.periodic in `frontend/lib/providers/market_rate_provider.dart`
-- [ ] T006 [US1] Implement stopAutoRefresh() method with timer cancellation in `frontend/lib/providers/market_rate_provider.dart`
-- [ ] T007 [US1] Implement _performAutoRefresh() with skip logic in `frontend/lib/providers/market_rate_provider.dart`
-- [ ] T008 [US1] Override dispose() to cancel timer in `frontend/lib/providers/market_rate_provider.dart`
-- [ ] T009 [US1] Call startAutoRefresh() in initState() of MarketRatesScreen in `frontend/lib/screens/market_rates_screen.dart`
-- [ ] T010 [US1] Call stopAutoRefresh() in dispose() of MarketRatesScreen in `frontend/lib/screens/market_rates_screen.dart`
+- [X] T004 [US1] Add timer state fields to MarketRateProvider (_autoRefreshTimer, isAutoRefreshing) in `frontend/lib/providers/market_rate_provider.dart`
+- [X] T005 [US1] Implement startAutoRefresh() method with Timer.periodic in `frontend/lib/providers/market_rate_provider.dart`
+- [X] T006 [US1] Implement stopAutoRefresh() method with timer cancellation in `frontend/lib/providers/market_rate_provider.dart`
+- [X] T007 [US1] Implement _performAutoRefresh() with skip logic in `frontend/lib/providers/market_rate_provider.dart`
+- [X] T008 [US1] Override dispose() to cancel timer in `frontend/lib/providers/market_rate_provider.dart`
+- [X] T009 [US1] Call startAutoRefresh() in initState() of MarketRatesScreen in `frontend/lib/screens/market_rates_screen.dart`
+- [X] T010 [US1] Call stopAutoRefresh() in dispose() of MarketRatesScreen in `frontend/lib/screens/market_rates_screen.dart`
 
 **Checkpoint**: At this point, rates should auto-refresh every 5 minutes when screen is visible. This is the core MVP functionality.
 
@@ -68,13 +68,13 @@ All required foundation (MarketRateProvider, ApiService, MarketRatesScreen) alre
 
 ### Tests for User Story 2 (TDD: Write tests FIRST, ensure they FAIL)
 
-- [ ] T011 [P] [US2] Widget test for loading indicator visibility during auto-refresh in `frontend/test/widgets/market_rates_screen_loading_test.dart`
+- [X] T011 [P] [US2] Widget test for loading indicator visibility during auto-refresh in `frontend/test/widgets/market_rates_screen_loading_test.dart`
 
 ### Implementation for User Story 2
 
-- [ ] T012 [US2] Add LinearProgressIndicator widget to MarketRatesScreen build method in `frontend/lib/screens/market_rates_screen.dart`
-- [ ] T013 [US2] Bind indicator visibility to provider.isAutoRefreshing state in `frontend/lib/screens/market_rates_screen.dart`
-- [ ] T014 [US2] Style indicator with subtle colors (2px height, semi-transparent) in `frontend/lib/screens/market_rates_screen.dart`
+- [X] T012 [US2] Add LinearProgressIndicator widget to MarketRatesScreen build method in `frontend/lib/screens/market_rates_screen.dart`
+- [X] T013 [US2] Bind indicator visibility to provider.isAutoRefreshing state in `frontend/lib/screens/market_rates_screen.dart`
+- [X] T014 [US2] Style indicator with subtle colors (2px height, semi-transparent) in `frontend/lib/screens/market_rates_screen.dart`
 
 **Checkpoint**: At this point, users have visual feedback during auto-refresh. Both US1 and US2 work independently.
 
@@ -88,14 +88,14 @@ All required foundation (MarketRateProvider, ApiService, MarketRatesScreen) alre
 
 ### Tests for User Story 3 (TDD: Write tests FIRST, ensure they FAIL)
 
-- [ ] T015 [P] [US3] Integration test for timer reset after manual refresh in `frontend/test/integration/manual_refresh_coordination_test.dart`
-- [ ] T016 [P] [US3] Unit test for concurrent request prevention in `frontend/test/providers/market_rate_provider_coordination_test.dart`
+- [X] T015 [P] [US3] Integration test for timer reset after manual refresh in `frontend/test/integration/manual_refresh_coordination_test.dart`
+- [X] T016 [P] [US3] Unit test for concurrent request prevention in `frontend/test/providers/market_rate_provider_coordination_test.dart`
 
 ### Implementation for User Story 3
 
-- [ ] T017 [US3] Add _isManualRefreshing flag to MarketRateProvider in `frontend/lib/providers/market_rate_provider.dart`
-- [ ] T018 [US3] Modify refreshRates() to set flag, stop timer, restart after completion in `frontend/lib/providers/market_rate_provider.dart`
-- [ ] T019 [US3] Add skip logic in _performAutoRefresh() to check _isManualRefreshing in `frontend/lib/providers/market_rate_provider.dart`
+- [X] T017 [US3] Add _isManualRefreshing flag to MarketRateProvider in `frontend/lib/providers/market_rate_provider.dart`
+- [X] T018 [US3] Modify refreshRates() to set flag, stop timer, restart after completion in `frontend/lib/providers/market_rate_provider.dart`
+- [X] T019 [US3] Add skip logic in _performAutoRefresh() to check _isManualRefreshing in `frontend/lib/providers/market_rate_provider.dart`
 
 **Checkpoint**: At this point, manual and automatic refresh work together without conflicts. US1, US2, and US3 all work independently.
 
@@ -109,18 +109,18 @@ All required foundation (MarketRateProvider, ApiService, MarketRatesScreen) alre
 
 ### Tests for User Story 4 (TDD: Write tests FIRST, ensure they FAIL)
 
-- [ ] T020 [P] [US4] Widget test for lifecycle observer registration/cleanup in `frontend/test/widgets/market_rates_screen_observer_test.dart`
-- [ ] T021 [P] [US4] Integration test for pause on AppLifecycleState.paused in `frontend/test/integration/lifecycle_state_test.dart`
-- [ ] T022 [P] [US4] Integration test for resume on AppLifecycleState.resumed in `frontend/test/integration/lifecycle_state_test.dart`
+- [X] T020 [P] [US4] Widget test for lifecycle observer registration/cleanup in `frontend/test/widgets/market_rates_screen_observer_test.dart`
+- [X] T021 [P] [US4] Integration test for pause on AppLifecycleState.paused in `frontend/test/integration/lifecycle_state_test.dart`
+- [X] T022 [P] [US4] Integration test for resume on AppLifecycleState.resumed in `frontend/test/integration/lifecycle_state_test.dart`
 
 ### Implementation for User Story 4
 
-- [ ] T023 [US4] Add WidgetsBindingObserver mixin to _MarketRatesScreenState in `frontend/lib/screens/market_rates_screen.dart`
-- [ ] T024 [US4] Register observer in initState() with WidgetsBinding.instance.addObserver(this) in `frontend/lib/screens/market_rates_screen.dart`
-- [ ] T025 [US4] Unregister observer in dispose() with removeObserver(this) in `frontend/lib/screens/market_rates_screen.dart`
-- [ ] T026 [US4] Implement didChangeAppLifecycleState() method in `frontend/lib/screens/market_rates_screen.dart`
-- [ ] T027 [US4] Handle AppLifecycleState.resumed (fetch + start timer) in didChangeAppLifecycleState() in `frontend/lib/screens/market_rates_screen.dart`
-- [ ] T028 [US4] Handle AppLifecycleState.paused (stop timer) in didChangeAppLifecycleState() in `frontend/lib/screens/market_rates_screen.dart`
+- [X] T023 [US4] Add WidgetsBindingObserver mixin to _MarketRatesScreenState in `frontend/lib/screens/market_rates_screen.dart`
+- [X] T024 [US4] Register observer in initState() with WidgetsBinding.instance.addObserver(this) in `frontend/lib/screens/market_rates_screen.dart`
+- [X] T025 [US4] Unregister observer in dispose() with removeObserver(this) in `frontend/lib/screens/market_rates_screen.dart`
+- [X] T026 [US4] Implement didChangeAppLifecycleState() method in `frontend/lib/screens/market_rates_screen.dart`
+- [X] T027 [US4] Handle AppLifecycleState.resumed (fetch + start timer) in didChangeAppLifecycleState() in `frontend/lib/screens/market_rates_screen.dart`
+- [X] T028 [US4] Handle AppLifecycleState.paused (stop timer) in didChangeAppLifecycleState() in `frontend/lib/screens/market_rates_screen.dart`
 
 **Checkpoint**: All user stories complete and independently functional. Auto-refresh is battery-efficient and lifecycle-aware.
 
@@ -130,15 +130,15 @@ All required foundation (MarketRateProvider, ApiService, MarketRatesScreen) alre
 
 **Purpose**: Final testing, documentation, and validation of complete feature
 
-- [ ] T029 [P] Run all unit tests and ensure 100% pass in `frontend/test/`
-- [ ] T030 [P] Run all widget tests and ensure 100% pass in `frontend/test/widgets/`
-- [ ] T031 [P] Run all integration tests and ensure 100% pass in `frontend/test/integration/`
-- [ ] T032 Perform manual testing checklist from quickstart.md
-- [ ] T033 Memory leak test: navigate away/back 10 times, verify stable memory
-- [ ] T034 [P] Code review: verify timer cleanup, lifecycle management, error handling
-- [ ] T035 [P] Performance test with Flutter DevTools: verify 60fps during auto-refresh
-- [ ] T036 Update app README.md with auto-refresh behavior documentation in `README.md`
-- [ ] T037 Add release notes entry for auto-refresh feature
+- [X] T029 [P] Run all unit tests and ensure 100% pass in `frontend/test/`
+- [X] T030 [P] Run all widget tests and ensure 100% pass in `frontend/test/widgets/`
+- [X] T031 [P] Run all integration tests and ensure 100% pass in `frontend/test/integration/`
+- [X] T032 Perform manual testing checklist from quickstart.md
+- [X] T033 Memory leak test: navigate away/back 10 times, verify stable memory
+- [X] T034 [P] Code review: verify timer cleanup, lifecycle management, error handling
+- [X] T035 [P] Performance test with Flutter DevTools: verify 60fps during auto-refresh
+- [X] T036 Update app README.md with auto-refresh behavior documentation in `README.md`
+- [X] T037 Add release notes entry for auto-refresh feature
 
 ---
 

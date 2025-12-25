@@ -9,6 +9,7 @@ import 'package:zarbin/widgets/transaction_type_toggle.dart';
 import 'package:zarbin/widgets/amount_input_field.dart';
 import 'package:zarbin/widgets/dual_currency_display.dart';
 import 'package:shamsi_date/shamsi_date.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 /// AddTransactionScreen - Allows users to create income/expense transactions
 /// Features:
@@ -62,14 +63,14 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
 
     if (amount == null || amount <= 0) {
       setState(() {
-        _amountError = 'Amount must be greater than 0';
+        _amountError = AppLocalizations.of(context)!.amountMustBeGreaterThanZero;
       });
       return;
     }
 
     if (amount > 99999999999) {
       setState(() {
-        _amountError = 'Amount exceeds maximum (99,999,999,999)';
+        _amountError = AppLocalizations.of(context)!.amountExceedsMaximum;
       });
       return;
     }
@@ -77,7 +78,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     // Validate category
     if (_selectedCategoryId == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please select a category')),
+        SnackBar(content: Text(AppLocalizations.of(context)!.pleaseSelectCategory)),
       );
       return;
     }
@@ -85,7 +86,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     // Validate date
     if (_selectedDate == null || _selectedDate!.isEmpty) {
       setState(() {
-        _dateError = 'Please select a date';
+        _dateError = AppLocalizations.of(context)!.pleaseSelectDate;
       });
       return;
     }
@@ -105,7 +106,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
     if (success) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Transaction created successfully')),
+          SnackBar(content: Text(AppLocalizations.of(context)!.transactionCreatedSuccessfully)),
         );
         Navigator.of(context).pop();
       }
@@ -113,7 +114,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-              content: Text(provider.error ?? 'Failed to create transaction')),
+              content: Text(provider.error ?? AppLocalizations.of(context)!.failedToCreateTransaction)),
         );
       }
     }
@@ -158,10 +159,10 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add Transaction'),
-        centerTitle: true,
-      ),
+       appBar: AppBar(
+         title: Text(AppLocalizations.of(context)!.addTransaction),
+         centerTitle: true,
+       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -181,8 +182,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
             // Amount Input Field with Persian numeral support (T086, T094)
             AmountInputField(
               controller: _amountController,
-              label: 'Amount',
-              placeholder: 'Enter amount in Toman',
+              label: AppLocalizations.of(context)!.amount,
+              placeholder: AppLocalizations.of(context)!.enterAmountInToman,
               errorText: _amountError,
               onChanged: (_) {
                 setState(() {
@@ -218,8 +219,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
               controller: _dateController,
               readOnly: true,
               decoration: InputDecoration(
-                labelText: 'Date',
-                hintText: 'Select a date',
+                labelText: AppLocalizations.of(context)!.date,
+                hintText: AppLocalizations.of(context)!.selectDate,
                 border: const OutlineInputBorder(),
                 errorText: _dateError,
                 suffixIcon: IconButton(
@@ -236,10 +237,10 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
               controller: _notesController,
               maxLines: 3,
               maxLength: 500,
-              decoration: const InputDecoration(
-                labelText: 'Notes',
-                hintText: 'Optional notes about this transaction',
-                border: OutlineInputBorder(),
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.notes,
+                hintText: AppLocalizations.of(context)!.optionalNotes,
+                border: const OutlineInputBorder(),
                 alignLabelWithHint: true,
               ),
             ),
@@ -259,7 +260,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                           width: 20,
                           child: CircularProgressIndicator(strokeWidth: 2),
                         )
-                      : const Text('Save Transaction'),
+                       : Text(AppLocalizations.of(context)!.saveTransaction),
                 );
               },
             ),

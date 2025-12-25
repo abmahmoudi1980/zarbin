@@ -13,5 +13,19 @@
   "welcomeBack": "خوش آمدید",
   "createAccount": "ایجاد حساب کاربری",
   "confirmPassword": "تکرار رمز عبور",
-  "agreeToTerms": "با شرایط و قوانین موافقم"
+  "agreeToTerms": "با شرایط و قوانین موافقم",
+  "addTransaction": "افزودن تراکنش",
+  "amount": "مبلغ",
+  "enterAmountInToman": "مبلغ را به تومان وارد کنید",
+  "date": "تاریخ",
+  "selectDate": "تاریخی انتخاب کنید",
+  "notes": "یادداشت‌ها",
+  "optionalNotes": "یادداشت‌های اختیاری درباره این تراکنش",
+  "saveTransaction": "ذخیره تراکنش",
+  "amountMustBeGreaterThanZero": "مبلغ باید بیشتر از صفر باشد",
+  "amountExceedsMaximum": "مبلغ بیش از حداکثر (۹۹,۹۹۹,۹۹۹,۹۹۹) است",
+  "pleaseSelectCategory": "لطفاً یک دسته انتخاب کنید",
+  "pleaseSelectDate": "لطفاً تاریخ را انتخاب کنید",
+  "transactionCreatedSuccessfully": "تراکنش با موفقیت ایجاد شد",
+  "failedToCreateTransaction": "ایجاد تراکنش ناموفق بود"
 }

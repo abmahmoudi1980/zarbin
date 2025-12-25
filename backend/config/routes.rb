@@ -22,6 +22,7 @@ Rails.application.routes.draw do
 
       # Protected routes (require authentication)
       get '/transactions/summary/monthly', to: 'transactions#monthly_summary'
+      get '/transactions/summary/categories', to: 'transactions#summary_categories'
       resources :transactions, only: [:create, :index, :show, :update, :destroy]
       get '/balance', to: 'balance#show'
       get '/categories', to: 'categories#index'

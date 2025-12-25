@@ -13,5 +13,19 @@
   "welcomeBack": "Welcome Back",
   "createAccount": "Create Your Account",
   "confirmPassword": "Confirm Password",
-  "agreeToTerms": "I agree to Terms and Conditions"
+  "agreeToTerms": "I agree to Terms and Conditions",
+  "addTransaction": "Add Transaction",
+  "amount": "Amount",
+  "enterAmountInToman": "Enter amount in Toman",
+  "date": "Date",
+  "selectDate": "Select a date",
+  "notes": "Notes",
+  "optionalNotes": "Optional notes about this transaction",
+  "saveTransaction": "Save Transaction",
+  "amountMustBeGreaterThanZero": "Amount must be greater than 0",
+  "amountExceedsMaximum": "Amount exceeds maximum (99,999,999,999)",
+  "pleaseSelectCategory": "Please select a category",
+  "pleaseSelectDate": "Please select a date",
+  "transactionCreatedSuccessfully": "Transaction created successfully",
+  "failedToCreateTransaction": "Failed to create transaction"
 }

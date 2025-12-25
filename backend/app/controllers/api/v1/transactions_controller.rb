@@ -4,7 +4,7 @@ module Api
   module V1
     class TransactionsController < Api::V1::ApplicationController
       # JWT verification inherited from Api::V1::ApplicationController
-      before_action :set_user, only: [:create, :index, :show, :destroy, :monthly_summary]
+      before_action :set_user, only: %i[create index show destroy monthly_summary summary_categories]
       before_action :set_transaction, only: [:show, :destroy, :update]
 
       # GET /api/v1/transactions
@@ -159,13 +159,13 @@ module Api
       def monthly_summary
         year = params[:year].to_i
         month = params[:month].to_i
-        
+
         transactions = @user.transactions.for_jalali_month(year, month)
-        
+
         total_income = transactions.income_only.sum(:amount_toman)
         total_expense = transactions.expense_only.sum(:amount_toman)
         net_balance = total_income - total_expense
-        
+
         render json: {
           year: year,
           month: month,
@@ -173,6 +173,41 @@ module Api
           total_expense: total_expense,
           net_balance: net_balance,
           transaction_count: transactions.count
+        }
+      rescue StandardError => e
+        render json: { error: e.message }, status: :internal_server_error
+      end
+
+      # GET /api/v1/transactions/summary/categories
+      def summary_categories
+        transactions = @user.transactions
+
+        # Group by category and calculate totals
+        categories_summary = transactions.joins(:category).group('categories.id', 'categories.persian_name', 'categories.icon_code').select(
+          'categories.id as category_id',
+          'categories.persian_name',
+          'categories.icon_code',
+          'SUM(CASE WHEN transactions.transaction_type = \'income\' THEN transactions.amount_toman ELSE 0 END) as total_income',
+          'SUM(CASE WHEN transactions.transaction_type = \'expense\' THEN transactions.amount_toman ELSE 0 END) as total_expense',
+          'COUNT(transactions.id) as transaction_count'
+        ).to_a
+
+        # Format the response
+        formatted_summary = categories_summary.map do |summary|
+          {
+            category_id: summary.category_id,
+            category_name: summary.persian_name,
+            icon_code: summary.icon_code,
+            total_income: summary.total_income.to_i,
+            total_expense: summary.total_expense.to_i,
+            net_balance: summary.total_income.to_i - summary.total_expense.to_i,
+            transaction_count: summary.transaction_count.to_i
+          }
+        end
+
+        render json: {
+          success: true,
+          data: formatted_summary
         }
       rescue StandardError => e
         render json: { error: e.message }, status: :internal_server_error

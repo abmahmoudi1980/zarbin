@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-class FetchMarketRatesJob
-  include Solid::Queue::Job
+class FetchMarketRatesJob < ApplicationJob
+  queue_as :default
 
   def perform
     Rails.logger.info("Starting FetchMarketRatesJob...")

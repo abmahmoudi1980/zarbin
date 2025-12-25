@@ -50,11 +50,13 @@ class PersianFormatter {
 
   // Format DateTime to Jalali string with time
   static String formatDateTime(DateTime dateTime) {
-    final jalali = Jalali.fromDateTime(dateTime);
+    // Convert to local time before formatting so the UI shows the user's local time
+    final adjustedDateTime = dateTime.toLocal();
+    final jalali = Jalali.fromDateTime(adjustedDateTime);
     final dateStr =
         '${jalali.year}/${jalali.month.toString().padLeft(2, '0')}/${jalali.day.toString().padLeft(2, '0')}';
     final timeStr =
-        '${dateTime.hour.toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}';
+        '${adjustedDateTime.hour.toString().padLeft(2, '0')}:${adjustedDateTime.minute.toString().padLeft(2, '0')}';
     return toPersianDigits('$dateStr $timeStr');
   }
 

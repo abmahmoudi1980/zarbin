@@ -32,7 +32,7 @@ module Api
 
         response_data = {
           rates: formatted_rates,
-          timestamp: rates.first.timestamp.iso8601,
+          timestamp: rates.first.timestamp.in_time_zone.iso8601,
           rates_stale_minutes: stale_minutes,
           stale: stale_minutes > 5
         }
@@ -58,7 +58,7 @@ module Api
           rate_type: @rate.rate_type,
           value_in_toman: @rate.value_in_toman,
           rate_label: @rate.rate_label,
-          timestamp: @rate.timestamp,
+          timestamp: @rate.timestamp.in_time_zone.iso8601,
           stale: @rate.stale?
         }
       rescue StandardError => e
@@ -75,7 +75,7 @@ module Api
             rate_type: rate.rate_type,
             value_in_toman: rate.value_in_toman,
             rate_label: rate.rate_label,
-            timestamp: rate.timestamp,
+            timestamp: rate.timestamp.in_time_zone.iso8601,
             stale: rate.stale?
           }
         else
@@ -96,7 +96,7 @@ module Api
           rate_type: rate.rate_type,
           value_in_toman: rate.value_in_toman,
           label: rate.rate_label,
-          timestamp: rate.timestamp.iso8601,
+          timestamp: rate.timestamp.in_time_zone.iso8601,
           stale: rate.stale?,
           change_percent: calculate_change_percent(rate),
           change_direction: calculate_change_direction(rate)
@@ -111,11 +111,11 @@ module Api
               rate_type: rate.rate_type,
               value_in_toman: rate.value_in_toman,
               rate_label: rate.rate_label,
-              timestamp: rate.timestamp,
+              timestamp: rate.timestamp.in_time_zone.iso8601,
               stale: rate.stale?
             }
           end,
-          last_updated: rates.first&.timestamp
+          last_updated: rates.first&.timestamp&.in_time_zone&.iso8601
         }
       end
 

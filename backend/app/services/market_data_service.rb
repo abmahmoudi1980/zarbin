@@ -3,9 +3,9 @@
 class MarketDataService
   TGJU_API_BASE = "https://api.tgju.org"
   RATE_TYPES = {
-    usd: "price_usd",
-    gold_gram: "price_gold_grams",
-    bahar_coin: "price_bahar_azadi"
+    usd: "price_dollar_rl",
+    gold_gram: "geram18",
+    bahar_coin: "sekee"
   }.freeze
   
   # Cache expiry: 5 minutes
@@ -85,14 +85,22 @@ class MarketDataService
     private
 
     def fetch_rates_from_tgju
-      response = fetch_json("#{TGJU_API_BASE}/v2/live/usd")
-      return nil if response.blank?
+      usd_response = fetch_json("#{TGJU_API_BASE}/v1/market/indicator/summary-table-data/price_dollar_rl")
+      gold_response = fetch_json("#{TGJU_API_BASE}/v1/market/indicator/summary-table-data/geram18")
+      coin_response = fetch_json("#{TGJU_API_BASE}/v1/market/indicator/summary-table-data/sekee")
 
-      rates_hash = response.dig("data") || {}
+      return nil if usd_response.blank? || gold_response.blank? || coin_response.blank?
+
+      usd_price = usd_response.dig("data", 0, 0)&.gsub(",", "")&.to_i
+      gold_price = gold_response.dig("data", 0, 0)&.gsub(",", "")&.to_i
+      coin_price = coin_response.dig("data", 0, 0)&.gsub(",", "")&.to_i
+
+      return nil if usd_price.blank? || gold_price.blank? || coin_price.blank?
+
       {
-        usd_rate: rates_hash.dig("usd", "p") || 0,
-        gold_rate: rates_hash.dig("gold_grams", "p") || 0,
-        bahar_coin_rate: rates_hash.dig("bahar_azadi", "p") || 0
+        usd_rate: usd_price,
+        gold_rate: gold_price,
+        bahar_coin_rate: coin_price
       }
     rescue StandardError => e
       Rails.logger.error("TGJU API fetch error: #{e.message}")
@@ -103,13 +111,13 @@ class MarketDataService
       timestamp = Time.current
 
       mapping = {
-        "usd" => rates_data["price_usd"],
-        "gold_gram" => rates_data["price_gold_grams"],
-        "bahar_coin" => rates_data["price_bahar_azadi"]
+        "usd" => rates_data[:usd_rate],
+        "gold_gram" => rates_data[:gold_rate],
+        "bahar_coin" => rates_data[:bahar_coin_rate]
       }
 
       mapping.each do |rate_type, value|
-        next if value.blank?
+        next if value.blank? || value.zero?
 
         record = MarketRate.for_type(rate_type).order(timestamp: :desc).first
         if record.present?
@@ -123,10 +131,12 @@ class MarketDataService
     def fetch_json(url)
       require "net/http"
       require "json"
+      require "openssl"
 
       uri = URI(url)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = (uri.scheme == "https")
+      http.verify_mode = OpenSSL::SSL::VERIFY_NONE  # Disable SSL verification for TGJU
       
       request = Net::HTTP::Get.new(uri.request_uri)
       request["User-Agent"] = "Zarbin/1.0"

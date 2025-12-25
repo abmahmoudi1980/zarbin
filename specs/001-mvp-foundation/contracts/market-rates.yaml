@@ -8,3 +8,87 @@ info:
 
 servers:
   - url: https://api.zarbin.app/api/v1
+
+paths:
+  /rates:
+    get:
+      summary: Get current market rates
+      description: Retrieve the latest market rates for USD, Gold, and Bahar Azadi Coin
+      operationId: getMarketRates
+      responses:
+        '200':
+          description: Successful response with current rates
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  rates:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/MarketRate'
+                  timestamp:
+                    type: string
+                    format: date-time
+                    description: Timestamp of the rates data
+                  rates_stale_minutes:
+                    type: integer
+                    nullable: true
+                    description: Minutes since rates were last updated
+                  stale:
+                    type: boolean
+                    description: Whether rates are considered stale (>5 minutes old)
+                required:
+                  - rates
+                  - timestamp
+                  - stale
+        '500':
+          $ref: '#/components/responses/Error'
+
+components:
+  schemas:
+    MarketRate:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Rate record ID
+        rate_type:
+          type: string
+          enum: [usd, gold_gram, bahar_coin]
+          description: Type of rate
+        value_in_toman:
+          type: integer
+          description: Rate value in Toman
+        label:
+          type: string
+          description: Human-readable label
+        timestamp:
+          type: string
+          format: date-time
+          description: When rate was last updated
+        stale:
+          type: boolean
+          description: Whether this rate is stale
+      required:
+        - rate_type
+        - value_in_toman
+        - timestamp
+        - stale
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: Error message
+      required:
+        - error
+
+  responses:
+    Error:
+      description: Error response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'

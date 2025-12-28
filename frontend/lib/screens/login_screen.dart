@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:zarbin/l10n/app_localizations.dart';
 import 'package:zarbin/providers/auth_provider.dart';
 import 'package:zarbin/utils/validators.dart';
 import 'package:zarbin/widgets/loading_overlay.dart';

@@ -9,7 +9,7 @@ import 'package:zarbin/widgets/transaction_type_toggle.dart';
 import 'package:zarbin/widgets/amount_input_field.dart';
 import 'package:zarbin/widgets/dual_currency_display.dart';
 import 'package:shamsi_date/shamsi_date.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:zarbin/l10n/app_localizations.dart';
 
 /// AddTransactionScreen - Allows users to create income/expense transactions
 /// Features:
